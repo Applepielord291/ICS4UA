@@ -6,20 +6,24 @@
 public class RandomNumberV3 {
     public static void main(String[] args) throws Exception 
     {
-        int min = 0;
-        int max = 100;
+        int min = 10;
+        int max = 25;
         int step = 5;
         System.out.println(randNumber(min, max, step));
+        System.out.println("");
     }
     public static int randNumber(int min, int max, int step)
     {
         double x = min + Math.random() * max;
+        double[] z = new double[3];
         for (int y = 0; y < 3; y++)
         {
             x += step;
+            z[y] = x;
             System.out.print(Math.floor(x) + " ");
         }
         System.out.println(' ');
-        return (int)x;
+        double q = Math.random() * 3;
+        return (int)z[(int)q];
     }
 }
