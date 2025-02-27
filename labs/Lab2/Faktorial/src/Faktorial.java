@@ -8,7 +8,8 @@ public class Faktorial {
     {
         int numberFactorial = 3;
         int result = 1;
-        System.out.println(factorial(numberFactorial, result) + " is the factorial of " + numberFactorial);
+        if (numberFactorial > 0) System.out.println(factorial(numberFactorial, result) + " is the factorial of " + numberFactorial);
+        else System.out.println("Please use a number greater than 0");
     }
     public static int factorial(int inputNum, int res) 
     {

@@ -10,7 +10,6 @@ public class RandomNumberV3 {
         int max = 25;
         int step = 5;
         System.out.println(randNumber(min, max, step));
-        System.out.println("");
     }
     public static int randNumber(int min, int max, int step)
     {
@@ -22,7 +21,7 @@ public class RandomNumberV3 {
             z[y] = x;
             System.out.print(Math.floor(x) + " ");
         }
-        System.out.println(' ');
+        System.out.println("");
         double q = Math.random() * 3;
         return (int)z[(int)q];
     }
