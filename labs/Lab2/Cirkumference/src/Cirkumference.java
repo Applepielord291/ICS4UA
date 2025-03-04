@@ -18,7 +18,7 @@ public class Cirkumference {
         else if (value <= 0) System.out.println("Please use a number greater than 0");
         while (loop)
         {
-            System.out.println(radius(5)); System.out.println(radius(value));
+            System.out.println(radius(value)); System.out.println(area(value));
             System.out.println("Continue? (Y/N)");
             String exit = scanner.nextLine();
             if (exit.toUpperCase().equals("N"))
