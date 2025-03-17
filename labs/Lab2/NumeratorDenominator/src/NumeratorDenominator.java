@@ -7,8 +7,8 @@ import java.util.Scanner;
 
 class fraction 
 {
-    public int num;
-    public int den;
+    public double num;
+    public double den;
 }
 
 public class NumeratorDenominator {
@@ -20,16 +20,12 @@ public class NumeratorDenominator {
         f.num = Integer.parseInt(scanner.nextLine());
         System.out.println("enter denominator");
         f.den = Integer.parseInt(scanner.nextLine());
-        int test = 1;
-        System.out.println(simplify(f.num, f.den, test));
+        System.out.println(simplify(f.num, f.den));
         scanner.close();
     }
-    public static int simplify(int num, int den, int test)
+    public static double simplify(double num, double den)
     {
-        if (num % test == 0 && den % test == 0)
-        {
-
-        }
-        return 0;
+        double r = num / den;
+        return r;
     }
 }
