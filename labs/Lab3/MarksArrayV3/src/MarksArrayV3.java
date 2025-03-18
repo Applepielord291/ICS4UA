@@ -2,11 +2,11 @@ import java.util.Scanner;
 
 /* Nigel Garcia
  * March 18 2025
- * MarksArrayV2
- * outputs all the marks inputted by the user and calculates the average of all the available grades
+ * MarksArrayV3
+ * outputs all the marks inputted by the user, calculates the average and outputs a lettter grade depending on the average
  */
 
-public class MarksArrayV2 {
+public class MarksArrayV3 {
     public static void main(String[] args) throws Exception 
     {
         Scanner scn = new Scanner(System.in);
@@ -44,6 +44,11 @@ public class MarksArrayV2 {
             total += marks[i];
         }
         int avg = total / marks.length;
-        System.out.println("Your average is: " + avg);
+        System.out.println("Your average is: " + avg + "% ");
+        letterGrade(avg);
+    }
+    public static void letterGrade(int avg) //finish later
+    {
+
     }
 }

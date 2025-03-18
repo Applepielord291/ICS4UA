@@ -1,5 +1,11 @@
 import java.util.Scanner;
 
+/* Nigel Garcia
+ * March 18 2025
+ * MarksArray
+ * outputs all the marks that the user inputs
+ */
+
 public class MarksArray {
     public static void main(String[] args) throws Exception 
     {
