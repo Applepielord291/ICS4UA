@@ -44,11 +44,22 @@ public class MarksArrayV3 {
             total += marks[i];
         }
         int avg = total / marks.length;
-        System.out.println("Your average is: " + avg + "% ");
+        System.out.println("\nYour average is: " + avg + "% ");
         letterGrade(avg);
     }
-    public static void letterGrade(int avg) //finish later
+    public static void letterGrade(int avg) //holy if else statements
     {
-
+        if (avg >= 90) System.out.println("A+");
+        else if (85 <= avg && avg <= 89) System.out.println("A");
+        else if (80 <= avg && avg <= 84) System.out.println("A-");
+        else if (77 <= avg && avg <= 79) System.out.println("B+");
+        else if (73 <= avg && avg <= 76) System.out.println("B");
+        else if (70 <= avg && avg <= 72) System.out.println("B-");
+        else if (67 <= avg && avg <= 69) System.out.println("C+");
+        else if (63 <= avg && avg <= 66) System.out.println("C");
+        else if (60 <= avg && avg <= 62) System.out.println("C-");
+        else if (55 <= avg && avg <= 59) System.out.println("D+");
+        else if (50 <= avg && avg <= 54) System.out.println("D");
+        else if (avg <= 49) System.out.println("F");
     }
 }
