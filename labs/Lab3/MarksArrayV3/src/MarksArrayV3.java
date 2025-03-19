@@ -16,7 +16,7 @@ public class MarksArrayV3 {
         Update(marks);
         scn.close();
     }
-    public static void Update(int[] marks)
+    public static void Update(int[] marks) //add marks to array
     {
         Scanner scn = new Scanner(System.in);
         for (int i = 0; i < marks.length; i++)
@@ -27,7 +27,7 @@ public class MarksArrayV3 {
         output(marks);
         scn.close();
     }
-    public static void output(int[] marks)
+    public static void output(int[] marks) //outputs marks from array
     {
         System.out.println("These are your marks: ");
         for (int i = 0; i < marks.length; i++)
@@ -36,7 +36,7 @@ public class MarksArrayV3 {
         }
         average(marks);
     }
-    public static void average(int[] marks)
+    public static void average(int[] marks) //calculates average from marks in array
     {
         int total = 0;
         for (int i = 0; i < marks.length; i++)
@@ -47,7 +47,7 @@ public class MarksArrayV3 {
         System.out.println("\nYour average is: " + avg + "% ");
         letterGrade(avg);
     }
-    public static void letterGrade(int avg) //holy if else statements
+    public static void letterGrade(int avg) //holy if else statements (letter grades)
     {
         if (avg >= 90) System.out.println("A+");
         else if (85 <= avg && avg <= 89) System.out.println("A");

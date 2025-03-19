@@ -33,5 +33,4 @@ public class NumeratorDenominator {
         if (den == 0) return num;
         else return simplify(den, num % den);
     }
-    
 }

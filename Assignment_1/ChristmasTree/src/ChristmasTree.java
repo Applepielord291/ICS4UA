@@ -27,7 +27,6 @@ public class ChristmasTree {
         {
             System.out.println("Only numbers!!!");
         }
-        
     }
     public static void makeTree(int height, String space, String visual)
     {
