@@ -7,17 +7,18 @@ import java.io.IOException;
 
 /* Nigel Garcia
  * March 24 2025
- * outputs marks, total, average, and letter grade given the mark values and number of marks
+ * outputs marks, total, average, and letter grade into a txt file given the mark values and number of marks
+ * please remember to bring this project over to the lab3 folder
  */
 
-public class MarksArrayIO {
+ public class MarksArrayIO {
     public static void main(String[] args) throws Exception //just messing around with try/catch to try and understand it more
     {
         start();
     }
-    public static void start() throws Exception //file creation and variable declaration
+    public static void start() throws Exception //file creation and variable declaration (fix the file creation to make it relative)
     {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./labs/Lab4/MarksArrayIO/src/output.txt")))
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./labs/Lab3/MarksArrayIO/src/output.txt")))
         {
             Scanner scn = new Scanner(System.in);
             System.out.println("How many marks would you like to enter?");
@@ -30,12 +31,17 @@ public class MarksArrayIO {
             bw.close();
             scn.close();
         }
-        catch (InputMismatchException e)
+        catch (InputMismatchException e) //this exception means theres a wrong input (string in int)
         {
             System.out.println("Only numbers are allowed, try again");
             start();
         }
-        catch (FileNotFoundException e)
+        catch (NegativeArraySizeException e) //this exception means theres an array with negative elements
+        {
+            System.out.println("only positive numbers are allowed, try again");
+            start();
+        }
+        catch (FileNotFoundException e) //this exception means that the selected file cannot be accessed
         {
             System.out.println("File not found");
         }
@@ -62,7 +68,7 @@ public class MarksArrayIO {
         }
         return total / marks.length;
     }
-    public static String showLevel(double avg) //calculates level grade in the worst way possible
+    public static String showLevel(double avg) //calculates level grade with various else if statements (i feel like yanderedev)
     {
         String result = "";
         if (avg >= 95) result = "You are a level 4+ student";
@@ -80,8 +86,8 @@ public class MarksArrayIO {
         else if (avg <= 49) result = "You are a failure, R";
         return result;
     }
-    public static void dispOutput(double avg, String res, int[] marks, BufferedWriter bw) throws IOException //prints results into the output file
-    {
+    public static void dispOutput(double avg, String res, int[] marks, BufferedWriter bw) throws IOException //IO exception is when an input/output operation fails
+    {                                                                                                       //outputs the results into a txt file
         double total = 0;
         bw.write("These are your marks: ");
         bw.write("\n\n");
@@ -100,3 +106,4 @@ public class MarksArrayIO {
         bw.write("\n"); bw.write(res);
     }
 }
+
