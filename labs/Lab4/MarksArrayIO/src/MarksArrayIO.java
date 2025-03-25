@@ -1,5 +1,7 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -9,13 +11,17 @@ import java.io.IOException;
  */
 
 public class MarksArrayIO {
-    public static void main(String[] args) throws Exception //file creation and variable declaration
+    public static void main(String[] args) throws Exception //just messing around with try/catch to try and understand it more
+    {
+        start();
+    }
+    public static void start() throws Exception //file creation and variable declaration
     {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("./labs/Lab4/MarksArrayIO/src/output.txt")))
         {
             Scanner scn = new Scanner(System.in);
             System.out.println("How many marks would you like to enter?");
-            int res = Integer.parseInt(scn.nextLine());
+            int res = scn.nextInt();
             int[] markList = marks(res);
             double avg = add(markList);
             String lvl = showLevel(avg);
@@ -24,9 +30,14 @@ public class MarksArrayIO {
             bw.close();
             scn.close();
         }
-        catch (Exception e)
+        catch (InputMismatchException e)
         {
-            System.out.println("Cant access file, " + e);
+            System.out.println("Only numbers are allowed, try again");
+            start();
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("File not found");
         }
     }
     public static int[] marks(int res) //adds marks to a list
@@ -36,7 +47,7 @@ public class MarksArrayIO {
         for (int i = 0; i < res; i++)
         {
             System.out.println("Enter mark " + (i + 1));
-            int mark = Integer.parseInt(scn.nextLine());
+            int mark = scn.nextInt();
             markList[i] = mark;
         }
         scn.close();
@@ -69,7 +80,7 @@ public class MarksArrayIO {
         else if (avg <= 49) result = "You are a failure, R";
         return result;
     }
-    public static void dispOutput(double avg, String res, int[] marks, BufferedWriter bw) throws Exception //prints results into the output file
+    public static void dispOutput(double avg, String res, int[] marks, BufferedWriter bw) throws IOException //prints results into the output file
     {
         double total = 0;
         bw.write("These are your marks: ");
