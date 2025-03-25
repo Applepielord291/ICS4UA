@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 
 /* Nigel Garcia
  * March 24 2025
@@ -10,25 +11,23 @@ import java.io.FileWriter;
 public class MarksArrayIO {
     public static void main(String[] args) throws Exception //file creation and variable declaration
     {
-        try
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./labs/Lab4/MarksArrayIO/src/output.txt")))
         {
             Scanner scn = new Scanner(System.in);
-            BufferedWriter bw = new BufferedWriter(new FileWriter("labs/Lab4/MarksArrayIO/src/output.txt"));
             System.out.println("How many marks would you like to enter?");
             int res = Integer.parseInt(scn.nextLine());
             int[] markList = marks(res);
             double avg = add(markList);
-            String lvl = level(avg);
-            output(avg, lvl, markList, bw);
+            String lvl = showLevel(avg);
+            dispOutput(avg, lvl, markList, bw);
             System.out.println("please check the results located in labs/Lab4/MarksArrayIO/src/output.txt");
             bw.close();
             scn.close();
         }
         catch (Exception e)
         {
-            System.out.println("Failed to create file, " + e);
+            System.out.println("Cant access file, " + e);
         }
-        
     }
     public static int[] marks(int res) //adds marks to a list
     {
@@ -52,7 +51,7 @@ public class MarksArrayIO {
         }
         return total / marks.length;
     }
-    public static String level(double avg) //calculates level grade in the worst way possible
+    public static String showLevel(double avg) //calculates level grade in the worst way possible
     {
         String result = "";
         if (avg >= 95) result = "You are a level 4+ student";
@@ -70,16 +69,17 @@ public class MarksArrayIO {
         else if (avg <= 49) result = "You are a failure, R";
         return result;
     }
-    public static void output(double avg, String res, int[] marks, BufferedWriter bw) throws Exception //prints results into the output file
+    public static void dispOutput(double avg, String res, int[] marks, BufferedWriter bw) throws Exception //prints results into the output file
     {
         double total = 0;
         bw.write("These are your marks: ");
-        bw.write("\n");
+        bw.write("\n\n");
         for (int i = 0; i < marks.length; i++)
         {
             bw.write("Your mark " + (i + 1) + " is : " + marks[i]);
             bw.write("\n");
         }
+        bw.write("\n");
         for (int i = 0; i < marks.length; i++)
         {
             total += marks[i];

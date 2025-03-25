@@ -1,10 +1,8 @@
 These are your marks: 
-Your mark 1 is : 88
-Your mark 2 is : 80
-Your mark 3 is : 80
-Your mark 4 is : 67
-Your mark 5 is : 85
-Your mark 6 is : 80
-Your total is : 480.0
+
+Your mark 1 is : 70
+Your mark 2 is : 90
+
+Your total is : 160.0
 Your average is : 80.0
 You are a level 4- student
