@@ -18,7 +18,7 @@ import java.io.IOException;
     }
     public static void start() throws Exception //file creation and variable declaration (fix the file creation to make it relative)
     {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./labs/Lab3/MarksArrayIO/src/output.txt")))
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("labs/Lab3/MarksArrayIO/src/output.txt")))
         {
             Scanner scn = new Scanner(System.in);
             System.out.println("How many marks would you like to enter?");
@@ -27,7 +27,7 @@ import java.io.IOException;
             double avg = add(markList);
             String lvl = showLevel(avg);
             dispOutput(avg, lvl, markList, bw);
-            System.out.println("please check the results located in labs/Lab4/MarksArrayIO/src/output.txt");
+            System.out.println("please check the results located in /Lab3/MarksArrayIO/src/output.txt");
             bw.close();
             scn.close();
         }
