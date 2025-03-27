@@ -56,13 +56,7 @@ public class Funktions {
     }
     public static boolean isPrime(int num1)
     {
-        for (int x = 1; x < num1; x++)
-        {
-            if (num1 % x == 1 && x != 1 || x != num1)
-            {
-                return true;
-            } 
-        }
+        if (num1 % Math.sqrt(num1) == 0) return true;
         return false;
     }
     public static boolean Letter(String x)

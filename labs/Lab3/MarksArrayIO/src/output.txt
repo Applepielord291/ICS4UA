@@ -1,0 +1,11 @@
+These are your marks: 
+
+Your mark 1 is : 88
+Your mark 2 is : 80
+Your mark 3 is : 80
+Your mark 4 is : 67
+Your mark 5 is : 80
+Your mark 6 is : 80
+
+Your total is : 475.0
+Your average is : 79.16666666666667
