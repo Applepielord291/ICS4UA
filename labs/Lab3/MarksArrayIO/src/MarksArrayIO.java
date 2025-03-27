@@ -26,6 +26,7 @@ import java.io.IOException;
             int[] markList = marks(res);
             double avg = add(markList);
             String lvl = showLevel(avg);
+            writeMark(markList);
             dispOutput(avg, lvl, markList, bw);
             System.out.println("please check the results located in /Lab3/MarksArrayIO/src/output.txt");
             bw.close();
@@ -104,6 +105,22 @@ import java.io.IOException;
         bw.write("Your total is : " + total);
         bw.write("\n"); bw.write("Your average is : " + avg);
         bw.write("\n"); bw.write(res);
+    }
+    public static void writeMark(int[] marks) throws Exception
+    {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("labs/Lab3/MarksArrayIO/src/marks.txt")))
+        {
+            bw.write("" + marks.length + "\n");
+            for (int i = 0; i < marks.length; i++)
+            {
+                bw.write("" + marks[i]);
+                bw.write("\n");
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("File path not found.");
+        }
     }
 }
 
