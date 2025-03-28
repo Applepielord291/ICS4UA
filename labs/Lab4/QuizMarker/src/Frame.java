@@ -1,18 +1,21 @@
 import javax.swing.*;
-import java.awt.*;
+//import java.awt.*;
 
 public class Frame {
     public void showWindow() throws Exception
     {
         JFrame frame = new JFrame("test");
+        JPanel panel = new JPanel();
+        JButton button = new JButton("System");
+        JMenu menu = new JMenu("Title");
+        frame.setSize(1920, 1080);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel emptyLabel = new JLabel("what");
-        frame.setBackground(new Color(220, 220, 220));
-        emptyLabel.setBackground(new Color(20, 20, 20));
-        emptyLabel.setPreferredSize(new Dimension(128, 128));
-        frame.getContentPane().add(emptyLabel, BorderLayout.CENTER);
-        frame.setTitle("WOWEEEE");
-        frame.pack();
+        frame.setTitle("Quiz Marker");
+        panel.setSize(600, 400);
+        frame.add(panel);
+        panel.add(menu);
+
+        panel.add(button);
         frame.setVisible(true);
     }
     public static void main(String[] args)

@@ -6,5 +6,7 @@ public class Main {
         Frame frame = new Frame();
         frame.showWindow();
 
+        fileGeneration fileG = new fileGeneration();
+        fileG.makeFile(); 
     }
 }
