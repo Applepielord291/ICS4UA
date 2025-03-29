@@ -1,22 +1,21 @@
 Student response
+B
 A
 A
-A
+B
+B
 B
 A
 C
 B
-C
-A
-C
-C
-A
+B
 C
 A
 A
+B
+C
+C
 C
 B
-A
 C
-B
-Answer Key
+A
