@@ -1,26 +1,28 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 
+/* Nigel Garcia
+ * March 28 2025
+ * fileGeneration
+ * Randomly generates test input answers and an answer key (both A-D) to use for the program.
+ */
 public class fileGeneration {
     static String res = "";
     static String res2 = "";
     static String res3 = "";
-    public static void main(String[] args) throws Exception 
-    {
-        
-    }
-    public void makeFile() throws Exception
+    public static void main(String[] args) throws Exception {}
+    public void makeFile() throws Exception //Generates file and random answers
     {
         int test = 0;
         char[][] ansAndKey = new char[20][2];
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("labs/Lab4/QuizMarker/src/textFiles/input.txt")))
         {
-            bw.write("Student Response:\n");
             for (int i = 0; i < 20; i++)
             {
                 ansAndKey[i][0] = Letter(test);
-                bw.write(ansAndKey[i][0]); bw.write("\n");
+                bw.write((i + 1) + ". " + ansAndKey[i][0]); bw.write("\n");
             }
+            bw.close();
         }
         catch (Exception e)
         {
@@ -34,6 +36,7 @@ public class fileGeneration {
                 ansAndKey[i][1] = Letter(test);
                 bw.write(ansAndKey[i][1]); bw.write("\n");
             }
+            bw.close();
         }
         catch (Exception e)
         {
@@ -42,7 +45,7 @@ public class fileGeneration {
 
         compare(ansAndKey);
     }
-    public static void compare(char[][] ansAndKey)
+    public static void compare(char[][] ansAndKey) //Compares if answers are right or not
     {
         int correctCount = 0;
         int wrongCount = 0;
@@ -56,17 +59,17 @@ public class fileGeneration {
         }
         if (wrongCount > correctCount) 
         {
-            res = "Verdict: Failed.";
+            res = "Failed.";
         }
         else if (wrongCount <= correctCount) 
         {
-            res = "Verdict: Passed.";
+            res = "Passed.";
         }
-        res2 = "Number of correct answer(s): " + correctCount;
-        res3 = "Number of incorrect answer(s) " + wrongCount;
-        System.out.println(correctCount + "/" + (wrongCount + correctCount));
+        res2 = "" + correctCount;
+        res3 = "" + wrongCount;
+        //System.out.println(correctCount + "/" + (wrongCount + correctCount));
     }
-    public static char Letter(int rnd)
+    public static char Letter(int rnd) //Randomly generates a letter
     {
         rnd = (int)(1 + Math.random() * 3);
         switch(rnd)
