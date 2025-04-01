@@ -40,7 +40,7 @@ public class Weather
         }
         System.out.println("Day: ");
         int res = scn.nextInt();
-        if (res > 0)
+        if (res > 0 && res <= 30)
         {
             for (int i = 0; i < months; i++)
             {

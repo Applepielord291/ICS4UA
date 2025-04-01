@@ -67,7 +67,6 @@ public class fileGeneration {
         }
         res2 = "" + correctCount;
         res3 = "" + wrongCount;
-        //System.out.println(correctCount + "/" + (wrongCount + correctCount));
     }
     public static char Letter(int rnd) //Randomly generates a letter
     {
