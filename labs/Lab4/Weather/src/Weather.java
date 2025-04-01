@@ -44,12 +44,9 @@ public class Weather
         {
             for (int i = 0; i < months; i++)
             {
-                if (i == res)
+                for (int j = 0; j < days; j++)
                 {
-                    for (int j = 0; j < days; j++)
-                    {
-                        System.out.println("Temperatures are: " + records[res][j]);
-                    }
+                    if (j == res) System.out.println("Temperatures are: " + records[i][j]);
                 }
             }
         }

@@ -23,6 +23,7 @@ public class Frame extends JFrame {
         JMenu menu = new JMenu("System");
         JMenu menu2 = new JMenu("About");
         JMenu subMenu = new JMenu("Exit");
+        JButton button2 = new JButton("Generate new files");
         JScrollPane scrollPane = new JScrollPane(textArea);
         JLabel label = new JLabel();
         JLabel label2 = new JLabel();
@@ -40,6 +41,7 @@ public class Frame extends JFrame {
         frame.setTitle("Quiz Marker");
         panel.setSize(600, 400);
         button.setBounds(400, 25, 100, 25);
+        button2.setBounds(375, 50, 150, 25);
         scrollPane.setBounds(10, 10, 250, 300);
         textArea2.setBounds(350, 210, 150, 100);
         textArea3.setBounds(350, 160, 200, 25);
@@ -48,6 +50,7 @@ public class Frame extends JFrame {
         label2.setBounds(350, 140, 200, 25);
         label3.setBounds(350, 190, 200, 25);
         button.addActionListener(e -> selectionButtonPressed());
+        button2.addActionListener(e -> clickedButton());
         
         frame.add(panel);
         panel.add(button);
@@ -64,6 +67,7 @@ public class Frame extends JFrame {
         panel.add(label);
         panel.add(label2);
         panel.add(label3);
+        panel.add(button2);
         
         frame.setVisible(true);
     }
@@ -80,6 +84,11 @@ public class Frame extends JFrame {
         {
             e.printStackTrace();
         }
+    }
+    public void clickedButton()
+    {
+        fileGeneration fGen = new fileGeneration();
+        fGen.makeFile();
     }
     public static void main(String[] args) {}
 }

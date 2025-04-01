@@ -11,7 +11,7 @@ public class fileGeneration {
     static String res2 = "";
     static String res3 = "";
     public static void main(String[] args) throws Exception {}
-    public void makeFile() throws Exception //Generates file and random answers
+    public void makeFile() //throws Exception //Generates file and random answers
     {
         int test = 0;
         char[][] ansAndKey = new char[20][2];

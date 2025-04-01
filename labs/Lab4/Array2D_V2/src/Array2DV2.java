@@ -1,5 +1,11 @@
 import java.util.Scanner;
 
+/* Nigel Garcia
+ * April 1 2025
+ * Array2D v2
+ * Creates 2D array of anything
+ */
+
 public class Array2DV2 {
     public static void main(String[] args) throws Exception 
     {

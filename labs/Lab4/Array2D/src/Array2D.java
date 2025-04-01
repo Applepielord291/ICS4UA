@@ -1,5 +1,11 @@
 import java.util.Scanner;
 
+/* Nigel Garcia 
+ * April 1 2025
+ * Array2D
+ * creates 2D array of numbers
+*/
+
 public class Array2D {
     public static void main(String[] args) throws Exception 
     {
