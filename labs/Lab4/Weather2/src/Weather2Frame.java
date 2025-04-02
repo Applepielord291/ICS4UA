@@ -15,7 +15,6 @@ public class Weather2Frame extends JFrame
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         
-        
         JLabel label2 = new JLabel();
         JLabel label3 = new JLabel();
         JScrollPane scrollPane = new JScrollPane(textArea);
@@ -43,6 +42,15 @@ public class Weather2Frame extends JFrame
         label3.setText("Month (as a number)");
         btn.addActionListener(e -> buttonClicked());
 
+        try 
+        {
+            textArea.read(new BufferedReader(new FileReader("labs/Lab4/Weather2/src/input.txt")), null);
+        }
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+        }
+
         frame.add(panel);
         panel.add(scrollPane);
         panel.add(label2);
@@ -52,18 +60,20 @@ public class Weather2Frame extends JFrame
         panel.add(btn);
         panel.add(scrollPane2);
 
-        
-
         frame.setVisible(true);
     }
     public static void buttonClicked()
     {
-        int StationNumber = Integer.parseInt(textArea2.getText());
+        /*int StationNumber = Integer.parseInt(textArea2.getText());
         int month = Integer.parseInt(textArea3.getText());
-        Weather2 w2 = new Weather2();
+        Weather2 w2 = new Weather2();*/
         try {
-            result = w2.tableAccess(StationNumber, month);
-            textArea.read(new BufferedReader(new FileReader("labs/Lab4/Weather2/src/input.txt")), null);
+            //result = w2.tableAccess(StationNumber, month);
+            for (int i = 0; i < 10; i++)
+            {
+                textArea.read(new BufferedReader(new FileReader("labs/Lab4/Weather2/src/input.txt")), null);
+            }
+            //textArea4.read(new BufferedReader(new FileReader("labs/Lab4/Weather2/src/input.txt")), null);
         }
         catch (IOException e) {
             e.printStackTrace();

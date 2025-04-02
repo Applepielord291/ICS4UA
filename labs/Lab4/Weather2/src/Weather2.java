@@ -68,9 +68,9 @@ public class Weather2 {
             bw.close();
         }
     }
-    public String tableAccess(int station, int month) throws IOException
+    public void tableAccess(int station, int month) throws IOException
     {
-        int min = 0;
+        /*int min = 0;
         int max = 0;
         switch(month)
         {
@@ -122,25 +122,17 @@ public class Weather2 {
                 min = 334;
                 max = 365;
                 break;
-        }
+        }*/
         try (BufferedReader br = new BufferedReader(new FileReader("labs/Lab4/Weather2/src/input.txt")))
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < station; i++)
             {
-                for (int j = min; j < max; j++)
-                {
-                    if (i == station)
-                    {
-                        return br.readLine();
-                    }
-                }
+                br.readLine();
             }
-            return br.readLine();
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
         }
     }
 }
