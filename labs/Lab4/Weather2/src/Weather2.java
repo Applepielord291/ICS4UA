@@ -1,52 +1,29 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
 
 /* Nigel Garcia
  * March 30 2025
  * Weather2
  * Outputs temperatures and the useer can pick a location now
+ * Now with JFrames (AHH)
  */
 
 public class Weather2 {
     static int locations = 10;
     static int days = 365;
     static double[][] records = new double[locations][days];
-    public static void main(String[] args) throws Exception 
+    public static void main(String[] args) throws Exception //generates random numbers for each element then writes it down on a txt file
     {
         Weather2Frame w2f = new Weather2Frame();
         w2f.showFrame();
-        for (int i = 0; i < locations; i++)
-        {
-            for (int j = 0; j < days; j++)
-            {
-                records[i][j] = Math.round(-10 + Math.random() * 45);
-            }
-        }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("labs/Lab4/Weather2/src/input.txt")))
-        {
-            for (int i = 0; i < locations; i++)
-            {
-                bw.write("Location: " + (i + 1) + ": ");
-                for (int j = 0; j < days; j++)
-                {
-                    bw.write(records[i][j] + " | ");
-                }
-            }
-            bw.close();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        
-        
+
+        generate();
+        w2f.readFile();
     }
-    public void generate() throws IOException
+    public static void generate() throws IOException //refreshes the table with new values
     {
-        
+        Weather2Frame w2f = new Weather2Frame();
         for (int i = 0; i < locations; i++)
         {
             for (int j = 0; j < days; j++)
@@ -54,6 +31,7 @@ public class Weather2 {
                 records[i][j] = Math.round(-10 + Math.random() * 45);
             }
         }
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("labs/Lab4/Weather2/src/input.txt")))
         {
             for (int i = 0; i < locations; i++)
@@ -67,10 +45,15 @@ public class Weather2 {
             }
             bw.close();
         }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        w2f.readFile();
     }
-    public void tableAccess(int station, int month) throws IOException
+    public void tableAccess(int station, int month) throws IOException //called when a user requests a month and a station number
     {
-        /*int min = 0;
+        int min = 0;
         int max = 0;
         switch(month)
         {
@@ -122,17 +105,20 @@ public class Weather2 {
                 min = 334;
                 max = 365;
                 break;
-        }*/
-        try (BufferedReader br = new BufferedReader(new FileReader("labs/Lab4/Weather2/src/input.txt")))
-        {
-            for (int i = 0; i < station; i++)
-            {
-                br.readLine();
-            }
         }
-        catch (Exception e)
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("labs/Lab4/Weather2/src/result.txt")))
+        {
+            bw.write("Location " + (station) + ": ");
+            for (int i = min; i < max; i++)
+            {
+                bw.write(records[station - 1][i] + " | ");
+            }
+            bw.close();
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
+
     }
 }
