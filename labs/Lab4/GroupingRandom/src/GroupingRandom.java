@@ -37,14 +37,4 @@ public class GroupingRandom {
             e.printStackTrace();
         }
     }
-    public static void GenerateAgain(String[][] groupedNames, String[][] names, int rnd)
-    {
-        for (int k = 0; k < 5; k++)
-        {
-            for (int l = 0; l < 3; l++)
-            {
-                
-            }
-        }
-    }
 }

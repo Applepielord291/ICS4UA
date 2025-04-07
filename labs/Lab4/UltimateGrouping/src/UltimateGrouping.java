@@ -2,7 +2,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.Scanner;
 
-public class App {
+public class UltimateGrouping {
     public static void main(String[] args) throws Exception {
         Scanner scn = new Scanner(System.in);
         System.out.println("How many rows?");
@@ -33,16 +33,20 @@ public class App {
                 bw.write("Group " + (i + 1) + ":\n");
                 for (int j = 0; j < columns; j++)
                 {
-                    for (int k = 0; k < columns; k++)
+                    boolean real = false;
+                    int rnd = 0;
+                    int rnd2 = 0;
+                        
+                    while(!real)
                     {
-                        int rnd = (int)Math.round(Math.random() * ((rows * columns) / groups));
-                        if (groupedNames[rnd][k] == null)
-                        {
-                            groupedNames[rnd][k] = names[rnd][k];
-                            bw.write(groupedNames[rnd][k] + "\n");
-                            break;
-                        }
+                        rnd = (int)Math.round(Math.random() * (groups - 1));
+                        rnd2 = (int)Math.round(Math.random() * (columns - 1));
+                        if (names[rnd][rnd2] != null) real = true;
                     }
+
+                    groupedNames[i][j] = names[rnd][rnd2];
+                    names[rnd][rnd2] = null;
+                    bw.write(groupedNames[i][j] + "\n");
                 }
                 bw.write("\n\n");
             }
