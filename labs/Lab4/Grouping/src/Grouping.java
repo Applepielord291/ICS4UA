@@ -1,7 +1,7 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 //fix later
-public class App {
+public class Grouping {
     public static void main(String[] args) throws Exception {
         String[][] names = {{"Abigail", "Ali", "Anderson"}, {"Bob", "Blake", "Bryan"}, {"Cam", "Charlie", "Clementine"}, {"Dennis", "Diana", "Dominic"}, {"Eden", "Elan", "Ebenezer"}};
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("labs/Lab4/Grouping/src/output.txt")))

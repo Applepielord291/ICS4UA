@@ -2,7 +2,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 
 //fix later
-public class App {
+public class GroupingRandom {
     public static void main(String[] args) throws Exception {
         String[][] names = {{"Abigail", "Ali", "Anderson"}, {"Bob", "Blake", "Bryan"}, {"Cam", "Charlie", "Clementine"}, {"Dennis", "Diana", "Dominic"}, {"Eden", "Elan", "Ebenezer"}};
         String[][] groupedNames = new String[5][3];
@@ -13,16 +13,20 @@ public class App {
                 bw.write("Group " + (i + 1) + ":\n");
                 for (int j = 0; j < 3; j++)
                 {
-                    for (int k = 0; k < 3; k++)
+                    boolean real = false;
+                    int rnd = 0;
+                    int rnd2 = 0;
+                    
+                    while(!real)
                     {
-                        int rnd = (int)Math.round(Math.random() * 3);
-                        if (groupedNames[rnd][k] == null)
-                        {
-                            groupedNames[rnd][k] = names[rnd][k];
-                            bw.write(groupedNames[rnd][k] + "\n");
-                            break;
-                        }
+                        rnd = (int)Math.round(Math.random() * 4);
+                        rnd2 = (int)Math.round(Math.random() * 2);
+                        if (names[rnd][rnd2] != null) real = true;
                     }
+
+                    groupedNames[i][j] = names[rnd][rnd2];
+                    names[rnd][rnd2] = null;
+                    bw.write(groupedNames[i][j] + "\n");
                 }
                 bw.write("\n\n");
             }
@@ -31,6 +35,16 @@ public class App {
         catch (Exception e)
         {
             e.printStackTrace();
+        }
+    }
+    public static void GenerateAgain(String[][] groupedNames, String[][] names, int rnd)
+    {
+        for (int k = 0; k < 5; k++)
+        {
+            for (int l = 0; l < 3; l++)
+            {
+                
+            }
         }
     }
 }
