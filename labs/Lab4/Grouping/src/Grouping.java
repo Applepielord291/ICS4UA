@@ -1,6 +1,12 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-//fix later
+
+/* Nigel Garcia
+ * April 4 2025
+ * Grouping
+ * Groups names together in a certain order (not random)
+ */
+
 public class Grouping {
     public static void main(String[] args) throws Exception {
         String[][] names = {{"Abigail", "Ali", "Anderson"}, {"Bob", "Blake", "Bryan"}, {"Cam", "Charlie", "Clementine"}, {"Dennis", "Diana", "Dominic"}, {"Eden", "Elan", "Ebenezer"}};

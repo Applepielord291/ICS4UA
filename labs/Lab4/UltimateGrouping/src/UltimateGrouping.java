@@ -2,6 +2,12 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.Scanner;
 
+/* Nigel Garcia
+ * April 4 2025
+ * UltimateGrouping
+ * With a custom list size and x amount of groups, groups custom names together in a random order
+ */
+
 public class UltimateGrouping {
     public static void main(String[] args) throws Exception {
         Scanner scn = new Scanner(System.in);

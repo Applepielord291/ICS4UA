@@ -2,6 +2,12 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.Scanner;
 
+/* Nigel Garcia
+ * April 4 2025
+ * GroupingRandomV2
+ * Groups custom names in a random order
+ */
+
 public class GroupingRandom_V2 {
     public static void main(String[] args) throws Exception {
         String[][] names = new String[5][3];
