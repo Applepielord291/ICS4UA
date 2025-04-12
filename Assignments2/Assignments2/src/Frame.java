@@ -13,34 +13,35 @@ import javax.swing.*;
 public class Frame {
     //I apologize for the naming scheme...
     //also I made these public since im applying the values from the instantiated soda classes into the textareas.
+    static JFrame frame = new JFrame();
     JTextArea soda1TxtAreaPrice = new JTextArea();
     JTextArea soda1TxtAreaQuantity = new JTextArea();
-    JButton soda1PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/CocaCola.jpg"));
+    static JButton soda1PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/CocaCola.jpg"));
 
     JTextArea soda2TxtAreaPrice = new JTextArea();
     JTextArea soda2TxtAreaQuantity = new JTextArea();
-    JButton soda2PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/Fanta.jpg"));
+    static JButton soda2PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/Fanta.jpg"));
 
     JTextArea soda3TxtAreaPrice = new JTextArea();
     JTextArea soda3TxtAreaQuantity = new JTextArea();
-    JButton soda3PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/Crush.jpg"));
+    static JButton soda3PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/Crush.jpg"));
 
     JTextArea soda4TxtAreaPrice = new JTextArea();
     JTextArea soda4TxtAreaQuantity = new JTextArea();
-    JButton soda4PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/Water.jpg"));
+    static JButton soda4PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/Water.jpg"));
 
     JTextArea soda5TxtAreaPrice = new JTextArea();
     JTextArea soda5TxtAreaQuantity = new JTextArea();
-    JButton soda5PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/StomachAcid.jpg"));
+    static JButton soda5PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/StomachAcid.jpg"));
 
     static JTextArea totalTxt = new JTextArea();
     static JTextArea resultTxt = new JTextArea();
+    static JTextArea actualTotalTxt = new JTextArea();
 
     static Main main = new Main();
     public void ShowFrame()
     {
         //defining all the components
-        JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         JButton exitBtn = new JButton("Exit");
         JButton resetBtn = new JButton("Reset");
@@ -49,7 +50,8 @@ public class Frame {
         JLabel drinkLabel3 = new JLabel("Drinks Left: ");
         JLabel drinkLabel4 = new JLabel("Drinks Left:");
         JLabel drinkLabel5 = new JLabel("Drinks Left: ");
-        JLabel totalLabel = new JLabel("Total sales:");
+        JLabel totalLabel = new JLabel("Revenue (1 day):");
+        JLabel realTotalLabel = new JLabel("Total Revenue:");
         JScrollPane scrollPane = new JScrollPane(resultTxt);
         
         //frame manager (this basically manages the size and visuals of the frame (no components))
@@ -61,6 +63,20 @@ public class Frame {
         panel.setSize(600, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Vending machine HWATTT");
+
+        //makes all the textAreas non-editable by users
+        soda1TxtAreaPrice.setEditable(false);
+        soda1TxtAreaQuantity.setEditable(false);
+        soda2TxtAreaPrice.setEditable(false);
+        soda2TxtAreaQuantity.setEditable(false);
+        soda3TxtAreaPrice.setEditable(false);
+        soda3TxtAreaQuantity.setEditable(false);
+        soda4TxtAreaPrice.setEditable(false);
+        soda4TxtAreaQuantity.setEditable(false);
+        soda5TxtAreaPrice.setEditable(false);
+        soda5TxtAreaQuantity.setEditable(false);
+        totalTxt.setEditable(false);
+        resultTxt.setEditable(false);
 
         //sets the positions of all of the components
         exitBtn.setBounds(300, 325, 150, 25);
@@ -80,14 +96,16 @@ public class Frame {
         soda5TxtAreaPrice.setBounds(300, 125, 100, 25);
         soda5TxtAreaQuantity.setBounds(300, 175, 100, 25);
         drinkLabel5.setBounds(225, 175, 100, 25);
-        totalLabel.setBounds(300, 250, 100, 25);
-        totalTxt.setBounds(300, 275, 100, 25);
+        totalLabel.setBounds(225, 225, 100, 25);
+        totalTxt.setBounds(225, 250, 50, 20);
         soda1PictureBtn.setBounds(0, 0, 75, 75);
         soda2PictureBtn.setBounds(0, 100, 75, 75);
         soda3PictureBtn.setBounds(0, 200, 75, 75);
         soda4PictureBtn.setBounds(220, 0, 75, 75);
         soda5PictureBtn.setBounds(220, 100, 75, 75);
         scrollPane.setBounds(420, 25, 150, 250);
+        realTotalLabel.setBounds(330, 225, 150, 25);
+        actualTotalTxt.setBounds(330, 250, 50, 20);
 
         //button listeners so that the buttons actually have funcctonality
         exitBtn.addActionListener(e -> exitBtnClicked());
@@ -132,6 +150,8 @@ public class Frame {
         panel.add(soda4PictureBtn);
         panel.add(soda5PictureBtn);
         panel.add(scrollPane);
+        panel.add(realTotalLabel);
+        panel.add(actualTotalTxt);
 
         frame.setVisible(true);
     }
@@ -155,36 +175,95 @@ public class Frame {
 
     public static void soda1Clicked()
     {
-        double rev = main.soda1Clicked();
-        totalTxt.setText("$" + rev + "0");
+        double[] rev = main.soda1Clicked();
+        if (rev != null)
+        {
+            totalTxt.setText("$" + rev[0] + "0");
+            actualTotalTxt.setText("$" + rev[1] + "0");
+        }
+        else 
+        {
+            soda1PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/CocaColaEmpty.png"));
+            JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
+        }
+        
     }
     public static void soda2Clicked()
     {
-        double rev = main.soda2Clicked();
-        totalTxt.setText("$" + rev + "0");
+        double[] rev = main.soda2Clicked();
+        if (rev != null)
+        {
+            totalTxt.setText("$" + rev[0] + "0");
+            actualTotalTxt.setText("$" + rev[1] + "0");
+        }
+        else 
+        {
+            soda2PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/FantaEmpty.png"));
+            JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
+        }
+        
     }
     public static void soda3Clicked()
     {
-        double rev = main.soda3Clicked();
-        totalTxt.setText("$" + rev + "0");
+        double[] rev = main.soda3Clicked();
+        if (rev != null)
+        {
+            totalTxt.setText("$" + rev[0] + "0");
+            actualTotalTxt.setText("$" + rev[1] + "0");
+        }
+        else 
+        {
+            soda3PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/CrushEmpty.png"));
+            JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
+        }
+        
     }
     public static void soda4Clicked()
     {
-        double rev = main.soda4Clicked();
-        totalTxt.setText("$" + rev + "0");
+        double[] rev = main.soda4Clicked();
+        if (rev != null)
+        {
+            totalTxt.setText("$" + rev[0] + "0");
+            actualTotalTxt.setText("$" + rev[1] + "0");
+        }
+        else 
+        {
+            soda4PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/WaterEmpty.png"));
+            JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
+        }
+        
     }
     public static void soda5Clicked()
     {
-        double rev = main.soda5Clicked();
-        totalTxt.setText("$" + rev + "0");
+        double[] rev = main.soda5Clicked();
+        if (rev != null)
+        {
+            totalTxt.setText("$" + rev[0] + "0");
+            actualTotalTxt.setText("$" + rev[1] + "0");
+        }
+        else 
+        {
+            soda5PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/StomachAcidEmpty.png"));
+            JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
+        }
+        
     }
     public static void exitBtnClicked()
     {
-
+        frame.dispose();
     }
     public static void resetBtnClicked() throws IOException
     {
         main.printResults();
+        main.resetQuantities();
+
+        soda1PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/CocaCola.jpg"));
+        soda2PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/Fanta.jpg"));
+        soda3PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/Crush.jpg"));
+        soda4PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/Water.jpg"));
+        soda5PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/StomachAcid.jpg"));
+
+        totalTxt.setText("$0.00");
         try 
         {
             resultTxt.read(new BufferedReader(new FileReader("Assignments2/Assignments2/src/result.txt")), null);
