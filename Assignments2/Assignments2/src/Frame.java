@@ -62,7 +62,7 @@ public class Frame {
         panel.setLayout(null);
         panel.setSize(600, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("Vending machine HWATTT");
+        frame.setTitle("Silly Vending Machine!?");
 
         //makes all the textAreas non-editable by users
         soda1TxtAreaPrice.setEditable(false);
@@ -153,8 +153,9 @@ public class Frame {
         panel.add(realTotalLabel);
         panel.add(actualTotalTxt);
 
-        frame.setVisible(true);
+        frame.setVisible(true); //sets the frame visible so that the user can actually see the window.
     }
+    //This function is called upon on startup, it displays hte prices of each soda to the user (so that the user actually knows the cost)
     public void setPrices(double soda1, double soda2, double soda3, double soda4, double soda5)
     {
         soda1TxtAreaPrice.setText("$" + soda1 + "0");
@@ -163,6 +164,7 @@ public class Frame {
         soda4TxtAreaPrice.setText("$" + soda4 + "0");
         soda5TxtAreaPrice.setText("$" + soda5 + "0");
     }
+    //same idea as the setPrices function, its called on startup and lets the user know the initial quantity.
     public void setQuantity(int soda1, int soda2, int soda3, int soda4, int soda5)
     {
         soda1TxtAreaQuantity.setText("" + soda1);
@@ -172,7 +174,11 @@ public class Frame {
         soda5TxtAreaQuantity.setText("" + soda5);
     }
 
-
+    //The next many functions deal with drink purchasing (clicking on the drink image)
+    //essentially, when a button is clicked, it is added to the revenue for x day and total revenue.
+    //the rev value is so that it can take and modify the revenue values in the "Main" script
+    //with the system I made it so that rev returns null if the quantity is empty.
+    //if null, a popup window saying that the selected product is empty appears and the image goes gray.
     public static void soda1Clicked()
     {
         double[] rev = main.soda1Clicked();
@@ -186,7 +192,6 @@ public class Frame {
             soda1PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/CocaColaEmpty.png"));
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
-        
     }
     public static void soda2Clicked()
     {
@@ -201,7 +206,6 @@ public class Frame {
             soda2PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/FantaEmpty.png"));
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
-        
     }
     public static void soda3Clicked()
     {
@@ -216,7 +220,6 @@ public class Frame {
             soda3PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/CrushEmpty.png"));
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
-        
     }
     public static void soda4Clicked()
     {
@@ -231,7 +234,6 @@ public class Frame {
             soda4PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/WaterEmpty.png"));
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
-        
     }
     public static void soda5Clicked()
     {
@@ -246,12 +248,15 @@ public class Frame {
             soda5PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/StomachAcidEmpty.png"));
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
-        
     }
+
+    //Simple, closes the program when the exit button is closed.
     public static void exitBtnClicked()
     {
         frame.dispose();
     }
+
+    //Resets everything (except for the total revenue value and the result.txt file)
     public static void resetBtnClicked() throws IOException
     {
         main.printResults();

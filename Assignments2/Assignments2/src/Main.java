@@ -32,7 +32,10 @@ public class Main {
     {
         frame.ShowFrame(); //calls upon the frame function so that it displays the JFrame to the user
 
-        soda1.name = "Coca cola"; //assigning values to soda instances (until line 42) (may remove the name value cause its useless as of right now)
+        AnimFrame animFrame = new AnimFrame();
+        animFrame.showFrame(); //WIP might not even use but its a new window that plays vending machine
+
+        soda1.name = "Coca cola"; //assigning values to soda instances (until line 58) (may remove the name value cause its useless as of right now)
         soda1.price = 1.00;
         soda1.initialQuantity = 20;
         soda1.currentQuantity = soda1.initialQuantity;
@@ -63,6 +66,7 @@ public class Main {
 
     //these functions keep track of revenue, called by the soda buttons (called function depends on button pressed, obviously)
     //each functions add revenue += price, then displays total revenue in the totalTxt area while decreasing quantity count and displaying that too.
+    //Additionaly, it checks if the quantity is greater than 0 or not. if its not, the quantity textArea says "EMPTY"
     public double[] soda1Clicked()
     {
         if (soda1.currentQuantity > 0)
@@ -165,6 +169,7 @@ public class Main {
 
     //once the reset button is clicked, this function is called, where it displays the revenue of x day onto a .txt file
     //revenue is reset, then the .txt file is displayed onto the textArea
+    //The revenue for past days are saved on the .txt file, and are overwritten when you relaunch the program.
     public void printResults() throws IOException
     {
         if (!fileMade)
@@ -207,6 +212,7 @@ public class Main {
             }
         }
     }
+    //when the user presses the reset button, this function is called, where it restocks all of the drinks (back up to its initial value, which is 20)
     public void resetQuantities()
     {
         soda1.currentQuantity = soda1.initialQuantity;
@@ -245,7 +251,7 @@ public class Main {
  *      - gray out picture when quantity is empty
  *      - select button instead of buying drink immediately (and buying custom amount of x drink)
  *      - possibly adding sounds?
- *      - 
+ *      - Make a second main window with silly animations i made from blender :3
  * 
  *  Ill take a break for a bit today...
  * --------------------------------------------------------------------------------------------------------
@@ -257,4 +263,7 @@ public class Main {
  *      - picture is reveerted back to normal once the user resets
  *      - if you were wondering, I found an online photoshop website called PhotoPea and took the image file for each and made them black and white
  * 
+ * (11:28pm on 2025-04-11)
+ *      - been doing some research on adding mp4's to JFrames, and now I just HAVE TO add a video into this project
+ *      - so.... I made a new JFrame!! refer to the "AnimFrame.java" script!
  */
