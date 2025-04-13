@@ -26,14 +26,14 @@ public class Main {
 
     static Frame frame = new Frame(); //refer to "Frame.java"
 
-    File file = null;
-    BufferedWriter bw = null;
+    File file = null; //both declared outside a function because I dont want to create a new File and bufferedWriter each time
+    BufferedWriter bw = null; //These are for the result.txt file, which print out the revenue of each day.
     public static void main(String[] args) throws Exception 
     {
         frame.ShowFrame(); //calls upon the frame function so that it displays the JFrame to the user
 
-        AnimFrame animFrame = new AnimFrame();
-        animFrame.showFrame(); //WIP might not even use but its a new window that plays vending machine
+        AnimFrame animFrame = new AnimFrame(); //Frame that plays vending machine animations
+        animFrame.showFrame(); 
 
         soda1.name = "Coca cola"; //assigning values to soda instances (until line 58) (may remove the name value cause its useless as of right now)
         soda1.price = 1.00;
@@ -174,7 +174,7 @@ public class Main {
     {
         if (!fileMade)
         {
-            file = new File("Assignments2/Assignments2/src/result.txt");
+            file = new File("Assignments2/VendingMachine/src/result.txt");
             bw = new BufferedWriter(new FileWriter(file));
             try
             {
@@ -280,4 +280,7 @@ public class Main {
  * 
  *  (Day 3)(12:19pm)
  *      - Animation 2 done, and added timer so that the second anim clip can actually play
+ * 
+ *  (10:35pm)
+ *      - Time to clean up my code and remove any unnecesary stuff
  */

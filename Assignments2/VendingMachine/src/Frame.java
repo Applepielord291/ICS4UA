@@ -16,23 +16,23 @@ public class Frame {
     static JFrame frame = new JFrame();
     JTextArea soda1TxtAreaPrice = new JTextArea();
     JTextArea soda1TxtAreaQuantity = new JTextArea();
-    static JButton soda1PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/CocaCola.jpg"));
+    static JButton soda1PictureBtn = new JButton(new ImageIcon("Assignments2/VendingMachine/src/Images/CocaCola.jpg"));
 
     JTextArea soda2TxtAreaPrice = new JTextArea();
     JTextArea soda2TxtAreaQuantity = new JTextArea();
-    static JButton soda2PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/Fanta.jpg"));
+    static JButton soda2PictureBtn = new JButton(new ImageIcon("Assignments2/VendingMachine/src/Images/Fanta.jpg"));
 
     JTextArea soda3TxtAreaPrice = new JTextArea();
     JTextArea soda3TxtAreaQuantity = new JTextArea();
-    static JButton soda3PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/Crush.jpg"));
+    static JButton soda3PictureBtn = new JButton(new ImageIcon("Assignments2/VendingMachine/src/Images/Crush.jpg"));
 
     JTextArea soda4TxtAreaPrice = new JTextArea();
     JTextArea soda4TxtAreaQuantity = new JTextArea();
-    static JButton soda4PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/Water.jpg"));
+    static JButton soda4PictureBtn = new JButton(new ImageIcon("Assignments2/VendingMachine/src/Images/Water.jpg"));
 
     JTextArea soda5TxtAreaPrice = new JTextArea();
     JTextArea soda5TxtAreaQuantity = new JTextArea();
-    static JButton soda5PictureBtn = new JButton(new ImageIcon("Assignments2/Assignments2/src/Images/StomachAcid.jpg"));
+    static JButton soda5PictureBtn = new JButton(new ImageIcon("Assignments2/VendingMachine/src/Images/StomachAcid.jpg"));
 
     static JTextArea totalTxt = new JTextArea();
     static JTextArea resultTxt = new JTextArea();
@@ -114,50 +114,14 @@ public class Frame {
             try {
                 resetBtnClicked();
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
         });
-        soda1PictureBtn.addActionListener(e -> {
-            try {
-                soda1Clicked();
-            } catch (InterruptedException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        });
-        soda2PictureBtn.addActionListener(e -> {
-            try {
-                soda2Clicked();
-            } catch (InterruptedException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        });
-        soda3PictureBtn.addActionListener(e -> {
-            try {
-                soda3Clicked();
-            } catch (InterruptedException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        });
-        soda4PictureBtn.addActionListener(e -> {
-            try {
-                soda4Clicked();
-            } catch (InterruptedException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        });
-        soda5PictureBtn.addActionListener(e -> {
-            try {
-                soda5Clicked();
-            } catch (InterruptedException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        });
+        soda1PictureBtn.addActionListener(e -> soda1Clicked());
+        soda2PictureBtn.addActionListener(e -> soda2Clicked());
+        soda3PictureBtn.addActionListener(e -> soda3Clicked());
+        soda4PictureBtn.addActionListener(e -> soda4Clicked());
+        soda5PictureBtn.addActionListener(e -> soda5Clicked());
 
         //this area is pretty much adding all the components onto the frame soa that the user can actually sewe them
         frame.add(panel);
@@ -215,7 +179,7 @@ public class Frame {
     //the rev value is so that it can take and modify the revenue values in the "Main" script
     //with the system I made it so that rev returns null if the quantity is empty.
     //if null, a popup window saying that the selected product is empty appears and the image goes gray.
-    public static void soda1Clicked() throws InterruptedException
+    public static void soda1Clicked() 
     {
         double[] rev = main.soda1Clicked();
         if (rev != null)
@@ -226,11 +190,11 @@ public class Frame {
         }
         else 
         {
-            soda1PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/CocaColaEmpty.png"));
+            soda1PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/CocaColaEmpty.png"));
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
     }
-    public static void soda2Clicked() throws InterruptedException
+    public static void soda2Clicked() 
     {
         double[] rev = main.soda2Clicked();
         if (rev != null)
@@ -241,11 +205,11 @@ public class Frame {
         }
         else 
         {
-            soda2PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/FantaEmpty.png"));
+            soda2PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/FantaEmpty.png"));
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
     }
-    public static void soda3Clicked() throws InterruptedException
+    public static void soda3Clicked() 
     {
         double[] rev = main.soda3Clicked();
         if (rev != null)
@@ -256,11 +220,11 @@ public class Frame {
         }
         else 
         {
-            soda3PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/CrushEmpty.png"));
+            soda3PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/CrushEmpty.png"));
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
     }
-    public static void soda4Clicked() throws InterruptedException
+    public static void soda4Clicked() 
     {
         double[] rev = main.soda4Clicked();
         if (rev != null)
@@ -271,11 +235,11 @@ public class Frame {
         }
         else 
         {
-            soda4PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/WaterEmpty.png"));
+            soda4PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/WaterEmpty.png"));
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
     }
-    public static void soda5Clicked() throws InterruptedException
+    public static void soda5Clicked() 
     {
         double[] rev = main.soda5Clicked();
         if (rev != null)
@@ -286,7 +250,7 @@ public class Frame {
         }
         else 
         {
-            soda5PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/StomachAcidEmpty.png"));
+            soda5PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/StomachAcidEmpty.png"));
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
     }
@@ -304,16 +268,16 @@ public class Frame {
         main.printResults();
         main.resetQuantities();
 
-        soda1PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/CocaCola.jpg"));
-        soda2PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/Fanta.jpg"));
-        soda3PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/Crush.jpg"));
-        soda4PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/Water.jpg"));
-        soda5PictureBtn.setIcon(new ImageIcon("Assignments2/Assignments2/src/Images/StomachAcid.jpg"));
+        soda1PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/CocaCola.jpg"));
+        soda2PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/Fanta.jpg"));
+        soda3PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/Crush.jpg"));
+        soda4PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/Water.jpg"));
+        soda5PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/StomachAcid.jpg"));
 
         totalTxt.setText("$0.00");
         try 
         {
-            resultTxt.read(new BufferedReader(new FileReader("Assignments2/Assignments2/src/result.txt")), null);
+            resultTxt.read(new BufferedReader(new FileReader("Assignments2/VendingMachine/src/result.txt")), null);
         }
         catch (IOException e)
         {

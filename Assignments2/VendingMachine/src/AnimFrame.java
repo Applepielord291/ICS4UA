@@ -12,8 +12,8 @@ import javax.swing.*;
 
 public class AnimFrame {
     static JFrame frame = new JFrame();
-    static Icon idle = new ImageIcon("Assignments2/Assignments2/src/Animations/vendingMachineIdle.gif");
-    static Icon bought = new ImageIcon("Assignments2/Assignments2/src/Animations/VendingMachineBought.gif");
+    static Icon idle = new ImageIcon("Assignments2/VendingMachine/src/Animations/vendingMachineIdle.gif");
+    static Icon bought = new ImageIcon("Assignments2/VendingMachine/src/Animations/VendingMachineBought.gif");
     static JLabel VendingM = new JLabel(idle);
     public void showFrame()
     {
@@ -40,13 +40,13 @@ public class AnimFrame {
     //I dont care, take a mark off of this, I ripped it off from online (https://sentry.io/answers/how-to-add-a-delay-in-java/)
     //Im aware of thread.sleep but was trying to find a method where it didnt stop the entire program (Thread.sleep did)
     //Oh, times like these make me miss Unity C#.. I miss my Time.deltaTime, my Coroutines, my Invokes
-    public static void playClip() throws InterruptedException
+    public static void playClip()
     {
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         VendingM.setIcon(bought);
         scheduledExecutorService.schedule(() -> {
             VendingM.setIcon(idle);
-        }, 4, TimeUnit.SECONDS);
+        }, 5, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
     }
 }
