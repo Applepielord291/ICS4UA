@@ -39,6 +39,7 @@ public class Frame {
     static JTextArea actualTotalTxt = new JTextArea();
 
     static Main main = new Main();
+    static AnimFrame anim = new AnimFrame();
     public void ShowFrame()
     {
         //defining all the components
@@ -117,11 +118,46 @@ public class Frame {
                 e1.printStackTrace();
             }
         });
-        soda1PictureBtn.addActionListener(e -> soda1Clicked());
-        soda2PictureBtn.addActionListener(e -> soda2Clicked());
-        soda3PictureBtn.addActionListener(e -> soda3Clicked());
-        soda4PictureBtn.addActionListener(e -> soda4Clicked());
-        soda5PictureBtn.addActionListener(e -> soda5Clicked());
+        soda1PictureBtn.addActionListener(e -> {
+            try {
+                soda1Clicked();
+            } catch (InterruptedException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        });
+        soda2PictureBtn.addActionListener(e -> {
+            try {
+                soda2Clicked();
+            } catch (InterruptedException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        });
+        soda3PictureBtn.addActionListener(e -> {
+            try {
+                soda3Clicked();
+            } catch (InterruptedException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        });
+        soda4PictureBtn.addActionListener(e -> {
+            try {
+                soda4Clicked();
+            } catch (InterruptedException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        });
+        soda5PictureBtn.addActionListener(e -> {
+            try {
+                soda5Clicked();
+            } catch (InterruptedException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        });
 
         //this area is pretty much adding all the components onto the frame soa that the user can actually sewe them
         frame.add(panel);
@@ -179,13 +215,14 @@ public class Frame {
     //the rev value is so that it can take and modify the revenue values in the "Main" script
     //with the system I made it so that rev returns null if the quantity is empty.
     //if null, a popup window saying that the selected product is empty appears and the image goes gray.
-    public static void soda1Clicked()
+    public static void soda1Clicked() throws InterruptedException
     {
         double[] rev = main.soda1Clicked();
         if (rev != null)
         {
             totalTxt.setText("$" + rev[0] + "0");
             actualTotalTxt.setText("$" + rev[1] + "0");
+            AnimFrame.playClip();
         }
         else 
         {
@@ -193,11 +230,12 @@ public class Frame {
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
     }
-    public static void soda2Clicked()
+    public static void soda2Clicked() throws InterruptedException
     {
         double[] rev = main.soda2Clicked();
         if (rev != null)
         {
+            AnimFrame.playClip();
             totalTxt.setText("$" + rev[0] + "0");
             actualTotalTxt.setText("$" + rev[1] + "0");
         }
@@ -207,11 +245,12 @@ public class Frame {
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
     }
-    public static void soda3Clicked()
+    public static void soda3Clicked() throws InterruptedException
     {
         double[] rev = main.soda3Clicked();
         if (rev != null)
         {
+            AnimFrame.playClip();
             totalTxt.setText("$" + rev[0] + "0");
             actualTotalTxt.setText("$" + rev[1] + "0");
         }
@@ -221,11 +260,12 @@ public class Frame {
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
     }
-    public static void soda4Clicked()
+    public static void soda4Clicked() throws InterruptedException
     {
         double[] rev = main.soda4Clicked();
         if (rev != null)
         {
+            AnimFrame.playClip();
             totalTxt.setText("$" + rev[0] + "0");
             actualTotalTxt.setText("$" + rev[1] + "0");
         }
@@ -235,11 +275,12 @@ public class Frame {
             JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
         }
     }
-    public static void soda5Clicked()
+    public static void soda5Clicked() throws InterruptedException
     {
         double[] rev = main.soda5Clicked();
         if (rev != null)
         {
+            AnimFrame.playClip();
             totalTxt.setText("$" + rev[0] + "0");
             actualTotalTxt.setText("$" + rev[1] + "0");
         }
@@ -253,6 +294,7 @@ public class Frame {
     //Simple, closes the program when the exit button is closed.
     public static void exitBtnClicked()
     {
+        AnimFrame.frame.dispose();
         frame.dispose();
     }
 

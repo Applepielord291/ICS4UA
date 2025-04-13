@@ -248,10 +248,11 @@ public class Main {
  *  (5:45pm 2025-04-11) FINISHED ASSIGNMENT (BASE INSTRUCTIONS), BUT OH BOY ITS NOT OVER IM ADDING ENHANCEMENTS 
  * 
  *  Enhancement ideas
- *      - gray out picture when quantity is empty
- *      - select button instead of buying drink immediately (and buying custom amount of x drink)
- *      - possibly adding sounds?
- *      - Make a second main window with silly animations i made from blender :3
+ *      - gray out picture when quantity is empty (done)
+ *      - select button instead of buying drink immediately (and buying custom amount of x drink) (decided not to do)
+ *      - possibly adding sounds? (NOPE)
+ *      - Make a second main window with silly animations i made from blender :3 (almost done)
+ *      - replacing a drink with another drink (planning to do)
  * 
  *  Ill take a break for a bit today...
  * --------------------------------------------------------------------------------------------------------
@@ -266,4 +267,17 @@ public class Main {
  * (11:28pm on 2025-04-11)
  *      - been doing some research on adding mp4's to JFrames, and now I just HAVE TO add a video into this project
  *      - so.... I made a new JFrame!! refer to the "AnimFrame.java" script!
+ * 
+ * (Day 2 on 2025-04-12)
+ *      - finished 3D model for the vending machine, now to do the animations
+ * (3:53pm)
+ *      - "Blender rendering the animation? best I can do is 4 hours." While it renders, ill work on some more enhancements.
+ *      - Also added the "DrinkSelectFrame.java" script.
+ * (5:16pm)
+ *      - Animation finally finished rendering, now to do 2 more animation clips
+ * 
+ *  Time for a break?
+ * 
+ *  (Day 3)(12:19pm)
+ *      - Animation 2 done, and added timer so that the second anim clip can actually play
  */
