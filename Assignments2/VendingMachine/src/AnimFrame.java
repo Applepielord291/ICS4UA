@@ -1,23 +1,24 @@
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.*;
 
 /* Nigel Garcia
  * April 11 2025
  * AnimFrame
- * Cool animations YEAHHHH
+ * Cool animations YEAHHHH (creates a new window and plays cool animations)
  */
 
 public class AnimFrame {
+    //Variables that I need to access in other scripts
     static JFrame frame = new JFrame();
-    static Icon idle = new ImageIcon("Assignments2/VendingMachine/src/Animations/vendingMachineIdle.gif");
-    static Icon bought = new ImageIcon("Assignments2/VendingMachine/src/Animations/VendingMachineBought.gif");
-    static JLabel VendingM = new JLabel(idle);
+    static Icon idleAnim = new ImageIcon("VendingMachine/src/Animations/vendingMachineIdle.gif"); //Idle animation for vending machine
+    static Icon boughtAnim = new ImageIcon("VendingMachine/src/Animations/VendingMachineBought.gif"); //Bought animation for vending machine
+    static JLabel VendingLabel = new JLabel(idleAnim);
+
+    //Setting up frame layout
     public void showFrame()
     {
-        
         JPanel panel = new JPanel();
         
         frame.setResizable(false);
@@ -29,23 +30,24 @@ public class AnimFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("GOOBER VIEWPOINT (LEAKED!!!!!)");
 
-        VendingM.setBounds(0, 0, 450, 600);
+        VendingLabel.setBounds(0, 0, 450, 600);
 
         frame.add(panel);
-        panel.add(VendingM);
+        panel.add(VendingLabel);
 
         frame.setVisible(true);
     }
 
     //I dont care, take a mark off of this, I ripped it off from online (https://sentry.io/answers/how-to-add-a-delay-in-java/)
-    //Im aware of thread.sleep but was trying to find a method where it didnt stop the entire program (Thread.sleep did)
+    //Im aware of thread.sleep but was trying to find a method where it didnt stop the entire program (Therefore no Thread.sleep)
     //Oh, times like these make me miss Unity C#.. I miss my Time.deltaTime, my Coroutines, my Invokes
+    //Oh yeah, this function is called when the user confirms a purchase, plays out the bought animation then goes back to idle anim.
     public static void playClip()
     {
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-        VendingM.setIcon(bought);
+        VendingLabel.setIcon(boughtAnim);
         scheduledExecutorService.schedule(() -> {
-            VendingM.setIcon(idle);
+            VendingLabel.setIcon(idleAnim);
         }, 5, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
     }

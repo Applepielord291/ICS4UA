@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
 import javax.swing.*;
 
 /* Nigel Garcia
@@ -12,31 +11,31 @@ import javax.swing.*;
 
 public class Frame {
 	//I apologize for the naming scheme...
-    //also I made these public since im applying the values from the instantiated soda classes into the textareas.
+    //also I made these public since im applying the values from the instantiated soda classes into the textareas. (and to access them from other scripts)
     static JFrame frame = new JFrame();
     JTextArea soda1TxtAreaPrice = new JTextArea();
     static JTextArea soda1TxtAreaQuantity = new JTextArea();
-    static JButton soda1PictureBtn = new JButton(new ImageIcon("Assignments2/VendingMachine/src/Images/CocaCola.jpg"));
+    static JButton soda1PictureBtn = new JButton(new ImageIcon("VendingMachine/src/Images/CocaCola.jpg"));
 
     JTextArea soda2TxtAreaPrice = new JTextArea();
     static JTextArea soda2TxtAreaQuantity = new JTextArea();
-    static JButton soda2PictureBtn = new JButton(new ImageIcon("Assignments2/VendingMachine/src/Images/Fanta.jpg"));
+    static JButton soda2PictureBtn = new JButton(new ImageIcon("VendingMachine/src/Images/Fanta.jpg"));
 
     JTextArea soda3TxtAreaPrice = new JTextArea();
     static JTextArea soda3TxtAreaQuantity = new JTextArea();
-    static JButton soda3PictureBtn = new JButton(new ImageIcon("Assignments2/VendingMachine/src/Images/Crush.jpg"));
+    static JButton soda3PictureBtn = new JButton(new ImageIcon("VendingMachine/src/Images/Crush.jpg"));
 
     JTextArea soda4TxtAreaPrice = new JTextArea();
     static JTextArea soda4TxtAreaQuantity = new JTextArea();
-    static JButton soda4PictureBtn = new JButton(new ImageIcon("Assignments2/VendingMachine/src/Images/Water.jpg"));
+    static JButton soda4PictureBtn = new JButton(new ImageIcon("VendingMachine/src/Images/Water.jpg"));
 
     JTextArea soda5TxtAreaPrice = new JTextArea();
     static JTextArea soda5TxtAreaQuantity = new JTextArea();
-    static JButton soda5PictureBtn = new JButton(new ImageIcon("Assignments2/VendingMachine/src/Images/StomachAcid.jpg"));
+    static JButton soda5PictureBtn = new JButton(new ImageIcon("VendingMachine/src/Images/StomachAcid.jpg"));
 
-    static JTextArea totalTxt = new JTextArea();
+    static JTextArea revTxt = new JTextArea();
     static JTextArea resultTxt = new JTextArea();
-    static JTextArea actualTotalTxt = new JTextArea();
+    static JTextArea totalRevTxt = new JTextArea();
 
     static JTextArea numSoda1 = new JTextArea();
     static JTextArea numSoda2 = new JTextArea();
@@ -71,14 +70,12 @@ public class Frame {
         JButton soda3RemoveBtn = new JButton("-1");
         JButton soda4RemoveBtn = new JButton("-1");
         JButton soda5RemoveBtn = new JButton("-1");
-        
         JButton confirmBuyBtn = new JButton("Confirm");
         
-        //frame manager (this basically manages the size and visuals of the frame (no components))
+        //frame manager (this basically manages the size and visuals and layouts of the frame)
         frame.setResizable(false);
         frame.setSize(800, 400);
         frame.setLocationRelativeTo(null);
-        frame.setLayout(null);
         panel.setLayout(null);
         panel.setSize(800, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,7 +92,7 @@ public class Frame {
         soda4TxtAreaQuantity.setEditable(false);
         soda5TxtAreaPrice.setEditable(false);
         soda5TxtAreaQuantity.setEditable(false);
-        totalTxt.setEditable(false);
+        revTxt.setEditable(false);
         resultTxt.setEditable(false);
         numSoda1.setEditable(false);
         numSoda2.setEditable(false);
@@ -122,7 +119,7 @@ public class Frame {
         soda5TxtAreaQuantity.setBounds(300, 175, 100, 25);
         drinkLabel5.setBounds(225, 175, 100, 25);
         totalLabel.setBounds(225, 225, 100, 25);
-        totalTxt.setBounds(225, 250, 50, 20);
+        revTxt.setBounds(225, 250, 50, 20);
         soda1PictureBtn.setBounds(0, 0, 75, 75);
         soda2PictureBtn.setBounds(0, 100, 75, 75);
         soda3PictureBtn.setBounds(0, 200, 75, 75);
@@ -130,7 +127,7 @@ public class Frame {
         soda5PictureBtn.setBounds(220, 100, 75, 75);
         scrollPaneResult.setBounds(420, 25, 150, 250);
         realTotalLabel.setBounds(330, 225, 150, 25);
-        actualTotalTxt.setBounds(330, 250, 50, 20);
+        totalRevTxt.setBounds(330, 250, 50, 20);
         buyTitleLbl.setBounds(620, 25, 175, 25);
         soda1Label.setBounds(620, 50, 175, 25);
         numSoda1.setBounds (620, 75, 50, 25);
@@ -173,7 +170,7 @@ public class Frame {
         soda5RemoveBtn.addActionListener(e -> main.soda5Remove());
         confirmBuyBtn.addActionListener(e -> confirmedPurchase());
 
-        //this area is pretty much adding all the components onto the frame soa that the user can actually sewe them
+        //this area is pretty much adding all the components onto the frame soda that the user can actually see them
         frame.add(panel);
         panel.add(exitBtn);
         panel.add(resetBtn);
@@ -193,7 +190,7 @@ public class Frame {
         panel.add(drinkLabel4);
         panel.add(drinkLabel5);
         panel.add(totalLabel);
-        panel.add(totalTxt);
+        panel.add(revTxt);
         panel.add(soda1PictureBtn);
         panel.add(soda2PictureBtn);
         panel.add(soda3PictureBtn);
@@ -201,7 +198,7 @@ public class Frame {
         panel.add(soda5PictureBtn);
         panel.add(scrollPaneResult);
         panel.add(realTotalLabel);
-        panel.add(actualTotalTxt);
+        panel.add(totalRevTxt);
         panel.add(buyTitleLbl);
         panel.add(soda1Label);
         panel.add(soda2Label);
@@ -222,15 +219,16 @@ public class Frame {
 
         frame.setVisible(true); //sets the frame visible so that the user can actually see the window.
 
+        //sets textArea values so that the textAreas arent blank on program startup
         Frame.numSoda1.setText("0");
         Frame.numSoda2.setText("0");
         Frame.numSoda3.setText("0");
         Frame.numSoda4.setText("0");
         Frame.numSoda5.setText("0");
-        totalTxt.setText("$0.00");
-        actualTotalTxt.setText("$0.00");
+        revTxt.setText("$0.00");
+        totalRevTxt.setText("$0.00");
     }
-    //This function is called upon on startup, it displays hte prices of each soda to the user (so that the user actually knows the cost)
+    //This function is called upon on program startup, it displays hte prices of each soda to the user (so that the user actually knows the cost)
     public void setPrices(double soda1, double soda2, double soda3, double soda4, double soda5)
     {
         soda1TxtAreaPrice.setText("$" + soda1 + "0");
@@ -248,6 +246,8 @@ public class Frame {
         soda4TxtAreaQuantity.setText("" + soda4);
         soda5TxtAreaQuantity.setText("" + soda5);
     }
+    //When the user clicks the confirm button, it resets the userBought values then calls this function
+    //the userBought values are the parameters and it changes the txtAreas back to 0
     public void resetUserList(int soda1, int soda2, int soda3, int soda4, int soda5)
     {
         numSoda1.setText("" + soda1);
@@ -258,16 +258,17 @@ public class Frame {
     }
 
     //The next many functions deal with drink purchasing (clicking on the drink image)
-    //essentially, when a button is clicked, it is added to the revenue for x day and total revenue.
-    //the rev value is so that it can take and modify the revenue values in the "Main" script
-    //with the system I made it so that rev returns null if the quantity is empty.
-    //if null, a popup window saying that the selected product is empty appears and the image goes gray.
+    //essentially, when a button is clicked, it is added +1 for the selected soda.
+    //bought value to check if the user can actually get a soda or not (quantity)
+    //with the system I made it so that bought returns 0 if the quantity is empty.
+    //if 0, a popup window saying that the selected product is empty appears and the image goes gray. (if the quantity is 0)
+    //if user tries to get more soda then quantity amount, popup will say the user is buying too much, and will stop the user.
     public static void soda1Clicked() 
     {
-        int rev = main.soda1Clicked();
-        if (rev != 0)
+        int bought = main.soda1Clicked();
+        if (bought != 0)
         {
-            numSoda1.setText("" + rev);
+            numSoda1.setText("" + bought);
         }
         else 
         {
@@ -284,10 +285,10 @@ public class Frame {
     }
     public static void soda2Clicked() 
     {
-        int rev = main.soda2Clicked();
-        if (rev != 0)
+        int bought = main.soda2Clicked();
+        if (bought != 0)
         {
-            numSoda2.setText("" + rev);
+            numSoda2.setText("" + bought);
         }
         else 
         {
@@ -303,10 +304,10 @@ public class Frame {
     }
     public static void soda3Clicked() 
     {
-        int rev = main.soda3Clicked();
-        if (rev != 0)
+        int bought = main.soda3Clicked();
+        if (bought != 0)
         {
-            numSoda3.setText("" + rev);
+            numSoda3.setText("" + bought);
         }
         else 
         {
@@ -323,10 +324,10 @@ public class Frame {
     }
     public static void soda4Clicked() 
     {
-        int rev = main.soda4Clicked();
-        if (rev != 0)
+        int bought = main.soda4Clicked();
+        if (bought != 0)
         {
-            numSoda4.setText("" + rev);
+            numSoda4.setText("" + bought);
         }
         else 
         {
@@ -342,10 +343,10 @@ public class Frame {
     }
     public static void soda5Clicked() 
     {
-        int rev = main.soda5Clicked();
-        if (rev != 0)
+        int bought = main.soda5Clicked();
+        if (bought != 0)
         {
-            numSoda5.setText("" + rev);
+            numSoda5.setText("" + bought);
         }
         else 
         {
@@ -359,37 +360,44 @@ public class Frame {
             }
         }
     }
+
+    //This function is called when the user tries to remove a soda from their list but they have no soda. Cant have negative soda
     public static void impossibleRemoveBtn()
     {
         JOptionPane.showMessageDialog(null, new JLabel("You havent even though of buying it yet!??"));
     }
 
+    //When the user clicks confirm, it called upon the anim frame to play the "Bought" clip
+    //additionaly, it adds totalRevenue += revenue (inside main function)
+    //additionaly, changes the drink current quantity value (soda#.currentQuantity - soda#.userBought)
+    //checks if its less then 0, if it is, sets quantity text to empty and makes image grey.
     public static void confirmedPurchase()
     {
+        AnimFrame.playClip();
         main.addRevenue();
         if (Main.soda1.currentQuantity <= 0)
         {
-            soda1PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/CocaColaEmpty.png"));
+            soda1PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/CocaColaEmpty.png"));
             soda1TxtAreaQuantity.setText("EMPTY");
         }
         else if (Main.soda2.currentQuantity <= 0)
         {
-            soda2PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/FantaEmpty.png"));
+            soda2PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/FantaEmpty.png"));
             soda2TxtAreaQuantity.setText("EMPTY");
         }
         else if (Main.soda3.currentQuantity <= 0)
         {
-            soda3PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/CrushEmpty.png"));
+            soda3PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/CrushEmpty.png"));
             soda3TxtAreaQuantity.setText("EMPTY");
         }
         else if (Main.soda4.currentQuantity <= 0)
         {
-            soda4PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/WaterEmpty.png"));
+            soda4PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/WaterEmpty.png"));
             soda4TxtAreaQuantity.setText("EMPTY");
         }
         else if (Main.soda5.currentQuantity <= 0)
         {
-            soda5PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/StomachAcidEmpty.png"));
+            soda5PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/StomachAcidEmpty.png"));
             soda5TxtAreaQuantity.setText("EMPTY");
         }
     }
@@ -401,26 +409,28 @@ public class Frame {
         frame.dispose();
     }
 
-    //Resets everything (except for the total revenue value and the result.txt file)
+    //function called when the user clicks the reset btn
+    //pop-up window displaying if the user wnats to reset and move on to the next day
+    //if the user clicks yes, the reset button resets the almost all the values (except for totalRevenue, result.txt, the fileIO vars, soda prices....)
+    //textArea then reads result.txt (with the newly written value and day) and displays it onto the frame
     public static void resetBtnClicked() throws IOException
     {
         int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to rest and move on to the next day? dont forget to confirm your purchase!", "WARNING", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION)
         {
-            System.out.println("do");
             main.printResults();
             main.resetQuantities();
 
-            soda1PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/CocaCola.jpg"));
-            soda2PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/Fanta.jpg"));
-            soda3PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/Crush.jpg"));
-            soda4PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/Water.jpg"));
-            soda5PictureBtn.setIcon(new ImageIcon("Assignments2/VendingMachine/src/Images/StomachAcid.jpg"));
+            soda1PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/CocaCola.jpg"));
+            soda2PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/Fanta.jpg"));
+            soda3PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/Crush.jpg"));
+            soda4PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/Water.jpg"));
+            soda5PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/StomachAcid.jpg"));
 
-            totalTxt.setText("$0.00");
+            revTxt.setText("$0.00");
             try 
             {
-                resultTxt.read(new BufferedReader(new FileReader("Assignments2/VendingMachine/src/result.txt")), null);
+                resultTxt.read(new BufferedReader(new FileReader("VendingMachine/src/result.txt")), null);
             }
             catch (IOException e)
             {

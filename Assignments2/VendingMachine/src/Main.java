@@ -1,9 +1,9 @@
 import java.io.BufferedWriter;
 import java.io.File;
-//import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
-//import java.io.FileReader;
+
+
 
 /* Nigel Garcia
  * April 11 2025
@@ -13,6 +13,7 @@ import java.io.IOException;
  */
 
 public class Main {
+    //Variables that i need to acces from other scripts
     int day = 1; //variable to keep track of number of days passed (days increases when the user hits the reset button)
     static double revenue = 0; //keeps track of the revenue per day
     static double totalRevenue = 0; //keeps track of the total revenue across all possible days
@@ -30,9 +31,7 @@ public class Main {
     BufferedWriter bw = null; //These are for the result.txt file, which print out the revenue of each day.
     public static void main(String[] args) throws Exception 
     {
-        
-
-        soda1.name = "Coca cola"; //assigning values to soda instances (until line 61) (may remove the name value cause its useless as of right now)
+        soda1.name = "Coca cola"; //assigning values to soda instances (until line 61) (may remove the name value cause its useless as of right now) (Edit: nvm its not)
         soda1.price = 1.00;
         soda1.initialQuantity = 20;
         soda1.currentQuantity = soda1.initialQuantity;
@@ -71,18 +70,14 @@ public class Main {
         frame.setQuantity(soda1.initialQuantity, soda2.initialQuantity, soda3.initialQuantity, soda4.initialQuantity, soda5.initialQuantity); //displays quantity to the txtArea
     }
 
-    //these functions keep track of revenue, called by the soda buttons (called function depends on button pressed, obviously)
-    //each functions add revenue += price, then displays total revenue in the totalTxt area while decreasing quantity count and displaying that too.
-    //Additionaly, it checks if the quantity is greater than 0 or not. if its not, the quantity textArea says "EMPTY"
+    //Its funny, originally this was a function that calculated revenue but since I added confirmation purchase this function completely changed
+    //anyways, theres a function for each soda, when their respective buttons are clicked, this function is called (depending on button)
+    //it adds +1 of x soda to the list and also checks if the user is actually able to get the desired soda or not (quantity check)
+    //This is also what makes the quantity txtArea say "empty" when quantity is 0
     public int soda1Clicked()
     {
         if (soda1.currentQuantity > soda1.userBought && soda1.userBought < 20)
         {
-            /*double[] revenues = new double[2];
-            revenue += soda1.price;
-            totalRevenue += soda1.price;
-            revenues[0] = revenue;
-            revenues[1] = totalRevenue;*/
             soda1.userBought += 1;
             return soda1.userBought;
         }
@@ -96,17 +91,11 @@ public class Main {
     {
         if (soda2.currentQuantity > soda2.userBought && soda2.userBought < 20)
         {
-            /* double[] revenues = new double[2];
-            revenue += soda2.price;
-            totalRevenue += soda2.price;
-            revenues[0] = revenue;
-            revenues[1] = totalRevenue;*/ 
             soda2.userBought += 1;
             return soda2.userBought;
         }
         else if (soda2.currentQuantity <= soda2.userBought || soda2.userBought >= 20)
         {
-            Frame.soda2TxtAreaQuantity.setText("EMPTY");
             return 0;
         }
         return 0;
@@ -115,17 +104,11 @@ public class Main {
     {
         if (soda3.currentQuantity > soda3.userBought && soda3.userBought < 20)
         {
-            /* double[] revenues = new double[2];
-            revenue += soda3.price;
-            totalRevenue += soda3.price;
-            revenues[0] = revenue;
-            revenues[1] = totalRevenue; */
             soda3.userBought += 1;
             return soda3.userBought;
         }
         else if (soda3.currentQuantity <= soda3.userBought || soda3.userBought >= 20)
         {
-            Frame.soda3TxtAreaQuantity.setText("EMPTY");
             return 0;
         }
         return 0;
@@ -135,17 +118,11 @@ public class Main {
     {
         if (soda4.currentQuantity > soda4.userBought && soda4.userBought < 20)
         {
-            /* double[] revenues = new double[2];
-            revenue += soda4.price;
-            totalRevenue += soda4.price;
-            revenues[0] = revenue;
-            revenues[1] = totalRevenue; */
             soda4.userBought += 1;
             return soda4.userBought;
         }
         else if (soda4.currentQuantity <= soda4.userBought || soda4.userBought >= 20)
         {
-            Frame.soda4TxtAreaQuantity.setText("EMPTY");
             return 0;
         }
         return 0;
@@ -154,22 +131,19 @@ public class Main {
     {
         if (soda5.currentQuantity > soda5.userBought && soda5.userBought < 20)
         {
-            /* double[] revenues = new double[2];
-            revenue += soda5.price;
-            totalRevenue += soda5.price;
-            revenues[0] = revenue;
-            revenues[1] = totalRevenue; */
             soda5.userBought += 1;
             return soda5.userBought;
         }
         else if (soda5.currentQuantity <= soda5.userBought || soda5.userBought >= 20)
         {
-            Frame.soda5TxtAreaQuantity.setText("EMPTY");
             return 0;
         }
         return 0;
     }
 
+    //The opposite of the above functions, I added a button where the user could remove a soda from their list
+    //checks if it can even be done (Example: cant remove one soda from purchase list if user didnt purchase anything)
+    //Instantiates a Popup frame when it cant remove soda
     public void soda1Remove()
     {
         if (soda1.userBought > 0)
@@ -230,6 +204,10 @@ public class Main {
             Frame.impossibleRemoveBtn();
         }
     }
+
+    //Called upon when the user clicks the confirm button
+    //calculates revenue based off of how many drinks user bought
+    //then adds up all the revenue 
     public void addRevenue()
     {
         soda1.currentQuantity -= soda1.userBought;
@@ -262,17 +240,17 @@ public class Main {
         Frame.numSoda5.setText("" + soda5.userBought);
         Frame.soda5TxtAreaQuantity.setText("" + soda5.currentQuantity);
         
-        Frame.totalTxt.setText("$" + revenue + "0");
+        Frame.revTxt.setText("$" + revenue + "0"); //yeah.. I was gonna use the decimalFormatter class but was too lazy (all the prices i set were 1.00 or 1.50 anyway)
     }
 
     //once the reset button is clicked, this function is called, where it displays the revenue of x day onto a .txt file
-    //revenue is reset, then the .txt file is displayed onto the textArea
+    //.txt file is then displayed on the JFrame
     //The revenue for past days are saved on the .txt file, and are overwritten when you relaunch the program.
     public void printResults() throws IOException
     {
         if (!fileMade)
         {
-            file = new File("Assignments2/VendingMachine/src/result.txt");
+            file = new File("VendingMachine/src/result.txt");
             bw = new BufferedWriter(new FileWriter(file));
             try
             {
@@ -308,10 +286,11 @@ public class Main {
             }
         }
     }
+
     //when the user presses the reset button, this function is called, where it restocks all of the drinks (back up to its initial value, which is 20)
+    //user bought goes to zero, and revenue is reset.
     public void resetQuantities()
     {
-        
         soda1.currentQuantity = soda1.initialQuantity;
         soda2.currentQuantity = soda2.initialQuantity;
         soda3.currentQuantity = soda3.initialQuantity;
@@ -324,7 +303,7 @@ public class Main {
         soda5.userBought = 0;
         
         totalRevenue += revenue;
-        Frame.actualTotalTxt.setText("$" + totalRevenue + "0");
+        Frame.totalRevTxt.setText("$" + totalRevenue + "0"); //yeah.. I was gonna use the decimalFormatter class but was too lazy (all the prices i set were 1.00 or 1.50 anyway)
         revenue = 0.0;
         
         frame.setQuantity(soda1.currentQuantity, soda2.currentQuantity, soda3.currentQuantity, soda4.currentQuantity, soda5.currentQuantity);
@@ -357,10 +336,10 @@ public class Main {
  * 
  *  Enhancement ideas
  *      - gray out picture when quantity is empty (done)
- *      - select button instead of buying drink immediately (and buying custom amount of x drink) (decided not to do)
- *      - possibly adding sounds? (NOPE)
- *      - Make a second main window with silly animations i made from blender :3 (almost done)
- *      - replacing a drink with another drink (planning to do)
+ *      - select button instead of buying drink immediately (and buying custom amount of x drink) (done)
+ *      - possibly adding sounds? (NOPE) (maybe next time?)
+ *      - Make a second main window with silly animations i made from blender :3 (almost done) (FINALLY DONE)
+ *      - replacing a drink with another drink (planning to do) (edit: will most likely NOT do)
  * 
  *  Ill take a break for a bit today...
  * --------------------------------------------------------------------------------------------------------
@@ -397,4 +376,21 @@ public class Main {
  * 
  *  (8:10pm)
  *      - Finally got the option pane confirming the reset button working
+ * 
+ *  (Day 4 (2025-04-14))(8:46am)
+ *      - Cleaning up code and adding more comments then im basically done...
+ *      - also possibly changeing the layout of the frame a bit
+ * 
+ * And now, I think everything is done.. (unless the enhancements arent good enough)
+ * ------------------------------------------------------------------------------------------------------------------------------------
+ * Main Takeaways:
+ *      - I absolutely love JFrames
+ *      - when it comes to coding math focused programs, I suck at it ??
+ *      - I will take every chance I get to throw an animation into my project and you cant stop me (only me can stop me (if future assignment gets more challenging))
+ *      - JFrames REALLY ARE similar to Unity c# 
+ *      - Setting deadlines for myself actually makes me motivated!? 
+ *          (I originally planned to finish this on friday then changed the personal deadline to sunday cause of the animations HAHA)
+ *      - I might be on YandereDev levels of bad coding (BAD BAD NO GOOD)
+ *      - making timelines are motivating, and makes me feel proud of a project I made (so ill keep doing these)
+ * ------------------------------------------------------------------------------------------------------------------------------------
  */
