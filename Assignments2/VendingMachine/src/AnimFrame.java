@@ -29,6 +29,7 @@ public class AnimFrame {
         panel.setSize(450, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("GOOBER VIEWPOINT (LEAKED!!!!!)");
+        frame.setIconImage(new ImageIcon("VendingMachine/src/Images/ProgramIcon.png").getImage());
 
         VendingLabel.setBounds(0, 0, 450, 600);
 
@@ -38,7 +39,7 @@ public class AnimFrame {
         frame.setVisible(true);
     }
 
-    //I dont care, take a mark off of this, I ripped it off from online (https://sentry.io/answers/how-to-add-a-delay-in-java/)
+    //I ripped it off from online (https://sentry.io/answers/how-to-add-a-delay-in-java/)
     //Im aware of thread.sleep but was trying to find a method where it didnt stop the entire program (Therefore no Thread.sleep)
     //Oh, times like these make me miss Unity C#.. I miss my Time.deltaTime, my Coroutines, my Invokes
     //Oh yeah, this function is called when the user confirms a purchase, plays out the bought animation then goes back to idle anim.

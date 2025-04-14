@@ -56,8 +56,8 @@ public class Frame {
         JLabel drinkLabel3 = new JLabel("Drinks Left: ");
         JLabel drinkLabel4 = new JLabel("Drinks Left:");
         JLabel drinkLabel5 = new JLabel("Drinks Left: ");
-        JLabel totalLabel = new JLabel("Revenue (1 day):");
-        JLabel realTotalLabel = new JLabel("Total Revenue:");
+        JLabel revLabel = new JLabel("Revenue (1 day):");
+        JLabel revTotalLabel = new JLabel("Total Revenue:");
         JScrollPane scrollPaneResult = new JScrollPane(resultTxt);
         JLabel buyTitleLbl = new JLabel("You are about to buy:");
         JLabel soda1Label = new JLabel(Main.soda1.name);
@@ -80,6 +80,7 @@ public class Frame {
         panel.setSize(800, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Silly Vending Machine!?");
+        frame.setIconImage(new ImageIcon("VendingMachine/src/Images/ProgramIcon.png").getImage());
 
         //makes all the textAreas non-editable by users
         soda1TxtAreaPrice.setEditable(false);
@@ -118,15 +119,15 @@ public class Frame {
         soda5TxtAreaPrice.setBounds(300, 125, 100, 25);
         soda5TxtAreaQuantity.setBounds(300, 175, 100, 25);
         drinkLabel5.setBounds(225, 175, 100, 25);
-        totalLabel.setBounds(225, 225, 100, 25);
+        revLabel.setBounds(225, 225, 100, 25);
         revTxt.setBounds(225, 250, 50, 20);
-        soda1PictureBtn.setBounds(0, 0, 75, 75);
-        soda2PictureBtn.setBounds(0, 100, 75, 75);
-        soda3PictureBtn.setBounds(0, 200, 75, 75);
+        soda1PictureBtn.setBounds(15, 0, 75, 75);
+        soda2PictureBtn.setBounds(15, 100, 75, 75);
+        soda3PictureBtn.setBounds(15, 200, 75, 75);
         soda4PictureBtn.setBounds(220, 0, 75, 75);
         soda5PictureBtn.setBounds(220, 100, 75, 75);
         scrollPaneResult.setBounds(420, 25, 150, 250);
-        realTotalLabel.setBounds(330, 225, 150, 25);
+        revTotalLabel.setBounds(330, 225, 150, 25);
         totalRevTxt.setBounds(330, 250, 50, 20);
         buyTitleLbl.setBounds(620, 25, 175, 25);
         soda1Label.setBounds(620, 50, 175, 25);
@@ -153,8 +154,7 @@ public class Frame {
             try {
                 resetBtnClicked();
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+                errorOccured(e1);
             }
         });
         soda1PictureBtn.addActionListener(e -> soda1Clicked());
@@ -189,7 +189,7 @@ public class Frame {
         panel.add(drinkLabel3);
         panel.add(drinkLabel4);
         panel.add(drinkLabel5);
-        panel.add(totalLabel);
+        panel.add(revLabel);
         panel.add(revTxt);
         panel.add(soda1PictureBtn);
         panel.add(soda2PictureBtn);
@@ -197,7 +197,7 @@ public class Frame {
         panel.add(soda4PictureBtn);
         panel.add(soda5PictureBtn);
         panel.add(scrollPaneResult);
-        panel.add(realTotalLabel);
+        panel.add(revTotalLabel);
         panel.add(totalRevTxt);
         panel.add(buyTitleLbl);
         panel.add(soda1Label);
@@ -373,33 +373,37 @@ public class Frame {
     //checks if its less then 0, if it is, sets quantity text to empty and makes image grey.
     public static void confirmedPurchase()
     {
-        AnimFrame.playClip();
-        main.addRevenue();
-        if (Main.soda1.currentQuantity <= 0)
-        {
-            soda1PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/CocaColaEmpty.png"));
-            soda1TxtAreaQuantity.setText("EMPTY");
+        if ((Main.soda1.userBought + Main.soda2.userBought + Main.soda3.userBought + Main.soda4.userBought + Main.soda5.userBought) != 0)
+        {   
+            AnimFrame.playClip();
+            main.addRevenue();
+            if (Main.soda1.currentQuantity <= 0)
+            {
+                soda1PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/CocaColaEmpty.png"));
+                soda1TxtAreaQuantity.setText("EMPTY");
+            }
+            else if (Main.soda2.currentQuantity <= 0)
+            {
+                soda2PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/FantaEmpty.png"));
+                soda2TxtAreaQuantity.setText("EMPTY");
+            }
+            else if (Main.soda3.currentQuantity <= 0)
+            {
+                soda3PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/CrushEmpty.png"));
+                soda3TxtAreaQuantity.setText("EMPTY");
+            }
+            else if (Main.soda4.currentQuantity <= 0)
+            {
+                soda4PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/WaterEmpty.png"));
+                soda4TxtAreaQuantity.setText("EMPTY");
+            }
+            else if (Main.soda5.currentQuantity <= 0)
+            {
+                soda5PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/StomachAcidEmpty.png"));
+                soda5TxtAreaQuantity.setText("EMPTY");
+            }
         }
-        else if (Main.soda2.currentQuantity <= 0)
-        {
-            soda2PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/FantaEmpty.png"));
-            soda2TxtAreaQuantity.setText("EMPTY");
-        }
-        else if (Main.soda3.currentQuantity <= 0)
-        {
-            soda3PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/CrushEmpty.png"));
-            soda3TxtAreaQuantity.setText("EMPTY");
-        }
-        else if (Main.soda4.currentQuantity <= 0)
-        {
-            soda4PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/WaterEmpty.png"));
-            soda4TxtAreaQuantity.setText("EMPTY");
-        }
-        else if (Main.soda5.currentQuantity <= 0)
-        {
-            soda5PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/StomachAcidEmpty.png"));
-            soda5TxtAreaQuantity.setText("EMPTY");
-        }
+        
     }
 
     //Simple, closes the program when the exit button is closed.
@@ -434,9 +438,14 @@ public class Frame {
             }
             catch (IOException e)
             {
-                e.printStackTrace();
+                errorOccured(e);
             }
         }
-        
+    }
+
+    //error frame when error happens
+    public static void errorOccured(Exception e)
+    {
+        JOptionPane.showMessageDialog(null, new JLabel("An error has occured: " + e));
     }
 }

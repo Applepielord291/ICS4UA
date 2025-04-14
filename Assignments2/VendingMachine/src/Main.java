@@ -259,7 +259,7 @@ public class Main {
             }
             catch(IOException e)
             {
-                e.printStackTrace();
+                Frame.errorOccured(e);
             }
             finally
             {
@@ -278,7 +278,7 @@ public class Main {
             }
             catch(IOException e)
             {
-                e.printStackTrace();
+                Frame.errorOccured(e);
             }
             finally
             {
