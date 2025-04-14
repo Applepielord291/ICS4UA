@@ -10,4 +10,5 @@ public class Soda {
     public double price;
     public int currentQuantity;
     public int initialQuantity;
+    public int userBought;
 }

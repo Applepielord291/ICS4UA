@@ -30,35 +30,42 @@ public class Main {
     BufferedWriter bw = null; //These are for the result.txt file, which print out the revenue of each day.
     public static void main(String[] args) throws Exception 
     {
-        frame.ShowFrame(); //calls upon the frame function so that it displays the JFrame to the user
+        
 
-        AnimFrame animFrame = new AnimFrame(); //Frame that plays vending machine animations
-        animFrame.showFrame(); 
-
-        soda1.name = "Coca cola"; //assigning values to soda instances (until line 58) (may remove the name value cause its useless as of right now)
+        soda1.name = "Coca cola"; //assigning values to soda instances (until line 61) (may remove the name value cause its useless as of right now)
         soda1.price = 1.00;
         soda1.initialQuantity = 20;
         soda1.currentQuantity = soda1.initialQuantity;
+        soda1.userBought = 0;
 
         soda2.name = "Fanta";
         soda2.price = 1.50;
         soda2.initialQuantity = 20;
         soda2.currentQuantity = soda2.initialQuantity;
+        soda2.userBought = 0;
 
         soda3.name = "Crush";
         soda3.price = 1.50;
         soda3.initialQuantity = 20;
         soda3.currentQuantity = soda3.initialQuantity;
+        soda3.userBought = 0;
 
         soda4.name = "Water";
         soda4.price = 1.00;
         soda4.initialQuantity = 20;
         soda4.currentQuantity = soda4.initialQuantity;
+        soda4.userBought = 0;
 
         soda5.name = "Stomach acid";
         soda5.price = 1.00;
         soda5.initialQuantity = 20;
         soda5.currentQuantity = soda5.initialQuantity;
+        soda5.userBought = 0;
+
+        frame.ShowFrame(); //calls upon the frame function so that it displays the JFrame to the user
+
+        AnimFrame animFrame = new AnimFrame(); //Frame that plays vending machine animations
+        animFrame.showFrame(); 
 
         frame.setPrices(soda1.price, soda2.price, soda3.price, soda4.price, soda5.price); //displays the prices to the textArea
         frame.setQuantity(soda1.initialQuantity, soda2.initialQuantity, soda3.initialQuantity, soda4.initialQuantity, soda5.initialQuantity); //displays quantity to the txtArea
@@ -67,104 +74,195 @@ public class Main {
     //these functions keep track of revenue, called by the soda buttons (called function depends on button pressed, obviously)
     //each functions add revenue += price, then displays total revenue in the totalTxt area while decreasing quantity count and displaying that too.
     //Additionaly, it checks if the quantity is greater than 0 or not. if its not, the quantity textArea says "EMPTY"
-    public double[] soda1Clicked()
+    public int soda1Clicked()
     {
-        if (soda1.currentQuantity > 0)
+        if (soda1.currentQuantity > soda1.userBought && soda1.userBought < 20)
         {
-            double[] revenues = new double[2];
+            /*double[] revenues = new double[2];
             revenue += soda1.price;
             totalRevenue += soda1.price;
             revenues[0] = revenue;
-            revenues[1] = totalRevenue;
-            soda1.currentQuantity -= 1;
-            frame.soda1TxtAreaQuantity.setText("" + soda1.currentQuantity);
-            return revenues;
+            revenues[1] = totalRevenue;*/
+            soda1.userBought += 1;
+            return soda1.userBought;
         }
-        else 
+        else if (soda1.currentQuantity <= soda1.userBought || soda1.userBought >= 20)
         {
-            frame.soda1TxtAreaQuantity.setText("EMPTY");
-            return null;
+            return 0;
         }
-        
+        return 0;
     }
-    public double[] soda2Clicked()
+    public int soda2Clicked()
     {
-        if (soda2.currentQuantity > 0)
+        if (soda2.currentQuantity > soda2.userBought && soda2.userBought < 20)
         {
-            double[] revenues = new double[2];
+            /* double[] revenues = new double[2];
             revenue += soda2.price;
             totalRevenue += soda2.price;
             revenues[0] = revenue;
-            revenues[1] = totalRevenue;
-            soda2.currentQuantity -= 1;
-            frame.soda2TxtAreaQuantity.setText("" + soda2.currentQuantity);
-            return revenues;
+            revenues[1] = totalRevenue;*/ 
+            soda2.userBought += 1;
+            return soda2.userBought;
         }
-        else 
+        else if (soda2.currentQuantity <= soda2.userBought || soda2.userBought >= 20)
         {
-            frame.soda2TxtAreaQuantity.setText("EMPTY");
-            return null;
+            Frame.soda2TxtAreaQuantity.setText("EMPTY");
+            return 0;
         }
-        
+        return 0;
     }
-    public double[] soda3Clicked()
+    public int soda3Clicked()
     {
-        if (soda3.currentQuantity > 0)
+        if (soda3.currentQuantity > soda3.userBought && soda3.userBought < 20)
         {
-            double[] revenues = new double[2];
+            /* double[] revenues = new double[2];
             revenue += soda3.price;
             totalRevenue += soda3.price;
             revenues[0] = revenue;
-            revenues[1] = totalRevenue;
-            soda3.currentQuantity -= 1;
-            frame.soda3TxtAreaQuantity.setText("" + soda3.currentQuantity);
-            return revenues;
+            revenues[1] = totalRevenue; */
+            soda3.userBought += 1;
+            return soda3.userBought;
         }
-        else 
+        else if (soda3.currentQuantity <= soda3.userBought || soda3.userBought >= 20)
         {
-            frame.soda3TxtAreaQuantity.setText("EMPTY");
-            return null;
+            Frame.soda3TxtAreaQuantity.setText("EMPTY");
+            return 0;
         }
+        return 0;
         
     }
-    public double[] soda4Clicked()
+    public int soda4Clicked()
     {
-        if (soda4.currentQuantity > 0)
+        if (soda4.currentQuantity > soda4.userBought && soda4.userBought < 20)
         {
-            double[] revenues = new double[2];
+            /* double[] revenues = new double[2];
             revenue += soda4.price;
             totalRevenue += soda4.price;
             revenues[0] = revenue;
-            revenues[1] = totalRevenue;
-            soda4.currentQuantity -= 1;
-            frame.soda4TxtAreaQuantity.setText("" + soda4.currentQuantity);
-            return revenues;
+            revenues[1] = totalRevenue; */
+            soda4.userBought += 1;
+            return soda4.userBought;
         }
-        else 
+        else if (soda4.currentQuantity <= soda4.userBought || soda4.userBought >= 20)
         {
-            frame.soda4TxtAreaQuantity.setText("EMPTY");
-            return null;
+            Frame.soda4TxtAreaQuantity.setText("EMPTY");
+            return 0;
         }
-        
+        return 0;
     }
-    public double[] soda5Clicked()
+    public int soda5Clicked()
     {
-        if (soda5.currentQuantity > 0)
+        if (soda5.currentQuantity > soda5.userBought && soda5.userBought < 20)
         {
-            double[] revenues = new double[2];
+            /* double[] revenues = new double[2];
             revenue += soda5.price;
             totalRevenue += soda5.price;
             revenues[0] = revenue;
-            revenues[1] = totalRevenue;
-            soda5.currentQuantity -= 1;
-            frame.soda5TxtAreaQuantity.setText("" + soda5.currentQuantity);
-            return revenues;
+            revenues[1] = totalRevenue; */
+            soda5.userBought += 1;
+            return soda5.userBought;
         }
-        else 
+        else if (soda5.currentQuantity <= soda5.userBought || soda5.userBought >= 20)
         {
-            frame.soda5TxtAreaQuantity.setText("EMPTY");
-            return null;
+            Frame.soda5TxtAreaQuantity.setText("EMPTY");
+            return 0;
         }
+        return 0;
+    }
+
+    public void soda1Remove()
+    {
+        if (soda1.userBought > 0)
+        {
+            soda1.userBought -= 1;
+            Frame.numSoda1.setText("" + soda1.userBought);
+        }
+        else
+        {
+            Frame.impossibleRemoveBtn();
+        }
+    }
+    public void soda2Remove()
+    {
+        if (soda2.userBought > 0)
+        {
+            soda2.userBought -= 1;
+            Frame.numSoda2.setText("" + soda2.userBought);
+        }
+        else
+        {
+            Frame.impossibleRemoveBtn();
+        }
+    }
+    public void soda3Remove()
+    {
+        if (soda3.userBought > 0)
+        {
+            soda3.userBought -= 1;
+            Frame.numSoda3.setText("" + soda3.userBought);
+        }
+        else
+        {
+            Frame.impossibleRemoveBtn();
+        }
+    }
+    public void soda4Remove()
+    {
+        if (soda4.userBought > 0)
+        {
+            soda4.userBought -= 1;
+            Frame.numSoda4.setText("" + soda4.userBought);
+        }
+        else
+        {
+            Frame.impossibleRemoveBtn();
+        }
+    }
+    public void soda5Remove()
+    {
+        if (soda5.userBought > 0)
+        {
+            soda5.userBought -= 1;
+            Frame.numSoda5.setText("" + soda5.userBought);
+        }
+        else
+        {
+            Frame.impossibleRemoveBtn();
+        }
+    }
+    public void addRevenue()
+    {
+        soda1.currentQuantity -= soda1.userBought;
+        revenue += soda1.userBought * soda1.price;
+        soda1.userBought = 0;
+        Frame.numSoda1.setText("" + soda1.userBought);
+        Frame.soda1TxtAreaQuantity.setText("" + soda1.currentQuantity);
+
+        soda2.currentQuantity -= soda2.userBought;
+        revenue += soda2.userBought * soda2.price;
+        soda2.userBought = 0;
+        Frame.numSoda2.setText("" + soda2.userBought);
+        Frame.soda2TxtAreaQuantity.setText("" + soda2.currentQuantity);
+
+        soda3.currentQuantity -= soda3.userBought;
+        revenue += soda3.userBought * soda3.price;
+        soda3.userBought = 0;
+        Frame.numSoda3.setText("" + soda3.userBought);
+        Frame.soda3TxtAreaQuantity.setText("" + soda3.currentQuantity);
+
+        soda4.currentQuantity -= soda4.userBought;
+        revenue += soda4.userBought * soda4.price;
+        soda4.userBought = 0;
+        Frame.numSoda4.setText("" + soda4.userBought);
+        Frame.soda4TxtAreaQuantity.setText("" + soda4.currentQuantity);
+
+        soda5.currentQuantity -= soda5.userBought;
+        revenue += soda5.userBought * soda5.price;
+        soda5.userBought = 0;
+        Frame.numSoda5.setText("" + soda5.userBought);
+        Frame.soda5TxtAreaQuantity.setText("" + soda5.currentQuantity);
+        
+        Frame.totalTxt.setText("$" + revenue + "0");
     }
 
     //once the reset button is clicked, this function is called, where it displays the revenue of x day onto a .txt file
@@ -180,7 +278,6 @@ public class Main {
             {
                 bw.write("Day " + day + ": $" + revenue + "0");
                 day++;
-                revenue = 0;
             }
             catch(IOException e)
             {
@@ -200,7 +297,6 @@ public class Main {
                 fw.write("\n");
                 fw.write("Day " + day + ": $" + revenue + "0");
                 day++;
-                revenue = 0;
             }
             catch(IOException e)
             {
@@ -215,12 +311,24 @@ public class Main {
     //when the user presses the reset button, this function is called, where it restocks all of the drinks (back up to its initial value, which is 20)
     public void resetQuantities()
     {
+        
         soda1.currentQuantity = soda1.initialQuantity;
         soda2.currentQuantity = soda2.initialQuantity;
         soda3.currentQuantity = soda3.initialQuantity;
         soda4.currentQuantity = soda4.initialQuantity;
         soda5.currentQuantity = soda5.initialQuantity;
+        soda1.userBought = 0;
+        soda2.userBought = 0;
+        soda3.userBought = 0;
+        soda4.userBought = 0;
+        soda5.userBought = 0;
+        
+        totalRevenue += revenue;
+        Frame.actualTotalTxt.setText("$" + totalRevenue + "0");
+        revenue = 0.0;
+        
         frame.setQuantity(soda1.currentQuantity, soda2.currentQuantity, soda3.currentQuantity, soda4.currentQuantity, soda5.currentQuantity);
+        frame.resetUserList(soda1.userBought, soda2.userBought, soda3.userBought, soda4.userBought, soda5.userBought);
     }
 }
 
@@ -283,4 +391,10 @@ public class Main {
  * 
  *  (10:35pm)
  *      - Time to clean up my code and remove any unnecesary stuff
+ * 
+ *  (7:55pm)
+ *      - Expanded the frame, you can now finally see a list of what you are about to buy before you buy it!
+ * 
+ *  (8:10pm)
+ *      - Finally got the option pane confirming the reset button working
  */
