@@ -278,7 +278,6 @@ public class Frame {
             }
             else if (Main.soda1.currentQuantity <= 0)
             {
-                
                 JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
             }
         }
@@ -382,22 +381,22 @@ public class Frame {
                 soda1PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/CocaColaEmpty.png"));
                 soda1TxtAreaQuantity.setText("EMPTY");
             }
-            else if (Main.soda2.currentQuantity <= 0)
+            if (Main.soda2.currentQuantity <= 0)
             {
                 soda2PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/FantaEmpty.png"));
                 soda2TxtAreaQuantity.setText("EMPTY");
             }
-            else if (Main.soda3.currentQuantity <= 0)
+            if (Main.soda3.currentQuantity <= 0)
             {
                 soda3PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/CrushEmpty.png"));
                 soda3TxtAreaQuantity.setText("EMPTY");
             }
-            else if (Main.soda4.currentQuantity <= 0)
+            if (Main.soda4.currentQuantity <= 0)
             {
                 soda4PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/WaterEmpty.png"));
                 soda4TxtAreaQuantity.setText("EMPTY");
             }
-            else if (Main.soda5.currentQuantity <= 0)
+            if (Main.soda5.currentQuantity <= 0)
             {
                 soda5PictureBtn.setIcon(new ImageIcon("VendingMachine/src/Images/StomachAcidEmpty.png"));
                 soda5TxtAreaQuantity.setText("EMPTY");
@@ -409,8 +408,15 @@ public class Frame {
     //Simple, closes the program when the exit button is closed.
     public static void exitBtnClicked()
     {
-        AnimFrame.frame.dispose();
-        frame.dispose();
+        int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "WARNING", JOptionPane.YES_NO_OPTION);
+        {
+            if (result == JOptionPane.YES_OPTION)
+            {
+                AnimFrame.frame.dispose();
+                frame.dispose();
+            }
+        }
+        
     }
 
     //function called when the user clicks the reset btn

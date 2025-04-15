@@ -3,13 +3,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-
-
 /* Nigel Garcia
  * April 11 2025
  * Main
  * Main script for the vending machine program, you need to run this script
- * If you want to see my timeline and thoughts on the assignment, scroll down on this file (this is the most I can do to show that im not using chatgpt (also i gues it would be pretty obvious cause my code sucks))
+ * If you want to see my timeline and thoughts on the assignment, scroll down on this file
  */
 
 public class Main {
@@ -393,4 +391,6 @@ public class Main {
  *      - I might be on YandereDev levels of bad coding (BAD BAD NO GOOD)
  *      - making timelines are motivating, and makes me feel proud of a project I made (so ill keep doing these)
  * ------------------------------------------------------------------------------------------------------------------------------------
+ * 
+ * 
  */
