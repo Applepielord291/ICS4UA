@@ -51,6 +51,7 @@ public class Frame {
 
     static Main main = new Main();
     static AnimFrame anim = new AnimFrame();
+    static boolean loggedIn = false;
     public void ShowFrame()
     {
         //defining all the components
@@ -430,26 +431,40 @@ public class Frame {
         
     }
 
+    //when user clicked login, popup window appears asking for password
+    //password located in .txt file
+    //takes user input and checks if its equal to the string in the .txt file
+    //if true, adds the revenue information
+    //else, tells the user password is wrong and gives an option to try again
+    //if user is already logged in, program lets user know that they are already logged in
     public static void clickedLogin() throws IOException
     {
-        var result = JOptionPane.showInputDialog(null, "Please enter a password.");
-        try (BufferedReader br = new BufferedReader(new FileReader("VendingMachine\\src\\password")))
+        if (!loggedIn)
         {
-            if (result.equals(br.readLine()))
+            var result = JOptionPane.showInputDialog(null, "Please enter a password.");
+            try (BufferedReader br = new BufferedReader(new FileReader("VendingMachine\\src\\password")))
             {
-                panel.add(scrollPaneResult);
-                panel.add(revTotalLabel);
-                panel.add(totalRevTxt);
-                panel.add(revLabel);
-                panel.add(revTxt);
-                frame.setVisible(false);
-                frame.setVisible(true);
+                if (result.equals(br.readLine()))
+                {
+                    panel.add(scrollPaneResult);
+                    panel.add(revTotalLabel);
+                    panel.add(totalRevTxt);
+                    panel.add(revLabel);
+                    panel.add(revTxt);
+                    frame.setVisible(false);
+                    frame.setVisible(true);
+                    loggedIn = true;
+                }
+                else
+                {
+                    int ans = JOptionPane.showConfirmDialog(null, "Wrong password, want to try again?", "WARNING", JOptionPane.YES_NO_OPTION);
+                    if (ans == JOptionPane.YES_OPTION) clickedLogin();
+                }
             }
-            else
-            {
-                int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to rest and move on to the next day? dont forget to confirm your purchase!", "WARNING", JOptionPane.YES_NO_OPTION);
-                if (ans == JOptionPane.YES_OPTION) clickedLogin();
-            }
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, new JLabel("You are already logged in!"));
         }
     }
 
