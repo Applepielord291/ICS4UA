@@ -13,6 +13,7 @@ public class Frame {
 	//I apologize for the naming scheme...
     //also I made these public since im applying the values from the instantiated soda classes into the textareas. (and to access them from other scripts)
     static JFrame frame = new JFrame();
+    static JPanel panel = new JPanel();
     JTextArea soda1TxtAreaPrice = new JTextArea();
     static JTextArea soda1TxtAreaQuantity = new JTextArea();
     static JButton soda1PictureBtn = new JButton(new ImageIcon("VendingMachine/src/Images/CocaCola.jpg"));
@@ -37,18 +38,23 @@ public class Frame {
     static JTextArea resultTxt = new JTextArea();
     static JTextArea totalRevTxt = new JTextArea();
 
+    static JScrollPane scrollPaneResult = new JScrollPane(resultTxt);
+
     static JTextArea numSoda1 = new JTextArea();
     static JTextArea numSoda2 = new JTextArea();
     static JTextArea numSoda3 = new JTextArea();
     static JTextArea numSoda4 = new JTextArea();
     static JTextArea numSoda5 = new JTextArea();
 
+    static JLabel revLabel = new JLabel("Revenue (1 day):");
+    static JLabel revTotalLabel = new JLabel("Total Revenue:");
+
     static Main main = new Main();
     static AnimFrame anim = new AnimFrame();
     public void ShowFrame()
     {
         //defining all the components
-        JPanel panel = new JPanel();
+        
         JButton exitBtn = new JButton("Exit");
         JButton resetBtn = new JButton("Reset");
         JLabel drinkLabel = new JLabel("Drinks Left:");
@@ -56,9 +62,8 @@ public class Frame {
         JLabel drinkLabel3 = new JLabel("Drinks Left: ");
         JLabel drinkLabel4 = new JLabel("Drinks Left:");
         JLabel drinkLabel5 = new JLabel("Drinks Left: ");
-        JLabel revLabel = new JLabel("Revenue (1 day):");
-        JLabel revTotalLabel = new JLabel("Total Revenue:");
-        JScrollPane scrollPaneResult = new JScrollPane(resultTxt);
+        
+        
         JLabel buyTitleLbl = new JLabel("You are about to buy:");
         JLabel soda1Label = new JLabel(Main.soda1.name);
         JLabel soda2Label = new JLabel(Main.soda2.name);
@@ -71,13 +76,15 @@ public class Frame {
         JButton soda4RemoveBtn = new JButton("-1");
         JButton soda5RemoveBtn = new JButton("-1");
         JButton confirmBuyBtn = new JButton("Confirm");
+        JMenuBar barMenu = new JMenuBar();
+        JButton loginBtn = new JButton("login");
         
         //frame manager (this basically manages the size and visuals and layouts of the frame)
         frame.setResizable(false);
-        frame.setSize(800, 400);
+        frame.setSize(800, 425);
         frame.setLocationRelativeTo(null);
         panel.setLayout(null);
-        panel.setSize(800, 400);
+        panel.setSize(800, 425);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Silly Vending Machine!?");
         frame.setIconImage(new ImageIcon("VendingMachine/src/Images/ProgramIcon.png").getImage());
@@ -169,6 +176,13 @@ public class Frame {
         soda4RemoveBtn.addActionListener(e -> main.soda4Remove());
         soda5RemoveBtn.addActionListener(e -> main.soda5Remove());
         confirmBuyBtn.addActionListener(e -> confirmedPurchase());
+        loginBtn.addActionListener(e -> {
+            try {
+                clickedLogin();
+            } catch (IOException e1) {
+                errorOccured(e1);
+            }
+        });
 
         //this area is pretty much adding all the components onto the frame soda that the user can actually see them
         frame.add(panel);
@@ -189,16 +203,11 @@ public class Frame {
         panel.add(drinkLabel3);
         panel.add(drinkLabel4);
         panel.add(drinkLabel5);
-        panel.add(revLabel);
-        panel.add(revTxt);
         panel.add(soda1PictureBtn);
         panel.add(soda2PictureBtn);
         panel.add(soda3PictureBtn);
         panel.add(soda4PictureBtn);
         panel.add(soda5PictureBtn);
-        panel.add(scrollPaneResult);
-        panel.add(revTotalLabel);
-        panel.add(totalRevTxt);
         panel.add(buyTitleLbl);
         panel.add(soda1Label);
         panel.add(soda2Label);
@@ -216,6 +225,8 @@ public class Frame {
         panel.add(soda3RemoveBtn);
         panel.add(soda4RemoveBtn);
         panel.add(soda5RemoveBtn);
+        frame.setJMenuBar(barMenu);
+        barMenu.add(loginBtn);
 
         frame.setVisible(true); //sets the frame visible so that the user can actually see the window.
 
@@ -417,6 +428,29 @@ public class Frame {
             }
         }
         
+    }
+
+    public static void clickedLogin() throws IOException
+    {
+        var result = JOptionPane.showInputDialog(null, "Please enter a password.");
+        try (BufferedReader br = new BufferedReader(new FileReader("VendingMachine\\src\\password")))
+        {
+            if (result.equals(br.readLine()))
+            {
+                panel.add(scrollPaneResult);
+                panel.add(revTotalLabel);
+                panel.add(totalRevTxt);
+                panel.add(revLabel);
+                panel.add(revTxt);
+                frame.setVisible(false);
+                frame.setVisible(true);
+            }
+            else
+            {
+                int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to rest and move on to the next day? dont forget to confirm your purchase!", "WARNING", JOptionPane.YES_NO_OPTION);
+                if (ans == JOptionPane.YES_OPTION) clickedLogin();
+            }
+        }
     }
 
     //function called when the user clicks the reset btn
