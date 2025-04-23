@@ -1,5 +1,11 @@
 import java.util.Scanner;
 
+/* NIgel Garcia
+ * April 22 2025
+ * Palindrome
+ * chekcs if its palindrome
+ */
+
 public class Palindrome {
     public static void main(String[] args) throws Exception 
     {
