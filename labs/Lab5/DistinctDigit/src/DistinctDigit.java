@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class DistinctDigit {
     public static void main(String[] args) throws Exception 
     {
+        boolean distinct = true;
         Scanner scn = new Scanner(System.in);
         System.out.println("Enter a value to check if its a distinct digit");
         int res = scn.nextInt();
@@ -21,17 +22,16 @@ public class DistinctDigit {
             {
                 if (String.valueOf(chars[i]).matches(String.valueOf(chars[j])))
                 {
-                    System.out.println("repeat");
-                    break;
+                    distinct = false;
                 }
                 else if (!String.valueOf(chars[i]).matches(String.valueOf(chars[j])) && i != j)
                 {
-                    System.out.println("non");
-                    System.out.println(i); System.out.println(j);
-                    break;
+                    
                 }
             }
         }
+        if (distinct) System.out.println("Phrase is not distinct");
+        else if (!distinct) System.out.println("Phrase is distinct");
         scn.close();
     }
 }
