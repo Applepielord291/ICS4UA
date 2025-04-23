@@ -9,24 +9,31 @@ import java.util.Scanner;
 public class RotatingLetters {
     public static void main(String[] args) throws Exception 
     {
+        boolean canBeRotated = true;
         Scanner scn = new Scanner(System.in);
         System.out.println("enter a phrase, checks if it can rotate (no more than 30 char): ");
         String res = scn.nextLine();
-        if (res.length() <= 30)
+        char[] chars = new char[res.length()];
+        chars = res.toCharArray();
+        for (int i = 0; i < res.length(); i++)
         {
-            isRotatable(res);
+            String test = String.valueOf(chars[i]);
+            if (test.toUpperCase().matches("[IOSHZXN]")) 
+            {
+                //nothing right now
+            }
+            else
+            {
+                System.out.println("can not be rotated.");
+                canBeRotated = false;
+                break;
+            }
         }
-        else
-        {
-            System.out.println("Invalid");
-        }
+        if (canBeRotated) System.out.println("can be rotated");
         scn.close();
     }
     public static void isRotatable(String res)
     {
-        if (res.toUpperCase().contains("IOSHZXN"))
-        {
-            System.out.println("yar");
-        }
+        
     }
 }
