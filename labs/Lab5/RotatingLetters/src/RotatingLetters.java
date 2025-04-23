@@ -32,8 +32,4 @@ public class RotatingLetters {
         if (canBeRotated) System.out.println("can be rotated");
         scn.close();
     }
-    public static void isRotatable(String res)
-    {
-        
-    }
 }
