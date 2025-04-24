@@ -12,6 +12,7 @@ public class Palindrome {
         Scanner scn = new Scanner(System.in);
         System.out.println("enter a value, checks if its palindrome.");
         String res = scn.nextLine();
+        res = res.replaceAll("[1234567890 ,.!]", "");
         char[] chars1 = new char[res.length()];
         chars1 = res.toCharArray();
         String rev = "";

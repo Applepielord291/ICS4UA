@@ -365,7 +365,7 @@ public class Frame {
             {
                 JOptionPane.showMessageDialog(null, new JLabel("Woah, Way too much, read the Quantity!"));
             }
-            else if (Main.soda5.userBought >= Main.soda5.currentQuantity && Main.soda5.userBought != 0)
+            else if (Main.soda5.currentQuantity <= 0)
             {
                 JOptionPane.showMessageDialog(null, new JLabel("The item you want does not exist!"));
             }
