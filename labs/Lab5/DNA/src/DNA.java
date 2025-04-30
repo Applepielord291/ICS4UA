@@ -30,7 +30,7 @@ public class DNA {
         }
         scn.close();
     }
-    public static void genReport(String res, char[] chars) //almost works
+    public static void genReport(String res, char[] chars)
     {
         System.out.println("DNA String: " + res.toUpperCase());
         System.out.println("String Length: " + res.length());
@@ -42,19 +42,29 @@ public class DNA {
             revString = revString.concat(String.valueOf(chars[i - 1]));
         }
         comp = res.toUpperCase();
-        comp.replaceAll("G", "C");
-        comp.replaceAll("C", "G");
-        comp.replaceAll("A", "T");
-        comp.replaceAll("T", "A");
-        System.out.println("comp: " + comp);
         char[] chars2 = new char[comp.length()];
         chars2 = comp.toCharArray();
-        for (int i = chars2.length; i > 0; i--)
+        String comp2 = "";
+        for (int i = 0; i < comp.length(); i++)
         {
-            revComp = revComp.concat(String.valueOf(chars2[i - 1]));
+            if (String.valueOf(chars2[i]).toUpperCase().equals("G")) comp2 += 'C';
+            else if (String.valueOf(chars2[i]).toUpperCase().equals("C")) comp2 += 'G';
+            else if (String.valueOf(chars2[i]).toUpperCase().equals("A")) comp2 += 'T';
+            else if (String.valueOf(chars2[i]).toUpperCase().equals("T")) comp2 += 'A';
+        }
+        comp = comp.replaceAll("G", "C");
+        comp = comp.replaceAll("C", "G");
+        comp = comp.replaceAll("A", "T");
+        comp = comp.replaceAll("T", "A");
+        
+        char[] chars3 = new char[comp2.length()];
+        chars3 = comp2.toCharArray();
+        for (int i = chars3.length; i > 0; i--)
+        {
+            revComp = revComp.concat(String.valueOf(chars3[i - 1]));
         }
         System.out.println("Reverse String: " + revString.toUpperCase());
-        System.out.println("String complement: " + comp.toUpperCase());
+        System.out.println("String complement: " + comp2.toUpperCase());
         System.out.println("Reverse complement: " + revComp.toUpperCase());
     }
 }
