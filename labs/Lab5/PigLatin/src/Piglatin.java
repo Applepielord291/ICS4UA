@@ -14,6 +14,13 @@ public class Piglatin {
         String res = scn.nextLine();
         char[] chars = new char[res.length()];
         chars = res.toCharArray();
+        /*for (int i = 0; i < res.length(); i++)
+        {
+            if (String.valueOf(chars[i]).equals(' '))
+            {
+                System.out.println(i + 1);
+            }
+        }*/
         if (String.valueOf(chars[0]).toUpperCase().matches("[AEIOU]"))
         {
             res = res.concat("way");
