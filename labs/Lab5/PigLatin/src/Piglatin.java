@@ -16,7 +16,7 @@ public class Piglatin {
         chars = res.toCharArray();
         /*for (int i = 0; i < res.length(); i++)
         {
-            if (String.valueOf(chars[i]).equals(' '))
+            if (String.valueOf(chars[i]).equals(" "))
             {
                 System.out.println(i + 1);
             }
