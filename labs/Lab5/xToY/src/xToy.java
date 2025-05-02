@@ -4,8 +4,8 @@ import java.util.Scanner;
  * May 2 2025
  * xToY
  * converts all x to y in a string
- * this is unfinished
  */
+
 public class xToy {
     public static void main(String[] args) throws Exception 
     {
@@ -16,20 +16,29 @@ public class xToy {
     }
     public static String convertX(String res, int test)
     {
+        char[] x = new char[res.length()];
+        x = res.toCharArray();
+        String newS = "";
         if (test < res.length())
         {
-            if (String.valueOf(res.toCharArray()[test]).toUpperCase().equals("X"))
+            if (String.valueOf(res.charAt(test)).toUpperCase().equals("X"))
             {
-                return convertX(res, test++);
+                x[test] = 'Y';
+                for (int i = 0; i < x.length; i++)
+                {
+                    newS += x[i];
+                }
+                return convertX(newS, test+1);
             }
-            else
-            {
-                return convertX(res, test+1);
-            }
+            return convertX(res, test+1);
         }
         else
         {
-            return res;
+            for (int i = 0; i < x.length; i++)
+            {
+                newS += x[i];
+            }
+            return newS.toLowerCase();
         }
     }
 }
