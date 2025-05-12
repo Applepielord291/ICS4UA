@@ -2,36 +2,80 @@ public class BubbleVsSelect {
     public static void main(String[] args) throws Exception 
     {
         int[] testSize = { 5, 10, 50, 100, 500, 1000 };
-        System.out.print("\n");
-        selectSort(testSize);
+        System.out.println(bubbleSort(testSize));
+        System.out.println(selectSort(testSize));
     }
-    public static void selectSort(int[] test)
+    public static String bubbleSort(int[] arrSize)
     {
-        for (int k = 0; k < test.length; k++)
+        int swaps = 0; int compares = 0;
+        for (int size : arrSize)
         {
-            int[] num = new int[test[k]];
+            double num[][] = new double[size + 1][size + 1];
             for (int i = 0; i < num.length - 1; i++)
             {
-                int min = num[i];
-                for (int j = i+1; j < num.length; j++)
+                for (int j = 0; j < num.length - 1; j++)
                 {
-                    if (num[j] < min)
-                    {
-                        min = num[j];
-                        j = i;
-                    }
+                    num[i][j] = Math.round(1 + Math.random() * 10000);
                 }
-                for (int t = i; t < num.length + 1; t++)
+            }
+            for (int i = 0; i < num.length -1 ; i++)
+            {
+                for (int j = 0; j < num.length- 1; j++)
                 {
-                    if (num[t] == min)
+                    if (num[i][j] > num[i][j+1] && j+1 < num.length - 1)
                     {
-                        num[t] = num[i];
-                        num[i] = min;
-                        break;
+                        double temp = num[i][j + 1]; //smaller number
+                        num[i][j + 1] = num[i][j];
+                        num[i][j] = temp;
+                        swaps++;
+                    }
+                    else
+                    {
+                        compares++;
                     }
                 }
             }
         }
-        System.out.println("done");
+        return "Swaps: " + swaps + " Compares: " + compares;
+    }
+    public static String selectSort(int[] arrSize)
+    {
+        int swaps = 0; int compares = 0;
+        for (int size : arrSize)
+        {
+            double num[][] = new double[size + 1][size + 1];
+            for (int i = 0; i < num.length - 1; i++)
+            {
+                for (int j = 0; j < num.length - 1; j++)
+                {
+                    num[i][j] = Math.round(1 + Math.random() * 10000);
+                }
+            }
+            for (int i = 0; i < num.length - 1; i++)
+            {
+                double min = num[i][0];
+                for (int j = i+1; j < num.length; j++)
+                {
+                    if (num[i][j] < min)
+                    {
+                        min = num[i][j];
+                        j = i;
+                        swaps++;
+                    }
+                }
+                for (int k = i; k < num.length + 1; k++)
+                {
+                    if (num[i][k] == min)
+                    {
+                        num[i][k] = num[i][i];
+                        num[i][i] = min;
+                        swaps++;
+                        break;
+                    }
+                }
+                compares++;
+            }
+        }
+        return "Swaps: " + swaps + " Compares: " + compares;
     }
 }

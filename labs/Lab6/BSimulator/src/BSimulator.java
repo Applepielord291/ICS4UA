@@ -8,9 +8,9 @@ public class BSimulator {
     }
     public static void sort(int swap, int compare, int[] arrSize)
     {
-        for (int k = 0; k < arrSize.length; k++)
+        for (int size : arrSize)
         {
-            double num[][] = new double[arrSize[k] + 1][arrSize[k] + 1];
+            double num[][] = new double[size + 1][size + 1];
             for (int i = 0; i < num.length - 1; i++)
             {
                 for (int j = 0; j < num.length - 1; j++)
