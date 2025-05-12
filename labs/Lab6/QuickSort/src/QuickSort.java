@@ -18,17 +18,17 @@ public class QuickSort {
     }
     public static void Quick(int[] num, int lowLim, int highLim)
     {
-        System.out.println("calling?");
         int i = lowLim; int j = highLim; int h;
         int x = num[(lowLim + highLim) / 2];
         do
         {
-            System.out.println("Do loop started");
             while (num[i] < x) i++;
             while (num[j] > x) j--;
             if (i <= j)
             {
-                h = num[i]; num[i] = num[j]; num[j] = h;
+                h = num[i]; 
+                num[i] = num[j]; 
+                num[j] = h;
                 i++; j--;
             }
         } while (i <= j);
