@@ -36,7 +36,7 @@ public class BubbleSort {
             {
                 if (num[i][j] > num[i][j+1] && j+1 < num.length)
                 {
-                    int temp = num[i][j + 1]; //smaller number
+                    int temp = num[i][j + 1]; 
                     num[i][j + 1] = num[i][j];
                     num[i][j] = temp;
                 }

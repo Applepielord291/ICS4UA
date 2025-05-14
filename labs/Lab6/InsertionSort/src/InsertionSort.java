@@ -20,17 +20,14 @@ public class InsertionSort {
     {
         for (int j = 1; j < num.length; j++)
         {
-            int i = j-1; //possibly the problem
+            int i = j-1; 
             int temp = num[j];
-            while (i >= 0)
+            while (i >= 0 && temp < num[i])
             {
-                if (temp < num[i]);
-                {
-                    int tempo = num[i];
-                    num[i] = num[i + 1];
-                    num[i + 1] = tempo;
-                    i--;
-                }
+                int tempo = num[i + 1];
+                num[i + 1] = num[i];
+                num[i] = tempo;
+                i--;
             }
             num[i + 1] = temp;
         }
