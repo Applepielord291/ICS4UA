@@ -4,7 +4,6 @@ import java.util.Scanner;
  * May 2 2025
  * fibonacci
  * outputs the nth number of the fibonnaci sequencce
- * program not finished yet
  */
 
 public class fibonacci {
@@ -13,18 +12,16 @@ public class fibonacci {
         Scanner scn = new Scanner(System.in);
         System.out.println("Enter a number: ");
         int res = scn.nextInt();
-        System.out.println(fibo(res, res - 1));
+        System.out.println(fibo(0, 1, res, 0, 0));
         scn.close();
     }
-    public static int fibo(int input, int ogInput)
+    public static int fibo(int num1, int num2, int limit, int timesRun, int sum)
     {
-        if ((ogInput) > 0)
+        if (timesRun < limit)
         {
-            return fibo((input - ogInput), ogInput - 1);
+            sum = num1 + num2;
+            return fibo(num2, sum, limit, timesRun+1, sum);
         }
-        else
-        {
-            return input;
-        }
+        else return sum;
     }
 }

@@ -7,6 +7,24 @@
 public class MergeSort {
     public static void main(String[] args) throws Exception {
         int[] num = {5, 16, 7, 8, 25, 46, 67, 88, 79, 110, 121, 12};
+        int gap = num.length/2;
+        int temp = 0;
+        for (int i = gap; i < num.length; i++) {
+            temp = num[i];
+            int j;
+            for (j = i; j >= gap && num[j] > temp; j++) {
+                num[j] = num[i];
+            }
+            num[j] = temp;
+        }
+        for (int i = 0; i < gap; i++) {
+            temp = num[i];
+            int j;
+            for (j = i; j < gap && num[j] > temp; j++) {
+                num[j] = num[i];
+            }
+            num[j] = temp;
+        }
 
         //Array printing result
         for (int i = 0; i < num.length; i++) {
