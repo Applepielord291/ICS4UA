@@ -39,16 +39,9 @@ public class BubbleSort {
                     int temp = num[i][j + 1]; //smaller number
                     num[i][j + 1] = num[i][j];
                     num[i][j] = temp;
-                    swap++;
-                }
-                else
-                {
-                    compare++;
                 }
             }
         }
-        System.out.println("\n\nNumber of swaps: " + swap);
-        System.out.println("Number of compares: " + compare);
         return num;
     }
 }

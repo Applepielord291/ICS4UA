@@ -35,6 +35,7 @@ public class QuickSort {
 
         if (lowLim < j) Quick(num, lowLim, j);
         if (i < highLim) Quick(num, i, highLim);
+        System.out.print("This is the element of the array <sorted>\n");
         for (int k = 0; k < num.length; k++)
         {
             System.out.print(num[k] + " ");

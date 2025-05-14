@@ -39,7 +39,7 @@ public class SelectionSort {
                 }
             }
         }
-        System.out.print("\n");
+        System.out.print("This is the element of the array <sorted>\n");
         for (int i = 0; i < num.length; i++)
         {
             System.out.print(num[i] + " ");

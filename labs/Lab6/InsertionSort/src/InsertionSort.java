@@ -20,7 +20,7 @@ public class InsertionSort {
     {
         for (int j = 1; j < num.length; j++)
         {
-            int i = j - 1; //possibly the problem
+            int i = j-1; //possibly the problem
             int temp = num[j];
             while (i >= 0)
             {
@@ -34,7 +34,7 @@ public class InsertionSort {
             }
             num[i + 1] = temp;
         }
-        System.out.print("\n");
+        System.out.print("This is the element of the array <sorted>\n");
         for (int i = 0; i < num.length; i++)
         {
             System.out.print(num[i] + " ");
