@@ -4,6 +4,11 @@
  * sorts an array of values using the selection sort method
  */
 
+ /* Selection sort finds the current smallest number in the array then swaps it with the nth element
+  * (n starts at 0 and increments)
+  * The loop stops when the algorithm is at the last element with the largest number
+  */
+
 public class SelectionSort {
     public static void main(String[] args) throws Exception 
     {
