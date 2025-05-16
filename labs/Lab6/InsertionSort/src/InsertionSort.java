@@ -4,6 +4,10 @@
  * sorts an array of values using the insertion method
  */
 
+ /* Insertion sort picks an elemeent from the unsorted list and inserts it into the correct position in a different list by comparing it to the numbers in the sorted list
+  * this repeats until the entire array is sorted.
+  */
+
 public class InsertionSort {
     public static void main(String[] args) throws Exception 
     {

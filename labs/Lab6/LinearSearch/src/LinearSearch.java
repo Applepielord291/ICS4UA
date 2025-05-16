@@ -3,8 +3,7 @@ import java.util.Scanner;
 /* Nigel Garcia
  * May 15 2025
  * Linear search
- * searches for a number using the linear search method (The array is already sorted using the quick sort method)
- * was not aware, the array must be sorted first to work
+ * searches for a number using the linear search method 
  */
 
 public class LinearSearch {

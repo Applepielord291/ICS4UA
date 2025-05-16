@@ -3,7 +3,8 @@ import java.util.Scanner;
 /* Nigel Garcia
  * May 15 2025
  * Binary Search
- * searches for a number using binary search
+ * searches for a number using binary search (The array is sorted using the quick sort method)
+ * was not aware, the array must be sorted first to work
  */
 
 public class BinarySearch {
@@ -12,7 +13,14 @@ public class BinarySearch {
         System.out.println("Enter a number you want to search for: "); //init
         int res = scn.nextInt();
         int index = 0;
-        int[][] num = {{5, 16, 7, 8}, {25, 46, 67, 88}, {79, 110, 121, 12}};
+        int[][] num = new int[5000][5000];
+        for (int i = 0; i < num.length; i++)
+        {
+            for (int j = 0; j < num[i].length; j++)
+            {
+                num[i][j] = (int)Math.round(1 + Math.random() * 10000);
+            }
+        }
 
         int[] realNums = new int[num.length * num[0].length]; //conversion
         for (int i = 0; i < num.length; i++)
