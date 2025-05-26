@@ -1,0 +1,112 @@
+import javax.swing.*;
+import java.awt.GridLayout;
+
+/* Nigel Garcia
+ * May 23 2025
+ * Frame
+ * The Frame for the BattleShip Program
+ */
+
+public class MainFrame {
+    public static JTextArea xCordTxt = new JTextArea();
+    public static JTextArea yCordTxt = new JTextArea();
+
+    public static JTextArea moveHistoryTxt = new JTextArea();
+    public static JTextArea ammoLeftTxt = new JTextArea();
+
+    public static JPanel playerGrid = new JPanel();
+    public static JPanel enemyGrid = new JPanel();
+
+    public static void ShowFrame()
+    {
+        JFrame frame = new JFrame();
+        JPanel panel = new JPanel();
+
+        JButton sendBtn = new JButton("Attack!");
+
+        JScrollPane moveHistory = new JScrollPane(moveHistoryTxt);
+
+        JLabel ammoCountLbl = new JLabel("Ammo Count");
+        JLabel xLbl = new JLabel("X");
+        JLabel yLbl = new JLabel("Y");
+
+        ImageIcon bgAnim = new ImageIcon("BattleShip/Graphics/TitleScreen/BattleShipTitleScreen.gif");
+        JLabel bgLbl = new JLabel(bgAnim); //used to display background graphic
+
+        frame.setResizable(false);
+        frame.setSize(900, 625);
+        frame.setLocationRelativeTo(null);
+        panel.setLayout(null);
+        panel.setSize(900, 625);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("BattleShip");
+
+        moveHistoryTxt.setEditable(false);
+
+        playerGrid.setBounds(10, 10, 300, 300);
+        enemyGrid.setBounds(575, 10, 300, 300);
+
+        xCordTxt.setBounds(25, 400, 100, 25);
+        yCordTxt.setBounds(25, 430, 100, 25);
+        moveHistory.setBounds(317, 10, 250, 300);
+        ammoLeftTxt.setBounds(150, 400, 100, 25);
+
+        ammoCountLbl.setBounds(150, 375, 100, 25);
+        xLbl.setBounds(5, 400, 25, 25);
+        yLbl.setBounds(5, 430, 25, 25);
+        bgLbl.setBounds(0, 0, 900, 625);
+
+        sendBtn.setBounds(25, 465, 100, 25);
+
+        playerGrid.setLayout(new GridLayout(Main.player.map.length, Main.player.map.length));
+        enemyGrid.setLayout(new GridLayout(Main.enemy.map.length, Main.enemy.map.length));
+
+        for (int i = 0; i < Main.player.map.length; i++)
+        {
+            for (int j = 0; j < Main.player.map.length; j++)
+            {
+                playerGrid.add(new JLabel(Main.ImageToAdd(Main.player.map[i][j])));
+            }
+        }
+        for (int i = 0; i < Main.enemy.map.length; i++)
+        {
+            for (int j = 0; j < Main.enemy.map.length; j++)
+            {
+                enemyGrid.add(new JLabel(Main.ImageToAdd(Main.enemy.map[i][j])));
+            }
+        }
+
+        sendBtn.addActionListener(e -> {
+            try {
+                Main.userSendsAttack(xCordTxt.getText(), yCordTxt.getText());
+            } catch (Exception e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        });
+
+        frame.add(panel);
+        panel.add(xCordTxt);
+        panel.add(yCordTxt);
+
+        panel.add(playerGrid);
+        panel.add(enemyGrid);
+
+        panel.add(sendBtn);
+        panel.add(moveHistory);
+        panel.add(ammoLeftTxt);
+        panel.add(ammoCountLbl);
+        panel.add(xLbl);
+        panel.add(yLbl);
+
+        panel.add(bgLbl);
+
+        frame.setVisible(true);
+
+        ammoLeftTxt.setText(Main.player.ammoCount + "");
+    }
+    public static void userClickedAttack()
+    {
+        Main.userSendsAttack(xCordTxt.getText(), yCordTxt.getText());
+    }
+}
