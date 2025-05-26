@@ -15,6 +15,8 @@ public class OpeningFrame {
     static ImageIcon titleFadeIn = new ImageIcon("BattleShip/Graphics/TitleScreen/BattleShipTitleFade.gif");
     static ImageIcon titleFadeOut = new ImageIcon("BattleShip/Graphics/TitleScreen/BattleShipTitleFadeOut.gif");
     static ImageIcon startBtnIcon = new ImageIcon("BattleShip/Graphics/TitleScreen/BattleShipStartBtn.png");
+    static ImageIcon quitBtnIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/QuitBtn.png");
+    static JButton quitBtn = new JButton(quitBtnIcon);
     static JButton startBtn = new JButton(startBtnIcon);
     static JLabel lbl = new JLabel(titleAnim);
     static JFrame frame = new JFrame();
@@ -22,22 +24,19 @@ public class OpeningFrame {
     public static void ShowFrame()
     {
         
-        
-
+        frame.setUndecorated(true);
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         lbl.setIcon(titleFadeOut);
         scheduledExecutorService.schedule(() -> {
             
             panel.remove(lbl);
             panel.add(startBtn);
+            panel.add(quitBtn);
             panel.add(lbl);
             lbl.setIcon(titleAnim);
         }, 3, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
-
         
-        
-    
         frame.setResizable(false);
         frame.setSize(800, 450);
         frame.setLocationRelativeTo(null);
@@ -48,14 +47,12 @@ public class OpeningFrame {
         frame.setTitle("BattleShipOpening");
         
 
-        startBtn.setBounds(285, 315, 200, 26);
+        startBtn.setBounds(285, 315, 200, 50);
+        quitBtn.setBounds(320, 375, 125, 31);
         lbl.setBounds(0, 0, 800, 450);
 
-        startBtn.setOpaque(false);
-        startBtn.setContentAreaFilled(false);
-        startBtn.setBorderPainted(false);
-
         startBtn.addActionListener(e -> userClickedStart());
+        quitBtn.addActionListener(e -> userExit());
 
         frame.add(panel);
         
@@ -63,14 +60,19 @@ public class OpeningFrame {
 
         frame.setVisible(true);
     }
+    public static void userExit()
+    {
+        frame.dispose();
+    }
     public static void userClickedStart()
     {
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         lbl.setIcon(titleFadeIn);
         panel.remove(startBtn);
+        panel.remove(quitBtn);
         scheduledExecutorService.schedule(() -> {
             SelectionFrame.ShowFrame();
-            frame.setVisible(false);
+            frame.dispose();
         }, 3, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
         

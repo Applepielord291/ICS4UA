@@ -30,9 +30,13 @@ public class SelectionFrame {
     static ImageIcon enemyMapTitleIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipEnemyPreview.png");
     public static JLabel bgLbl = new JLabel(bgAnim); //used to display background graphic
 
+    static JButton cheatBtn = new JButton("Display Enemy Map");
+    static JButton unCheatBtn = new JButton("Hide Enemy Map");
+
     static JLabel enemyMapPreviewLbl = new JLabel(enemyMapTitleIcon);
     public static void ShowFrame()
     {
+        frame.setUndecorated(true);
         ImageIcon readyBtnIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipReadyBtn.png");
         ImageIcon modIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/ModifyGameRulesLbl.png");
         ImageIcon mapIconTitle = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipMapSize.png");
@@ -41,13 +45,15 @@ public class SelectionFrame {
         ImageIcon playerSettingsIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipPlayerSettingsTitle.png");
         ImageIcon attackTypeIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipAttackTypeLbl.png");
         ImageIcon setMapSizeIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipSetSize.png");
+        ImageIcon quitBtnIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/QuitBtn.png");
 
-        JButton confirmMapBtn = new JButton("Confirm Size");
+        JButton confirmMapBtn = new JButton("Confirm");
         JButton readyBtn = new JButton(readyBtnIcon);
-        JButton cheatBtn = new JButton("Display Enemy Map");
+        
         JButton easyBtn = new JButton("Easy");
         JButton singleSegBtn = new JButton("Single Segment");
         JButton fullShipBtn = new JButton("Full Ship Sinks");
+        JButton quitBtn = new JButton(quitBtnIcon);
 
         JLabel modTitle = new JLabel(modIcon);
         JLabel mapSizeLbl = new JLabel(mapIconTitle);
@@ -62,8 +68,6 @@ public class SelectionFrame {
         MapSize.setAlignmentX(0);
         MapSize.setAlignmentY(0);
         MapSize.setFont(MapSize.getFont().deriveFont(14f));
-
-        
 
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         bgLbl.setIcon(titleFadeOut);
@@ -87,13 +91,12 @@ public class SelectionFrame {
             panel.add(attackTypeLbl);
             panel.add(singleSegBtn);
             panel.add(fullShipBtn);
+            panel.add(quitBtn);
 
             panel.add(bgLbl);
             bgLbl.setIcon(bgAnim);
         }, 3, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
-
-        
 
         frame.setResizable(false);
         frame.setSize(800, 450);
@@ -113,12 +116,14 @@ public class SelectionFrame {
         enemyGrid.setBounds(575, 240, 150, 150);
         //maxAmmo.setBounds(10, 350, 100, 25);
         
-        confirmMapBtn.setBounds(115, 80, 140, 25);
+        confirmMapBtn.setBounds(160, 80, 95, 37);
         readyBtn.setBounds(285, 325, 200, 50);
-        cheatBtn.setBounds(50, 110, 150, 25);
+        cheatBtn.setBounds(5, 125, 150, 25);
+        unCheatBtn.setBounds(5, 125, 150, 25);
         easyBtn.setBounds(330, 80, 100, 25);
         singleSegBtn.setBounds(50, 300, 150, 25);
         fullShipBtn.setBounds(50, 330, 150, 25);
+        quitBtn.setBounds(323, 385, 125, 31);
 
         mapSizeLbl.setBounds(5, 10, 250, 65);
         modTitle.setBounds(260, 10, 250, 65);
@@ -132,28 +137,105 @@ public class SelectionFrame {
         confirmMapBtn.addActionListener(e -> userConfirmedSize());
         readyBtn.addActionListener(e -> userClickedReady());
         cheatBtn.addActionListener(e -> userViewEnemMap());
+        easyBtn.addActionListener(e -> userClickedEasyBtn());
+        singleSegBtn.addActionListener(e -> userClickedSingle());
+        fullShipBtn.addActionListener(e -> userClickedFullSink());
+        unCheatBtn.addActionListener(e -> userChangedWays());
+        quitBtn.addActionListener(e -> userExit());
 
         frame.add(panel);
 
         panel.add(bgLbl);
         frame.setVisible(true);
+
+        GameRules.enemyMapVisible = false;
+    }
+    public static void userExit()
+    {
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+            panel.removeAll();
+            panel.add(bgLbl);
+            bgLbl.setIcon(titleFadeIn);
+            scheduledExecutorService.schedule(() -> {
+                OpeningFrame.ShowFrame();
+                frame.dispose();
+            }, 3, TimeUnit.SECONDS);
+            scheduledExecutorService.shutdown();
+    }
+    public static void userChangedWays()
+    {
+        int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to hide the enemies map?", "WARNING", JOptionPane.YES_NO_OPTION);
+        if (ans == JOptionPane.YES_OPTION) 
+        {
+            GameRules.enemyMapVisible = false;
+            panel.remove(bgLbl); //java is silly and the only way the thing T DW - THERES LAYERS yeha theres layers so this is the only way
+            panel.remove(enemyGrid); 
+            panel.remove(enemyMapPreviewLbl);
+            panel.add(cheatBtn);
+            panel.remove(unCheatBtn);
+            panel.add(bgLbl);
+            frame.revalidate();
+            frame.repaint();
+        }
+    }
+    public static void userClickedFullSink()
+    {
+        GameRules.atkType = GameRules.AttackType.fullShip;
+    }
+    public static void userClickedSingle()
+    {
+        GameRules.atkType = GameRules.AttackType.singleSegment;
+    }
+    public static void userClickedEasyBtn()
+    {
+        GameRules.difficulty = GameRules.AIDifficulty.Easy;
     }
     public static void userConfirmedSize()
     {
-        playerGrid.removeAll();
-        enemyGrid.removeAll();
-        Main.mapSizeSet(Integer.parseInt(MapSize.getText()));
-        playerGrid.setLayout(new GridLayout(Main.player.map.length, Main.player.map.length));
-        enemyGrid.setLayout(new GridLayout(Main.enemy.map.length, Main.enemy.map.length));
-        
-        panel.remove(bgLbl); 
-        panel.add(bgLbl);
-        frame.revalidate();
-        frame.repaint();
+        try
+        {
+            if (Integer.parseInt(MapSize.getText()) >= 5 && Integer.parseInt(MapSize.getText()) <= 10)
+            {
+                playerGrid.removeAll();
+                enemyGrid.removeAll();
+                Main.mapSizeSet(Integer.parseInt(MapSize.getText()));
+                playerGrid.setLayout(new GridLayout(Main.player.map.length, Main.player.map.length));
+                enemyGrid.setLayout(new GridLayout(Main.enemy.map.length, Main.enemy.map.length));
+                
+                panel.remove(bgLbl); 
+                panel.add(bgLbl);
+                frame.revalidate();
+                frame.repaint();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, new JLabel("Map size can only be between 5-10"));
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(null, new JLabel("You must enter a map size value! (5 - 10)"));
+        }
     }
     public static void userClickedReady()
     {
-        MainFrame.ShowFrame();
+        try
+        {
+            ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+            panel.removeAll();
+            panel.add(bgLbl);
+            bgLbl.setIcon(titleFadeIn);
+            scheduledExecutorService.schedule(() -> {
+                MainFrame.ShowFrame();
+                frame.setVisible(false);
+            }, 3, TimeUnit.SECONDS);
+            scheduledExecutorService.shutdown();
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, new JLabel("You have to generate a map first!"));
+        }
+        
     }
     public static void userViewEnemMap()
     {
@@ -161,9 +243,12 @@ public class SelectionFrame {
         int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to display the enemies map?", "WARNING", JOptionPane.YES_NO_OPTION);
         if (ans == JOptionPane.YES_OPTION) 
         {
-            panel.remove(bgLbl); //java is silly and the only way the thing T DW - THERES LAYERS yeha theres layers so this is the only way
+            GameRules.enemyMapVisible = true;
+            panel.remove(bgLbl); 
             panel.add(enemyGrid); 
             panel.add(enemyMapPreviewLbl);
+            panel.remove(cheatBtn);
+            panel.add(unCheatBtn);
             panel.add(bgLbl);
             frame.revalidate();
             frame.repaint();

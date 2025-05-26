@@ -9,6 +9,7 @@ public class EndingScreen {
     {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
+        frame.setUndecorated(true);
 
         JLabel pTitle = new JLabel("Player Stats");
         JLabel eTitle = new JLabel("Enemy Stats");

@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.GridLayout;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /* Nigel Garcia
  * May 23 2025
@@ -8,21 +11,24 @@ import java.awt.GridLayout;
  */
 
 public class MainFrame {
-    public static JTextArea xCordTxt = new JTextArea();
-    public static JTextArea yCordTxt = new JTextArea();
+    public static JTextPane xCordTxt = new JTextPane();
+    public static JTextPane yCordTxt = new JTextPane();
 
-    public static JTextArea moveHistoryTxt = new JTextArea();
-    public static JTextArea ammoLeftTxt = new JTextArea();
+    public static JTextPane moveHistoryTxt = new JTextPane();
+    public static JTextPane ammoLeftTxt = new JTextPane();
 
     public static JPanel playerGrid = new JPanel();
     public static JPanel enemyGrid = new JPanel();
 
     public static void ShowFrame()
     {
+        System.out.println(GameRules.enemyMapVisible);
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
+        frame.setUndecorated(true);
 
         JButton sendBtn = new JButton("Attack!");
+        JButton surrenderBtn = new JButton("Surrender");
 
         JScrollPane moveHistory = new JScrollPane(moveHistoryTxt);
 
@@ -30,8 +36,9 @@ public class MainFrame {
         JLabel xLbl = new JLabel("X");
         JLabel yLbl = new JLabel("Y");
 
-        ImageIcon bgAnim = new ImageIcon("BattleShip/Graphics/TitleScreen/BattleShipTitleScreen.gif");
-        JLabel bgLbl = new JLabel(bgAnim); //used to display background graphic
+        ImageIcon bgAnim = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameBg.gif");
+        ImageIcon bgAnimFadeOut = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameFadeOut.gif");
+        JLabel bgLbl = new JLabel(bgAnimFadeOut); //used to display background graphic
 
         frame.setResizable(false);
         frame.setSize(900, 625);
@@ -44,7 +51,12 @@ public class MainFrame {
         moveHistoryTxt.setEditable(false);
 
         playerGrid.setBounds(10, 10, 300, 300);
-        enemyGrid.setBounds(575, 10, 300, 300);
+
+        if (GameRules.enemyMapVisible)
+        {
+            enemyGrid.setBounds(575, 10, 300, 300);
+        }
+        
 
         xCordTxt.setBounds(25, 400, 100, 25);
         yCordTxt.setBounds(25, 430, 100, 25);
@@ -56,10 +68,15 @@ public class MainFrame {
         yLbl.setBounds(5, 430, 25, 25);
         bgLbl.setBounds(0, 0, 900, 625);
 
-        sendBtn.setBounds(25, 465, 100, 25);
+        sendBtn.setBounds(385, 350, 100, 25);
+        surrenderBtn.setBounds(385, 380, 100, 25);
 
         playerGrid.setLayout(new GridLayout(Main.player.map.length, Main.player.map.length));
-        enemyGrid.setLayout(new GridLayout(Main.enemy.map.length, Main.enemy.map.length));
+        if (GameRules.enemyMapVisible)
+        {
+            enemyGrid.setLayout(new GridLayout(Main.enemy.map.length, Main.enemy.map.length));
+        }
+        
 
         for (int i = 0; i < Main.player.map.length; i++)
         {
@@ -68,13 +85,17 @@ public class MainFrame {
                 playerGrid.add(new JLabel(Main.ImageToAdd(Main.player.map[i][j])));
             }
         }
-        for (int i = 0; i < Main.enemy.map.length; i++)
+        if (GameRules.enemyMapVisible)
         {
-            for (int j = 0; j < Main.enemy.map.length; j++)
+            for (int i = 0; i < Main.enemy.map.length; i++)
             {
-                enemyGrid.add(new JLabel(Main.ImageToAdd(Main.enemy.map[i][j])));
+                for (int j = 0; j < Main.enemy.map.length; j++)
+                {
+                    enemyGrid.add(new JLabel(Main.ImageToAdd(Main.enemy.map[i][j])));
+                }
             }
         }
+        
 
         sendBtn.addActionListener(e -> {
             try {
@@ -85,20 +106,34 @@ public class MainFrame {
             }
         });
 
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        
+        scheduledExecutorService.schedule(() -> {
+            panel.remove(bgLbl);
+            panel.add(xCordTxt);
+            panel.add(yCordTxt);
+            panel.add(surrenderBtn);
+
+            panel.add(playerGrid);
+
+            if (GameRules.enemyMapVisible) 
+            {
+                panel.add(enemyGrid);
+            }
+
+            panel.add(sendBtn);
+            panel.add(moveHistory);
+            panel.add(ammoLeftTxt);
+            panel.add(ammoCountLbl);
+            panel.add(xLbl);
+            panel.add(yLbl);
+            panel.add(bgLbl);
+            bgLbl.setIcon(bgAnim);
+            frame.setVisible(true);
+        }, 2, TimeUnit.SECONDS);
+        scheduledExecutorService.shutdown();
+
         frame.add(panel);
-        panel.add(xCordTxt);
-        panel.add(yCordTxt);
-
-        panel.add(playerGrid);
-        panel.add(enemyGrid);
-
-        panel.add(sendBtn);
-        panel.add(moveHistory);
-        panel.add(ammoLeftTxt);
-        panel.add(ammoCountLbl);
-        panel.add(xLbl);
-        panel.add(yLbl);
-
         panel.add(bgLbl);
 
         frame.setVisible(true);

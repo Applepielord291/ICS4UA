@@ -1,3 +1,4 @@
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -148,12 +149,36 @@ public class Main {
     }
     public static ImageIcon ImageToAdd(char visual)
     {
-        if (visual == '-') return new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipEmpty.png");
-        else if (visual == Frigate.shipVisual) return new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipFrigate.png");
-        else if (visual == attackBoat.shipVisual) return new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipAttackBoat.png");
-        else if (visual == dinghy.shipVisual) return new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipDinghy.png");
-        else if (visual == dreadNaught.shipVisual) return new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipDreadnaught.png");
-        else if (visual == subMarine.shipVisual) return new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipSub.png");
+        if (visual == '-') 
+        {
+            Image curr = new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipEmpty.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            return new ImageIcon(curr);
+        }
+        else if (visual == Frigate.shipVisual) 
+        {
+            Image curr = new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipFrigate.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            return new ImageIcon(curr);
+        }
+        else if (visual == attackBoat.shipVisual) 
+        {
+            Image curr = new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipAttackBoat.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            return new ImageIcon(curr);
+        }
+        else if (visual == dinghy.shipVisual) 
+        {
+            Image curr = new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipDinghy.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            return new ImageIcon(curr);
+        }
+        else if (visual == dreadNaught.shipVisual) 
+        {
+            Image curr = new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipDreadnaught.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            return new ImageIcon(curr);
+        }
+        else if (visual == subMarine.shipVisual) 
+        {
+            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipSub.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            return new ImageIcon(curr);
+        }
         else
         {
             //error popup
@@ -287,7 +312,6 @@ public class Main {
                 {
                     if (player.map[i][j] == key)
                     {
-                        System.out.println("MORE");
                         player.map[i][j] = '-';
                         shipLength -= 1;
                     }
@@ -315,6 +339,7 @@ public class Main {
     {
         if (isPlayer)
         {
+            if (player.ammoCount == 0) return true;
             for (int i = 0; i < player.map.length; i++)
             {
                 for (int j = 0; j < player.map.length; j++)
@@ -326,6 +351,7 @@ public class Main {
         }
         else
         {
+            if (player.ammoCount == 0) return true;
             for (int i = 0; i < enemy.map.length; i++)
             {
                 for (int j = 0; j < enemy.map.length; j++)
@@ -436,10 +462,32 @@ public class Main {
  * And with that, I finished all the requirements (level 3 and level4++), so technically, I could submit it now, but just like last time, im adding more garbage.
  * 
  * (Day 3: May 25, 2025)
- *  - created the gameRules script (11:03AM)
+ *  - created the gameRules script to store global variables (11:03AM)
  *  - created fadeIn/out transition between frames (11:59AM)
  *  - Making the UI look better (creates some of the button and label visuals) (3:06PM)
  *  - made the map look better: the boats and empty spaces are actually pictures now instead of characters! (3:55PM)
  *  - ok so theres an image scaling problem for the grid and I have no Idea how to go about fixing it so ill fix it later (4:54PM)
- *  - yeah... pretty much this entire day was dedicated to designing UI elements and rearranging the components in each frame (8:08PM)
+ *  - yeah... pretty much this entire day was dedicated to designing UI elements and rearranging the components in each frame (8:08PM - end of day)
+ * 
+ * (Day 4: May 26, 2025)
+ *  - Started adding functionality to various buttons in the SelectionFrame (12:43AM)
+ *  - Started working on MainFrame UI (8:22AM)
+ *  - Fixed Grid image scaling issues (10:45AM)
+ *  - Making program more bullet proof (11:35AM)
+ * 
+ *  Things to add:
+ *      - Choice between AI or PVP
+ *      - Heavy rework to ending screen (display both resulting maps and add a quit btn and animation)
+ *      - rework win conditions (If player 1 took down more ships than player 2, player 1 wins, if both took down even amount of ships, its a draw)
+ *      - add better visuals to MainFrame and ending frame
+ *      - transition between turns (think fire emblem)
+ *      - attack animations (think Fire emblem GBA series)
+ *      - metaprogression (add ranked points for fun)
+ *  Enemy AI Plan:
+ *      - easy difficulty has the AI completely random point generation (already implemented)
+ *      - medium difficulty (hardest one to implement) has random point generation, but when the point is a ship, the AI goes into the searching state
+ *          - when in the searching state, the ai will look for other possible segments that are connected to that key point, and will loop x times. (x depends on boat length)
+ *      - Hard difficulty will have the AI search for the ship chars (using linear search), this one is impossible to beat.
+ * 
+ *  Theres a lot of time still left on this assignment, so after that, I could add sounds and music, then playtest it a bunch
  */
