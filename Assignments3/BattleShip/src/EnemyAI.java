@@ -3,19 +3,20 @@
  * EnemyAI
  * Script that handles the behaviour for the computer in battleship
  */
-import java.io.File;
-
-import javax.swing.JLabel;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class EnemyAI {
+    static String result = "Missed!";
     public static void enemyTurn(PlayerStats player, PlayerStats enem)
     {
-        String result = "Missed!";
+        result = "Missed!";
         int xPoint = (int)Math.floor(Math.random() * player.map.length);
         int yPoint = (int)Math.floor(Math.random() * player.map.length);
         if (player.map[xPoint][yPoint] != '-' && enem.ammoCount > 0)
         {
-            Main.DestroyEntireShip(player.map[xPoint][yPoint], true);
+            if (GameRules.atkType == GameRules.AttackType.fullShip) Main.DestroyEntireShip(player.map[xPoint][yPoint], true);
             player.map[xPoint][yPoint] = '-';
             enem.timesHit += 1;
             result = "Hit!";
@@ -24,32 +25,32 @@ public class EnemyAI {
         enem.ammoCount -= 1;
         enem.timesFired += 1;
         //call functio do edit history
-        Main.MoveHistory("Enemy", result);
-        MainFrame.playerGrid.removeAll();
-        try 
-        {
-            Main.createMapFile(player.map, new File("BattleShip/src/playerMap.txt"));
-            for (int i = 0; i < Main.player.map.length; i++)
+
+        ScheduledExecutorService scheduledExecutorService2 = Executors.newScheduledThreadPool(1);
+            //add attack animation here
+            scheduledExecutorService2.schedule(() -> {
+            //attack animation here (hit or miss depending on String result value)
+            
+        }, 1, TimeUnit.SECONDS);
+        scheduledExecutorService2.shutdown();
+
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+            //add attack animation here
+            scheduledExecutorService.schedule(() -> {
+            
+            Main.MoveHistory("Enemy", result);
+            MainFrame.displayPlayerMap();
+            MainFrame.frame.revalidate();
+            MainFrame.frame.repaint();
+            boolean didGameEnd = Main.GameEnd(true);
+            if (didGameEnd) 
             {
-                for (int j = 0; j < Main.player.map.length; j++)
-                {
-                    MainFrame.playerGrid.add(new JLabel(Main.ImageToAdd(player.map[i][j])));
-                }
+                EndingScreen.DisplayFrame();
             }
-        }
-        catch (Exception e)
-        {
-            //error popup window here
-        }
-
-        boolean didGameEnd = Main.GameEnd(true);
-        if (didGameEnd) 
-        {
-            EndingScreen.DisplayFrame();
-        }
+            MainFrame.userTurnStarted();
+        }, 3, TimeUnit.SECONDS);
+        scheduledExecutorService.shutdown();
 
 
-
-        //make sure to add AI difficulties later if theres time
     }
 }

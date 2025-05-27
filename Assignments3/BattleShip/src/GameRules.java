@@ -11,7 +11,9 @@ public class GameRules {
     public enum AIDifficulty
     {
         Easy,
-        impossible
+        medium,
+        impossible,
+        pvp
     }
     public enum AttackType
     {

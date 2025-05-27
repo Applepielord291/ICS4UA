@@ -51,6 +51,9 @@ public class SelectionFrame {
         JButton readyBtn = new JButton(readyBtnIcon);
         
         JButton easyBtn = new JButton("Easy");
+        JButton midBtn = new JButton("Medium");
+        JButton hardBtn = new JButton("Impossible");
+        JButton pvpBtn = new JButton("No AI (PvP)");
         JButton singleSegBtn = new JButton("Single Segment");
         JButton fullShipBtn = new JButton("Full Ship Sinks");
         JButton quitBtn = new JButton(quitBtnIcon);
@@ -92,6 +95,9 @@ public class SelectionFrame {
             panel.add(singleSegBtn);
             panel.add(fullShipBtn);
             panel.add(quitBtn);
+            panel.add(midBtn);
+            panel.add(hardBtn);
+            panel.add(pvpBtn);
 
             panel.add(bgLbl);
             bgLbl.setIcon(bgAnim);
@@ -120,7 +126,10 @@ public class SelectionFrame {
         readyBtn.setBounds(285, 325, 200, 50);
         cheatBtn.setBounds(5, 125, 150, 25);
         unCheatBtn.setBounds(5, 125, 150, 25);
-        easyBtn.setBounds(330, 80, 100, 25);
+        easyBtn.setBounds(330, 100, 100, 25);
+        midBtn.setBounds(330, 130, 100, 25);
+        hardBtn.setBounds(330, 160, 100, 25);
+        pvpBtn.setBounds(330, 190, 100, 25);
         singleSegBtn.setBounds(50, 300, 150, 25);
         fullShipBtn.setBounds(50, 330, 150, 25);
         quitBtn.setBounds(323, 385, 125, 31);
@@ -142,6 +151,9 @@ public class SelectionFrame {
         fullShipBtn.addActionListener(e -> userClickedFullSink());
         unCheatBtn.addActionListener(e -> userChangedWays());
         quitBtn.addActionListener(e -> userExit());
+        midBtn.addActionListener(e -> userClickedMedium());
+        hardBtn.addActionListener(e -> userClickedHard());
+        pvpBtn.addActionListener(e -> userClickedPvp());
 
         frame.add(panel);
 
@@ -149,6 +161,18 @@ public class SelectionFrame {
         frame.setVisible(true);
 
         GameRules.enemyMapVisible = false;
+    }
+    public static void userClickedPvp()
+    {
+        GameRules.difficulty = GameRules.AIDifficulty.pvp;
+    }
+    public static void userClickedMedium()
+    {
+        GameRules.difficulty = GameRules.AIDifficulty.medium;
+    }
+    public static void userClickedHard()
+    {
+        GameRules.difficulty = GameRules.AIDifficulty.impossible;
     }
     public static void userExit()
     {

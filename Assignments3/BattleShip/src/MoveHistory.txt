@@ -1,2 +1,6 @@
 Player Hit!
+Enemy Hit!
+Player Hit!
+Enemy Missed!
+Player Hit!
 Enemy Missed!

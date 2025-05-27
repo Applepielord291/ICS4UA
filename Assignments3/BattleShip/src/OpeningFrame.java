@@ -59,6 +59,8 @@ public class OpeningFrame {
         panel.add(lbl);
 
         frame.setVisible(true);
+
+        //for testing
     }
     public static void userExit()
     {

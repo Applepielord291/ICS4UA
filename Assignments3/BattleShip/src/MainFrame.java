@@ -20,11 +20,17 @@ public class MainFrame {
     public static JPanel playerGrid = new JPanel();
     public static JPanel enemyGrid = new JPanel();
 
+    static ImageIcon bgAnim = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameBg.gif");
+    static ImageIcon bgAnimFadeOut = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameFadeOut.gif");
+    static JLabel bgLbl = new JLabel(bgAnimFadeOut); //used to display background graphic
+
+    static JFrame frame = new JFrame();
+
+    static JPanel panel = new JPanel();
+
     public static void ShowFrame()
     {
-        System.out.println(GameRules.enemyMapVisible);
-        JFrame frame = new JFrame();
-        JPanel panel = new JPanel();
+
         frame.setUndecorated(true);
 
         JButton sendBtn = new JButton("Attack!");
@@ -36,9 +42,7 @@ public class MainFrame {
         JLabel xLbl = new JLabel("X");
         JLabel yLbl = new JLabel("Y");
 
-        ImageIcon bgAnim = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameBg.gif");
-        ImageIcon bgAnimFadeOut = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameFadeOut.gif");
-        JLabel bgLbl = new JLabel(bgAnimFadeOut); //used to display background graphic
+        
 
         frame.setResizable(false);
         frame.setSize(900, 625);
@@ -77,14 +81,9 @@ public class MainFrame {
             enemyGrid.setLayout(new GridLayout(Main.enemy.map.length, Main.enemy.map.length));
         }
         
-
-        for (int i = 0; i < Main.player.map.length; i++)
-        {
-            for (int j = 0; j < Main.player.map.length; j++)
-            {
-                playerGrid.add(new JLabel(Main.ImageToAdd(Main.player.map[i][j])));
-            }
-        }
+        displayPlayerMap();
+        
+        
         if (GameRules.enemyMapVisible)
         {
             for (int i = 0; i < Main.enemy.map.length; i++)
@@ -106,9 +105,12 @@ public class MainFrame {
             }
         });
 
+        surrenderBtn.addActionListener(e -> userSurrender());
+
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         
         scheduledExecutorService.schedule(() -> {
+            userTurnStarted();
             panel.remove(bgLbl);
             panel.add(xCordTxt);
             panel.add(yCordTxt);
@@ -130,6 +132,7 @@ public class MainFrame {
             panel.add(bgLbl);
             bgLbl.setIcon(bgAnim);
             frame.setVisible(true);
+            
         }, 2, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
 
@@ -140,8 +143,32 @@ public class MainFrame {
 
         ammoLeftTxt.setText(Main.player.ammoCount + "");
     }
+    public static void userSurrender()
+    {
+        Main.player.ammoCount = 0;
+        EndingScreen.DisplayFrame();
+    }
     public static void userClickedAttack()
     {
         Main.userSendsAttack(xCordTxt.getText(), yCordTxt.getText());
+    }
+    public static void userTurnStarted()
+    {
+        TransitionAnim.showFrame("player");
+    }
+    public static void enemyTurnStarted()
+    {
+        TransitionAnim.showFrame("enemy");
+    }
+    public static void displayPlayerMap()
+    {
+        playerGrid.removeAll();
+        for (int i = 0; i < Main.player.map.length; i++)
+        {
+            for (int j = 0; j < Main.player.map.length; j++)
+            {
+                playerGrid.add(new JLabel(Main.ImageToAdd(Main.player.map[i][j])));
+            }
+        }
     }
 }

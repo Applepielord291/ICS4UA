@@ -29,10 +29,10 @@ public class EndingScreen {
 
         pTitle.setBounds(10, 10, 100, 25);
         eTitle.setBounds(210, 10, 100, 25);
-        timesFired.setBounds(10, 25, 150, 25);
-        timesMissed.setBounds(10, 40, 100, 25);
-        timesFiredE.setBounds(210, 25, 150, 25);
-        timesMissedE.setBounds(210, 40, 150, 25);
+        timesFiredE.setBounds(10, 25, 150, 25);
+        timesMissedE.setBounds(10, 40, 100, 25);
+        timesFired.setBounds(210, 25, 150, 25);
+        timesMissed.setBounds(210, 40, 150, 25);
 
         frame.add(panel);
         panel.add(pTitle);

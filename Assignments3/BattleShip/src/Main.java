@@ -3,6 +3,9 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -151,27 +154,27 @@ public class Main {
     {
         if (visual == '-') 
         {
-            Image curr = new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipEmpty.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipEmpty.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
             return new ImageIcon(curr);
         }
         else if (visual == Frigate.shipVisual) 
         {
-            Image curr = new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipFrigate.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipFrigate.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
             return new ImageIcon(curr);
         }
         else if (visual == attackBoat.shipVisual) 
         {
-            Image curr = new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipAttackBoat.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipAttackBoat.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
             return new ImageIcon(curr);
         }
         else if (visual == dinghy.shipVisual) 
         {
-            Image curr = new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipDinghy.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipDinghy.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
             return new ImageIcon(curr);
         }
         else if (visual == dreadNaught.shipVisual) 
         {
-            Image curr = new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipDreadnaught.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipDreadnaught.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
             return new ImageIcon(curr);
         }
         else if (visual == subMarine.shipVisual) 
@@ -264,7 +267,7 @@ public class Main {
             if (enemy.map[y][x] != '-') 
             {
                 hitOrMiss = "Hit!";
-                DestroyEntireShip(enemy.map[y][x], false);
+                if (GameRules.atkType == GameRules.AttackType.fullShip) DestroyEntireShip(enemy.map[y][x], false);
                 enemy.map[y][x] = '-';
             }
             MainFrame.enemyGrid.removeAll();
@@ -286,12 +289,31 @@ public class Main {
             MoveHistory("Player", hitOrMiss);
             player.ammoCount -= 1;
             MainFrame.ammoLeftTxt.setText(player.ammoCount + "");
-            boolean didGameEnd = GameEnd(false);
-            if (!didGameEnd) EnemyAI.enemyTurn(player, enemy);
-            else 
-            {
-                EndingScreen.DisplayFrame();
-            }
+
+            ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+            scheduledExecutorService.schedule(() -> {
+                //attack animation here
+                
+            }, 1, TimeUnit.SECONDS);
+            scheduledExecutorService.shutdown();
+
+            ScheduledExecutorService scheduledExecutorService2 = Executors.newScheduledThreadPool(1);
+            //add attack animation here
+            scheduledExecutorService2.schedule(() -> {
+                boolean didGameEnd = GameEnd(false);
+                if (!didGameEnd) 
+                {
+                    MainFrame.enemyTurnStarted();
+                    EnemyAI.enemyTurn(player, enemy);
+                }
+                else 
+                {
+                    EndingScreen.DisplayFrame();
+                }
+            }, 3, TimeUnit.SECONDS);
+            scheduledExecutorService2.shutdown();
+
+            
         }
     }
     public static void DestroyEntireShip(char key, boolean isPlayer)
@@ -490,4 +512,10 @@ public class Main {
  *      - Hard difficulty will have the AI search for the ship chars (using linear search), this one is impossible to beat.
  * 
  *  Theres a lot of time still left on this assignment, so after that, I could add sounds and music, then playtest it a bunch
+ * 
+ *  (Day 5: may 27, 2025)
+ *      - added choice between single segment destruction or full ship destruction (12:16AM)
+ *      - added animation transition between player and enemy turns (1:47AM)
+ *      - added the script TransitionAnim (9:39AM)
+ *      - FInally fixed the problem where the program would crash everytime the TransitionAnim is re-instantiated (11:25AM)
  */
