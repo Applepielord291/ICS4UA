@@ -1,14 +1,13 @@
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import javax.swing.*;
+
 /* Nigel Garcia
  * May 23 2025
  * OpeningFrame
  * The Title Screen for the battleship program
  */
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import javax.swing.*;
 
 public class OpeningFrame {
     static ImageIcon titleAnim = new ImageIcon("BattleShip/Graphics/TitleScreen/BattleShipTitleScreen.gif");
@@ -23,8 +22,10 @@ public class OpeningFrame {
     static JPanel panel = new JPanel();
     public static void ShowFrame()
     {
-        
+        //removes window
         frame.setUndecorated(true);
+
+        //display components after the fade effect finishes
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         lbl.setIcon(titleFadeOut);
         scheduledExecutorService.schedule(() -> {
@@ -46,7 +47,6 @@ public class OpeningFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("BattleShipOpening");
         
-
         startBtn.setBounds(285, 315, 200, 50);
         quitBtn.setBounds(320, 375, 125, 31);
         lbl.setBounds(0, 0, 800, 450);
@@ -55,19 +55,18 @@ public class OpeningFrame {
         quitBtn.addActionListener(e -> userExit());
 
         frame.add(panel);
-        
         panel.add(lbl);
-
         frame.setVisible(true);
-
-        //for testing
     }
     public static void userExit()
     {
+        //function called when the user clicked the quit button, closes the application
         frame.dispose();
     }
     public static void userClickedStart()
     {
+        //function called when the user clicked the start button
+        //triggers the fade effect, disables components and switches to the next window (SelectionFrame) after 3 seconds
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         lbl.setIcon(titleFadeIn);
         panel.remove(startBtn);
@@ -77,7 +76,5 @@ public class OpeningFrame {
             frame.dispose();
         }, 3, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
-        
-        
     }
 }

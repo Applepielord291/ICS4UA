@@ -1,14 +1,13 @@
-/* Nigel Garcia
- * May 27 2025
- * Transition Anim
- * frame movement looks cool
- */
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.*;
+
+/* Nigel Garcia
+ * May 27 2025
+ * Transition Anim
+ * frame movement looks cool, cool transition
+ */
 
 public class TransitionAnim {
     static int time = 0;
@@ -23,6 +22,7 @@ public class TransitionAnim {
         JPanel panel = new JPanel();
         JLabel bgLbl = new JLabel();
         frame.setUndecorated(true);
+
         if (whichTurn.equals("player"))
         {
             bgLbl = new JLabel(pTurn);
@@ -42,11 +42,9 @@ public class TransitionAnim {
         frame.add(panel);
         panel.add(bgLbl);
 
-        
         frame.setVisible(true);
         frame.setLocation(0, 50);
 
-        
         while (!reachedMiddle)
         {
             time+=1;

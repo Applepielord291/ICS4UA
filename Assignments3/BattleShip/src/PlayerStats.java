@@ -6,8 +6,8 @@
 
 public class PlayerStats 
 {
-    public int ammoCount; //ammo that each player has
-    public char[][] map; //unique map for each player
+    public int ammoCount; 
+    public char[][] map;
     public int timesFired;
     public int timesMissed;
     public int timesHit;

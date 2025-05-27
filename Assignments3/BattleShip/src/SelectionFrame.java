@@ -2,7 +2,6 @@ import java.awt.GridLayout;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.*;
 
 /* Nigel Garcia
@@ -11,16 +10,12 @@ import javax.swing.*;
  * This takes place after the opening frame, where the user has to select game rules and check maps.
  */
 
-
-
 public class SelectionFrame {
     public static JTextPane MapSize = new JTextPane();
     
     public static JPanel playerGrid = new JPanel();
     public static JPanel enemyGrid = new JPanel();
-
-    //public static JTextArea maxAmmo = new JTextArea();
-
+    
     public static JFrame frame = new JFrame();
     public static JPanel panel = new JPanel();
 

@@ -6,13 +6,11 @@ import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+
 /* Nigel Garcia
  * May 23 2025
  * Main
@@ -22,21 +20,23 @@ import java.io.FileReader;
 /* As always, a timeline will be included at the bottom of this script. */
 
 public class Main {
-    public static char[][] map = new char[0][0]; //add user input mapsize later (using text boxes)
+    public static char[][] map = new char[0][0];
 
     public static PlayerStats player = new PlayerStats();
-
     public static PlayerStats enemy = new PlayerStats();
 
-    public static ShipType Frigate = new ShipType(); //Making ship objects
+    //ship Objects
+    public static ShipType Frigate = new ShipType(); 
     public static ShipType attackBoat = new ShipType();
     public static ShipType dinghy = new ShipType();
     public static ShipType dreadNaught = new ShipType();
     public static ShipType subMarine = new ShipType();
 
+    //stores turn history
     public static File moveHistoryFile = null;
     public static void main(String[] args) throws Exception 
     {
+        //Assigning values for each ship object
         Frigate.length = 3;
         Frigate.shipVisual = 'F';
         Frigate.shipOnMap = false;
@@ -61,6 +61,7 @@ public class Main {
         player.timesHit = 0;
         player.timesMissed = 0;
 
+        //display title screen
         OpeningFrame.ShowFrame();
     }
     public static void mapSizeSet(int size)
@@ -68,8 +69,10 @@ public class Main {
         //this function is called when the user sets a size in SelectionFrame
         player.map = new char[size][size];
         enemy.map = new char[size][size];
-        int upperLimit = 2; //upper limit changes depending on the mapSize
-        if (size >= 5 && size < 8) //these values change based on playtesting.
+        //upperLimit is used to manage how many ships there will be on the map (upperLimit changes depending on map size)
+        int upperLimit = 2; 
+        //changes both ammoCount and upperLimit depending on mapSize
+        if (size >= 5 && size < 8) 
         {
             player.ammoCount = 10;
             enemy.ammoCount = 10;
@@ -88,6 +91,7 @@ public class Main {
             upperLimit = 4;
         }
 
+        //fills the entire player/enemy map with empty spaces
         for (int i = 0; i < player.map.length; i++)
         {
             for (int j = 0; j < player.map.length; j++)
@@ -104,28 +108,7 @@ public class Main {
             }
         }
 
-        //the plan:
-        //randomly generate a point
-        //check if the point and around has only -
-        //randomly pick a rotation (vertical or horizontal)
-        //loop x amount of times (x depends on the ShipType.length value) to add the ship
-        //have a max ship amount to manage number of ships
-        //plan
-        //for each length of the ship added, check if its going to replace another part of the ship, and if its going to, start going the other way
-        //in the off chance that the new ship is being generated between 2 other ships, have a new point generated
-        //this needs to be fixed
-
-        //OK NEW PLAN I JUST UHH
-        //check the points before hand if ship is able to generate
-        //if not, pick a new point and rotation and repeat until it can generate (recursive)
-        //if can generate, then actually place the ship chars on to the points
-
-        //Actual final plan
-        //generates rotation (vertical or horizontal)
-        //generates a random point (inside the bounds of the array)
-        //depending on rotation, keeps looping either left or down, placing the ship graphic until it reaches the ship length
-        //if theres any obstacle (loop runs into a ship or reaches the end of the array) delete the CURRENT boat and recall the function again (recursive)
-        
+        //array to give functionality to the upperLimit value
         ShipType[] currentType = {Frigate, attackBoat, dinghy, dreadNaught, subMarine};
         player.map = GenerateRandomPoint(size, player.map, currentType[0], currentType, 0, upperLimit);
         enemy.map = GenerateRandomPoint(size, enemy.map, currentType[0], currentType, 0, upperLimit);
@@ -133,7 +116,7 @@ public class Main {
         createMapFile(player.map, new File("BattleShip/src/playerMap.txt"));
         createMapFile(enemy.map, new File("BattleShip/src/enemyMap.txt"));
 
-        
+        //adds the ships to the array as ImageIcons
         for (int i = 0; i < player.map.length; i++)
         {
             for (int j = 0; j < player.map.length; j++)
@@ -152,6 +135,8 @@ public class Main {
     }
     public static ImageIcon ImageToAdd(char visual)
     {
+        //each char has their own respective ImageIcon
+        //used image Icons to make the program look cooler.
         if (visual == '-') 
         {
             Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipEmpty.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
@@ -184,13 +169,16 @@ public class Main {
         }
         else
         {
-            //error popup
+            //TODO add error popup here
             return null;
         }
     }
     public static char[][] GenerateRandomPoint(int size, char[][] map, ShipType curr, ShipType[] shipList, int current, int upperLimit) 
     {
-        //Boat generation
+        //generates rotation (vertical or horizontal)
+        //generates a random point (inside the bounds of the array)
+        //depending on rotation, keeps looping either left or down, placing the ship graphic until it reaches the ship length
+        //if theres any obstacle (loop runs into a ship or reaches the end of the array) delete the CURRENT boat and recall the function again (recursive)
         int rndX = (int)Math.round(Math.random() * (map.length-1));
         int rndY = (int)Math.round(Math.random() * (map.length-1));
         int[] res = {rndX, rndY};
@@ -257,11 +245,10 @@ public class Main {
     }
     public static void userSendsAttack(String xCord, String yCord)
     {
-        //use sorting and searching to check the point and replace it with a '-'
-        //use shell sort (or quick sort) and binary search
-        //reprint new map to file
+        //Function called upon when the user clicks the attack button after entering an x and y coordinate on the MainFrame
         if (!xCord.equals("") && !yCord.equals("") && player.ammoCount > 0)
         {
+            //string value used for the move history file
             String hitOrMiss = "Miss!";
             int x = Integer.parseInt(xCord)-1; int y = Integer.parseInt(yCord)-1;
             if (enemy.map[y][x] != '-') 
@@ -270,6 +257,8 @@ public class Main {
                 if (GameRules.atkType == GameRules.AttackType.fullShip) DestroyEntireShip(enemy.map[y][x], false);
                 enemy.map[y][x] = '-';
             }
+
+            //refreshes the map grid
             MainFrame.enemyGrid.removeAll();
             try (BufferedReader br = new BufferedReader(new FileReader("BattleShip/src/enemyMap.txt")))
             {
@@ -284,12 +273,14 @@ public class Main {
             }
             catch (Exception e)
             {
-                //error popup window here
+                //TODO add error popup here
             }
+
             MoveHistory("Player", hitOrMiss);
             player.ammoCount -= 1;
             MainFrame.ammoLeftTxt.setText(player.ammoCount + "");
 
+            //attack animation plays 1 second after user enters their attack
             ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
             scheduledExecutorService.schedule(() -> {
                 //attack animation here
@@ -297,6 +288,8 @@ public class Main {
             }, 1, TimeUnit.SECONDS);
             scheduledExecutorService.shutdown();
 
+            //switches to enemy turn 3 seconds after the user sends their attack
+            //dont forget to disable player attacking after those 3 seconds
             ScheduledExecutorService scheduledExecutorService2 = Executors.newScheduledThreadPool(1);
             //add attack animation here
             scheduledExecutorService2.schedule(() -> {
@@ -312,13 +305,12 @@ public class Main {
                 }
             }, 3, TimeUnit.SECONDS);
             scheduledExecutorService2.shutdown();
-
-            
         }
     }
     public static void DestroyEntireShip(char key, boolean isPlayer)
     {
-        //decided to do linear search cuz binary search is too much work
+        //determines what ship was hit and takes the boat length value
+        //boat length value is taken so that the algorithm can remove the enite ship (loop through each segment of the ship to destroy)
         int shipLength = 0;
         if (key == Frigate.shipVisual) shipLength = Frigate.length;
         else if (key == attackBoat.shipVisual) shipLength = attackBoat.length;
@@ -326,6 +318,8 @@ public class Main {
         else if (key == dreadNaught.shipVisual) shipLength = dreadNaught.length;
         else if (key == subMarine.shipVisual) shipLength = subMarine.length;
 
+        //Decided to use Linear search when destrouing the rest of the ship
+        //binary search would be way too complicated for this situation since it would rewuire sorting then unsorting the map
         if (isPlayer)
         {
             for (int i = 0; i < player.map.length; i++)
@@ -357,8 +351,10 @@ public class Main {
             }
         }
     }
+
     public static boolean GameEnd(boolean isPlayer)
     {
+        //uses linear search to check if the game ended
         if (isPlayer)
         {
             if (player.ammoCount == 0) return true;
@@ -384,9 +380,10 @@ public class Main {
             return true;
         }
     }
+
     public static void createMapFile(char[][] map, File file)
     {
-        //write map type to a text file
+        //redundant function, dont forget to remove it later
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file)))
         {
             for (int i = 0; i < map.length; i++)
@@ -400,11 +397,13 @@ public class Main {
         }
         catch(IOException e)
         {
-            //display error frame
+            //TODO add error popup here
         }
     }
+
     public static void MoveHistory(String player, String hitOrMiss)
     {
+        //stores each turn result onto a text file
         if (moveHistoryFile == null)
         {
             moveHistoryFile = new File("BattleShip/src/MoveHistory.txt");
@@ -415,7 +414,7 @@ public class Main {
             }
             catch (Exception e)
             {
-                //error popup
+                //TODO add error popup here
             }
         }
         else
@@ -426,22 +425,20 @@ public class Main {
             }
             catch (Exception e)
             {
-                //error popup
+                //TODO add error popup here
             }
         }
+
+        //displays the file onto a JTextPane for the user to see on the MainFrame
         try {
             MainFrame.moveHistoryTxt.read(new BufferedReader(new FileReader("BattleShip/src/MoveHistory.txt")), null);
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception e) {
+            //TODO add error popup here
         }
     }
 }
 
-/* TIMELINE:
+/* TODO TIMELINE:
  * Main goal: Finish core functionality before the end of today. When creating games, the top priority is to make sure it runs. Add all the fancy mechanics and visuals later.
  *      An important thing I learned is that people prefer games that are simple yet polished instead of gimmicky yet unpolished.
  * 
@@ -505,6 +502,7 @@ public class Main {
  *      - transition between turns (think fire emblem)
  *      - attack animations (think Fire emblem GBA series)
  *      - metaprogression (add ranked points for fun)
+ *      - Main thing to do is to clean up the code (So much redundant garbage)
  *  Enemy AI Plan:
  *      - easy difficulty has the AI completely random point generation (already implemented)
  *      - medium difficulty (hardest one to implement) has random point generation, but when the point is a ship, the AI goes into the searching state
@@ -516,6 +514,6 @@ public class Main {
  *  (Day 5: may 27, 2025)
  *      - added choice between single segment destruction or full ship destruction (12:16AM)
  *      - added animation transition between player and enemy turns (1:47AM)
- *      - added the script TransitionAnim (9:39AM)
+ *      - added the script TransitionAnim, the frame now moves (9:39AM)
  *      - FInally fixed the problem where the program would crash everytime the TransitionAnim is re-instantiated (11:25AM)
  */

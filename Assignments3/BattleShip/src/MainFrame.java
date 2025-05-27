@@ -96,14 +96,7 @@ public class MainFrame {
         }
         
 
-        sendBtn.addActionListener(e -> {
-            try {
-                Main.userSendsAttack(xCordTxt.getText(), yCordTxt.getText());
-            } catch (Exception e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        });
+        sendBtn.addActionListener(e -> Main.userSendsAttack(xCordTxt.getText(), yCordTxt.getText()));
 
         surrenderBtn.addActionListener(e -> userSurrender());
 
@@ -132,7 +125,6 @@ public class MainFrame {
             panel.add(bgLbl);
             bgLbl.setIcon(bgAnim);
             frame.setVisible(true);
-            
         }, 2, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
 

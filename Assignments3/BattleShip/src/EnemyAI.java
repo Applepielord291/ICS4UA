@@ -1,19 +1,41 @@
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 /* Nigel Garcia
  * May 23 2025
  * EnemyAI
  * Script that handles the behaviour for the computer in battleship
  */
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class EnemyAI {
     static String result = "Missed!";
     public static void enemyTurn(PlayerStats player, PlayerStats enem)
     {
         result = "Missed!";
-        int xPoint = (int)Math.floor(Math.random() * player.map.length);
-        int yPoint = (int)Math.floor(Math.random() * player.map.length);
+        int xPoint = 0;
+        int yPoint = 0;
+        if (GameRules.difficulty == GameRules.AIDifficulty.Easy)
+        {
+            xPoint = (int)Math.floor(Math.random() * player.map.length);
+            yPoint = (int)Math.floor(Math.random() * player.map.length);
+        }
+        else if (GameRules.difficulty == GameRules.AIDifficulty.impossible)
+        {
+            for (int i = 0; i < player.map.length; i++)
+            {
+                for (int j = 0; j < player.map.length; j++)
+                {
+                    if (player.map[i][j] != '-') 
+                    {
+                        xPoint = i+1;
+                        yPoint = j+1;
+                        break;
+                    }
+                }
+            }
+        }
+        
         if (player.map[xPoint][yPoint] != '-' && enem.ammoCount > 0)
         {
             if (GameRules.atkType == GameRules.AttackType.fullShip) Main.DestroyEntireShip(player.map[xPoint][yPoint], true);
@@ -50,7 +72,5 @@ public class EnemyAI {
             MainFrame.userTurnStarted();
         }, 3, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
-
-
     }
 }

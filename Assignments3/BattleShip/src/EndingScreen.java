@@ -1,9 +1,11 @@
 import javax.swing.*;
+
 /* Nigel Garcia
  * May 24 2025
  * Ending Screen
- * Runs only after the game ends: game stats n stuff
+ * Runs only after the game ends: game stats n stuff as well as the ability to quit 
  */
+
 public class EndingScreen {
     public static void DisplayFrame()
     {
