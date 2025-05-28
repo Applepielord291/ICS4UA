@@ -205,7 +205,6 @@ public class SelectionFrame {
     }
     public static void userChangedWays()
     {
-        //TODO called twice when reloaded
         int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to hide the enemies map?", "WARNING", JOptionPane.YES_NO_OPTION);
         if (ans == JOptionPane.YES_OPTION) 
         {
@@ -282,7 +281,6 @@ public class SelectionFrame {
     }
     public static void userViewEnemMap()
     {
-        //TODO called twice when reloaded
         //display popup to confirm, then display enemy map.
         int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to display the enemies map?", "WARNING", JOptionPane.YES_NO_OPTION);
         if (ans == JOptionPane.YES_OPTION) 

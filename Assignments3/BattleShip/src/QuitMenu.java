@@ -11,7 +11,6 @@ public class QuitMenu {
     static JPanel panel = new JPanel();
     public static void showFrame(JFrame currFrame)
     {
-        //TODO the issues with bugs after reloading JFrames could possibly be fixed by making instances instead.
         JButton quitToSelect = new JButton("Quit to select");
         JButton quitToTitle = new JButton("Quit to Title"); 
         JButton closeApp = new JButton("Close Application");
@@ -55,7 +54,6 @@ public class QuitMenu {
     }
     public static void shutDownProgram(JFrame frameToClose)
     {
-        //TODO problem app dosent close properly
         frameToClose.dispose();
         frame.dispose();
         System.exit(0);

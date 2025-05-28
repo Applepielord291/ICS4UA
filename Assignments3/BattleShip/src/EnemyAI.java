@@ -22,15 +22,14 @@ public class EnemyAI {
         }
         else if (GameRules.difficulty == GameRules.AIDifficulty.impossible)
         {
-            //TODO not working
             for (int i = 0; i < player.map.length; i++)
             {
                 for (int j = 0; j < player.map.length; j++)
                 {
                     if (player.map[i][j] != '-' && player.map[i][j] != 'x' && player.map[i][j] != 'X') 
                     {
-                        xPoint = i+1;
-                        yPoint = j+1;
+                        xPoint = i;
+                        yPoint = j;
                         break;
                     }
                 }
@@ -76,7 +75,11 @@ public class EnemyAI {
             {
                 EndingScreen.DisplayFrame();
             }
-            MainFrame.userTurnStarted();
+            else
+            {
+                GameRules.playerCanAttack = true;
+                MainFrame.userTurnStarted();
+            }
         }, 3, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
     }

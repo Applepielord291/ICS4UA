@@ -2,12 +2,13 @@ import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.io.File;
 import java.io.FileReader;
 
@@ -116,9 +117,6 @@ public class Main {
         ShipType[] currentType = {Frigate, attackBoat, dinghy, dreadNaught, subMarine};
         player.map = GenerateRandomPoint(size, player.map, currentType[0], currentType, 0, upperLimit);
         enemy.map = GenerateRandomPoint(size, enemy.map, currentType[0], currentType, 0, upperLimit);
-        
-        createMapFile(player.map, new File("BattleShip/src/playerMap.txt"));
-        createMapFile(enemy.map, new File("BattleShip/src/enemyMap.txt"));
 
         //adds the ships to the array as ImageIcons
         for (int i = 0; i < player.map.length; i++)
@@ -183,7 +181,7 @@ public class Main {
         }
         else
         {
-            //TODO add error popup here
+            JOptionPane.showMessageDialog(null, new JLabel("Visual Failed to display"));
             return null;
         }
     }
@@ -259,6 +257,7 @@ public class Main {
     }
     public static void userSendsAttack(String xCord, String yCord)
     {
+        GameRules.playerCanAttack = false;
         //Function called upon when the user clicks the attack button after entering an x and y coordinate on the MainFrame
         if (!xCord.equals("") && !yCord.equals("") && player.ammoCount > 0)
         {
@@ -282,21 +281,13 @@ public class Main {
 
             //refreshes the map grid
             MainFrame.enemyGrid.removeAll();
-            try (BufferedReader br = new BufferedReader(new FileReader("BattleShip/src/enemyMap.txt")))
+            for (int i = 0; i < enemy.map.length; i++)
             {
-                createMapFile(enemy.map, new File("BattleShip/src/enemyMap.txt"));
-                for (int i = 0; i < enemy.map.length; i++)
+                for (int j = 0; j < enemy.map.length; j++)
                 {
-                    for (int j = 0; j < enemy.map.length; j++)
-                    {
-                        if (GameRules.enemyMapVisible) MainFrame.enemyGrid.add(new JLabel(ImageToAdd(enemy.map[i][j], 300)));
-                        else MainFrame.enemyGrid.add(new JLabel(ImageToAdd(enemy.hiddenMap[i][j], 300)));
-                    }
+                    if (GameRules.enemyMapVisible) MainFrame.enemyGrid.add(new JLabel(ImageToAdd(enemy.map[i][j], 300)));
+                    else MainFrame.enemyGrid.add(new JLabel(ImageToAdd(enemy.hiddenMap[i][j], 300)));
                 }
-            }
-            catch (Exception e)
-            {
-                //TODO add error popup here
             }
 
             MoveHistory("Player", hitOrMiss);
@@ -406,26 +397,6 @@ public class Main {
         }
     }
 
-    public static void createMapFile(char[][] map, File file)
-    {
-        //redundant function, dont forget to remove it later
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file)))
-        {
-            for (int i = 0; i < map.length; i++)
-            {
-                for (int j = 0; j < map.length; j++)
-                {
-                    bw.write(map[i][j] + " ");
-                }
-                bw.write("\n");
-            }
-        }
-        catch(IOException e)
-        {
-            //TODO add error popup here
-        }
-    }
-
     public static void MoveHistory(String player, String hitOrMiss)
     {
         //stores each turn result onto a text file
@@ -439,7 +410,7 @@ public class Main {
             }
             catch (Exception e)
             {
-                //TODO add error popup here
+                JOptionPane.showMessageDialog(null, new JLabel("Failed to create player turn result."));
             }
         }
         else
@@ -450,7 +421,7 @@ public class Main {
             }
             catch (Exception e)
             {
-                //TODO add error popup here
+                JOptionPane.showMessageDialog(null, new JLabel("Failed to create player turn result."));
             }
         }
 
@@ -458,8 +429,17 @@ public class Main {
         try {
             MainFrame.moveHistoryTxt.read(new BufferedReader(new FileReader("BattleShip/src/MoveHistory.txt")), null);
         } catch (Exception e) {
-            //TODO add error popup here
+            JOptionPane.showMessageDialog(null, new JLabel("Failed to display move history file"));
         }
+    }
+    public static void resetInfo()
+    {
+        //call upon this function when the game ends: this is to reload the info so it dosent break
+        GameRules.resetValues();
+        //list of things to reseet:
+        //player and enemy values
+        //setting values
+        //Move history file
     }
 }
 
@@ -519,22 +499,22 @@ public class Main {
  *  - Fixed Grid image scaling issues (10:45AM)
  *  - Making program more bullet proof (11:35AM)
  * 
- *  TODO Things to add:
- *      - Choice between AI or PVP
- *      - Heavy rework to ending screen (display both resulting maps and add a quit btn and animation)
- *      - rework win conditions (If player 1 took down more ships than player 2, player 1 wins, if both took down even amount of ships, its a draw)
- *      - add better visuals to MainFrame and ending frame
- *      - transition between turns (think fire emblem)
- *      - attack animations (think Fire emblem GBA series)
- *      - metaprogression (add ranked points for fun) (lowest priority)
- *      - Main thing to do is to clean up the code (So much redundant garbage)
- *      - add an extra button (the menu button) that opens up a new frame when pressed, showing 3 of these buttons:
+ *  Things to add:
+ *      - TODO Choice between AI or PVP
+ *      - Heavy rework to ending screen (display both resulting maps and add a quit btn and animation) (implemented)
+ *      - TODO rework win conditions (If player 1 took down more ships than player 2, player 1 wins, if both took down even amount of ships, its a draw)
+ *      - TODO add better visuals to MainFrame and ending frame
+ *      - transition between turns (think fire emblem) (implemented)
+ *      - TODO attack animations (think Fire emblem GBA series) (most likely not doing)
+ *      - TODO metaprogression (add ranked points for fun) (lowest priority) (most likely not doing)
+ *      - TODO Main thing to do is to clean up the code (So much redundant garbage)
+ *      - add an extra button (the menu button) that opens up a new frame when pressed, showing 3 of these buttons: (implemented)
  *          - Quit to SelectionFrame
  *          - Quit to titleScreen
  *          - Quit full application
- *      - UI changes when the user chooses to go pvp mode
- *      - have medium difficulty button only work when the user chooses the single segment attack type 
- *      - label grid size so that its easier for the user to determine the coordinate they want to pick
+ *      - TODO UI changes when the user chooses to go pvp mode
+ *      - have medium difficulty button only work when the user chooses the single segment attack type (most likely not doing)
+ *      - TODO label grid size so that its easier for the user to determine the coordinate they want to pick 
  *  
  *  Enemy AI Plan:
  *      - easy difficulty has the AI completely random point generation (already implemented)
@@ -561,6 +541,8 @@ public class Main {
  *      - added move history title in MainFrame (8:36AM)
  *      - added AmmoGrid in MainFrame (9:10AM)
  *      - ammo number now displays in grid instead of as a number in a textArea (9:51Am)
+ *      - user can no longer crash the program by spam clicking the attack button in the MainFrame (11:24AM)
+ *      - Fixed enemyAI impossible difficulty not attacking (11:45AM)
  * 
  *  TODO add a bunch of popup windows for confirmation cause theres many things the user can do on accident
  *  when enemy map display is off, display different grid (implemented)
@@ -572,6 +554,9 @@ public class Main {
  *  TODO better transitions in the main frame and ending frame
  *  TODO remove medium AI difficulty
  *  TODO have turn history display more information
- *  TODO a bug that happens rarely where the MainFrame is never loaded after exiting selectionFrame
+ *  a bug that happens rarely where the MainFrame is never loaded after exiting selectionFrame (realised this happens when try catch fails)
  *  TODO delete all progress after game ends in mainFrame and when user surrenders
+ *  TODO add indicator that shows which modes are selected in the SeletionFrame
+ *  TODO EndScreen displays only the map of the first game (if user loaded one game), fix this
+ *  TODO popup error when user enters coordinates that go outside the bounds of the array
  */

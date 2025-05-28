@@ -54,11 +54,11 @@ public class MainFrame {
         ammoUsed = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAmmoUsed.png");
 
         GameRules.currF = GameRules.CurrentFrame.mainScreen;
+        GameRules.playerCanAttack = true;
 
         frame.setUndecorated(true);
 
-        JButton sendBtn = new JButton("Attack!");
-        JButton surrenderBtn = new JButton("Surrender");
+        
 
         JScrollPane moveHistory = new JScrollPane(moveHistoryTxt);
 
@@ -66,6 +66,11 @@ public class MainFrame {
         ImageIcon enemyMapIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\BattleShipEnemyPreview.png");
         ImageIcon turnHistoryIcon = new ImageIcon("BattleShip\\Graphics\\MainFrame\\TurnHistoryTitle.png");
         ImageIcon ammoLeftIcon = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAmmoCount.png");
+        ImageIcon atkIcon = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAttackIcon.png");
+        ImageIcon surrenderIcon = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipSurrenderIcon.png");
+
+        JButton sendBtn = new JButton(atkIcon);
+        JButton surrenderBtn = new JButton(surrenderIcon);
         
         JLabel ammoCountLbl = new JLabel(ammoLeftIcon);
         JLabel xLbl = new JLabel("X");
@@ -123,7 +128,7 @@ public class MainFrame {
         }
         
 
-        sendBtn.addActionListener(e -> Main.userSendsAttack(xCordTxt.getText(), yCordTxt.getText()));
+        sendBtn.addActionListener(e -> userClickedAttack());
 
         surrenderBtn.addActionListener(e -> userSurrender());
 
@@ -181,7 +186,14 @@ public class MainFrame {
     }
     public static void userClickedAttack()
     {
-        Main.userSendsAttack(xCordTxt.getText(), yCordTxt.getText());
+        if (GameRules.playerCanAttack) 
+        {
+            Main.userSendsAttack(xCordTxt.getText(), yCordTxt.getText());
+        }
+        else if (!GameRules.playerCanAttack)
+        {
+            JOptionPane.showMessageDialog(null, new JLabel("Its not your turn yet!"));
+        }
     }
     public static void userTurnStarted()
     {

@@ -28,4 +28,9 @@ public class GameRules {
         selectionScreen,
         mainScreen
     }
+    public static void resetValues()
+    {
+        enemyMapVisible = false;
+        playerCanAttack = true;
+    }
 }
