@@ -31,7 +31,28 @@ public class SelectionFrame {
     static JLabel enemyMapPreviewLbl = new JLabel(enemyMapTitleIcon);
     public static void ShowFrame()
     {
+        frame.removeAll();
+        frame.revalidate();
+        frame.repaint();
+        GameRules.currF = GameRules.CurrentFrame.selectionScreen;
+
+        //just testing something
+        MapSize = new JTextPane();
+        playerGrid = new JPanel();
+        enemyGrid = new JPanel();
+        frame = new JFrame();
+        panel = new JPanel();
+        bgAnim = new ImageIcon("BattleShip/Graphics/TitleScreen/BattleShipTitleScreen.gif");
+        titleFadeIn = new ImageIcon("BattleShip/Graphics/TitleScreen/BattleShipTitleFade.gif");
+        titleFadeOut = new ImageIcon("BattleShip/Graphics/TitleScreen/BattleShipTitleFadeOut.gif");
+        enemyMapTitleIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipEnemyPreview.png");
+        bgLbl = new JLabel(bgAnim); //used to display background graphic
+        cheatBtn = new JButton("Display Enemy Map");
+        unCheatBtn = new JButton("Hide Enemy Map");
+        enemyMapPreviewLbl = new JLabel(enemyMapTitleIcon);
+
         frame.setUndecorated(true);
+
         ImageIcon readyBtnIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipReadyBtn.png");
         ImageIcon modIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/ModifyGameRulesLbl.png");
         ImageIcon mapIconTitle = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipMapSize.png");
@@ -171,18 +192,20 @@ public class SelectionFrame {
     }
     public static void userExit()
     {
+        //TODO fix transition background for this
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
             panel.removeAll();
             panel.add(bgLbl);
             bgLbl.setIcon(titleFadeIn);
             scheduledExecutorService.schedule(() -> {
-                OpeningFrame.ShowFrame();
-                frame.dispose();
+                QuitMenu.showFrame(SelectionFrame.frame);
+                //frame.dispose();
             }, 3, TimeUnit.SECONDS);
             scheduledExecutorService.shutdown();
     }
     public static void userChangedWays()
     {
+        //TODO called twice when reloaded
         int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to hide the enemies map?", "WARNING", JOptionPane.YES_NO_OPTION);
         if (ans == JOptionPane.YES_OPTION) 
         {
@@ -238,6 +261,7 @@ public class SelectionFrame {
     }
     public static void userClickedReady()
     {
+        
         try
         {
             ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
@@ -246,7 +270,7 @@ public class SelectionFrame {
             bgLbl.setIcon(titleFadeIn);
             scheduledExecutorService.schedule(() -> {
                 MainFrame.ShowFrame();
-                frame.setVisible(false);
+                frame.dispose();
             }, 3, TimeUnit.SECONDS);
             scheduledExecutorService.shutdown();
         }
@@ -258,6 +282,7 @@ public class SelectionFrame {
     }
     public static void userViewEnemMap()
     {
+        //TODO called twice when reloaded
         //display popup to confirm, then display enemy map.
         int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to display the enemies map?", "WARNING", JOptionPane.YES_NO_OPTION);
         if (ans == JOptionPane.YES_OPTION) 

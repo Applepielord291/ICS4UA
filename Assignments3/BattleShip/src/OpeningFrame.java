@@ -62,6 +62,7 @@ public class OpeningFrame {
     {
         //function called when the user clicked the quit button, closes the application
         frame.dispose();
+        System.exit(0);
     }
     public static void userClickedStart()
     {

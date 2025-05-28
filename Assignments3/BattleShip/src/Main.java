@@ -68,7 +68,9 @@ public class Main {
     {
         //this function is called when the user sets a size in SelectionFrame
         player.map = new char[size][size];
+        player.hiddenMap = new char[size][size];
         enemy.map = new char[size][size];
+        enemy.hiddenMap = new char[size][size];
         //upperLimit is used to manage how many ships there will be on the map (upperLimit changes depending on map size)
         int upperLimit = 2; 
         //changes both ammoCount and upperLimit depending on mapSize
@@ -97,6 +99,7 @@ public class Main {
             for (int j = 0; j < player.map.length; j++)
             {
                 player.map[i][j] = '-';
+                player.hiddenMap[i][j] = '-';
             }
         }
         enemy.map = new char[size][size];
@@ -105,6 +108,7 @@ public class Main {
             for (int j = 0; j < enemy.map.length; j++)
             {
                 enemy.map[i][j] = '-';
+                enemy.hiddenMap[i][j] = '-';
             }
         }
 
@@ -121,50 +125,60 @@ public class Main {
         {
             for (int j = 0; j < player.map.length; j++)
             {
-                SelectionFrame.playerGrid.add(new JLabel(ImageToAdd(player.map[i][j])));
+                SelectionFrame.playerGrid.add(new JLabel(ImageToAdd(player.map[i][j], 150)));
             }
         }
         for (int i = 0; i < enemy.map.length; i++)
         {
             for (int j = 0; j < enemy.map.length; j++)
             {
-                SelectionFrame.enemyGrid.add(new JLabel(ImageToAdd(enemy.map[i][j])));
+                SelectionFrame.enemyGrid.add(new JLabel(ImageToAdd(enemy.map[i][j], 150)));
             }
         }
         
     }
-    public static ImageIcon ImageToAdd(char visual)
+    public static ImageIcon ImageToAdd(char visual, int gridSize)
     {
         //each char has their own respective ImageIcon
         //used image Icons to make the program look cooler.
         if (visual == '-') 
         {
-            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipEmpty.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipEmpty.png").getImage().getScaledInstance(gridSize/player.map.length, gridSize/player.map.length, 0);
             return new ImageIcon(curr);
         }
         else if (visual == Frigate.shipVisual) 
         {
-            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipFrigate.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipFrigate.png").getImage().getScaledInstance(gridSize/player.map.length, gridSize/player.map.length, 0);
             return new ImageIcon(curr);
         }
         else if (visual == attackBoat.shipVisual) 
         {
-            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipAttackBoat.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipAttackBoat.png").getImage().getScaledInstance(gridSize/player.map.length, gridSize/player.map.length, 0);
             return new ImageIcon(curr);
         }
         else if (visual == dinghy.shipVisual) 
         {
-            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipDinghy.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipDinghy.png").getImage().getScaledInstance(gridSize/player.map.length, gridSize/player.map.length, 0);
             return new ImageIcon(curr);
         }
         else if (visual == dreadNaught.shipVisual) 
         {
-            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipDreadnaught.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipDreadnaught.png").getImage().getScaledInstance(gridSize/player.map.length, gridSize/player.map.length, 0);
             return new ImageIcon(curr);
         }
         else if (visual == subMarine.shipVisual) 
         {
-            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipSub.png").getImage().getScaledInstance(300/player.map.length, 300/player.map.length, 0);
+            Image curr = new ImageIcon("BattleShip/Graphics/MapVisuals/BattleShipSub.png").getImage().getScaledInstance(gridSize/player.map.length, gridSize/player.map.length, 0);
+            return new ImageIcon(curr);
+        }
+        else if (visual == 'x') //miss
+        {
+            Image curr = new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipMiss.png").getImage().getScaledInstance(gridSize/player.map.length, gridSize/player.map.length, 0);
+            return new ImageIcon(curr);
+        }
+        else if (visual == 'X') //hit
+        {
+            Image curr = new ImageIcon("BattleShip\\Graphics\\MapVisuals\\BattleShipHit.png").getImage().getScaledInstance(gridSize/player.map.length, gridSize/player.map.length, 0);
             return new ImageIcon(curr);
         }
         else
@@ -251,12 +265,20 @@ public class Main {
             //string value used for the move history file
             String hitOrMiss = "Miss!";
             int x = Integer.parseInt(xCord)-1; int y = Integer.parseInt(yCord)-1;
-            if (enemy.map[y][x] != '-') 
+            if (enemy.map[y][x] != '-' && enemy.map[y][x] != 'x' && enemy.map[y][x] != 'X') 
             {
                 hitOrMiss = "Hit!";
                 if (GameRules.atkType == GameRules.AttackType.fullShip) DestroyEntireShip(enemy.map[y][x], false);
-                enemy.map[y][x] = '-';
+                enemy.map[y][x] = 'X';
+                enemy.hiddenMap[y][x] = 'X';
             }
+            else
+            {
+                player.timesMissed+=1;
+                enemy.map[y][x] = 'x';
+                enemy.hiddenMap[y][x] = 'x';
+            }
+            player.timesFired+=1;
 
             //refreshes the map grid
             MainFrame.enemyGrid.removeAll();
@@ -267,7 +289,8 @@ public class Main {
                 {
                     for (int j = 0; j < enemy.map.length; j++)
                     {
-                        MainFrame.enemyGrid.add(new JLabel(ImageToAdd(enemy.map[i][j])));
+                        if (GameRules.enemyMapVisible) MainFrame.enemyGrid.add(new JLabel(ImageToAdd(enemy.map[i][j], 300)));
+                        else MainFrame.enemyGrid.add(new JLabel(ImageToAdd(enemy.hiddenMap[i][j], 300)));
                     }
                 }
             }
@@ -278,7 +301,9 @@ public class Main {
 
             MoveHistory("Player", hitOrMiss);
             player.ammoCount -= 1;
-            MainFrame.ammoLeftTxt.setText(player.ammoCount + "");
+            MainFrame.updateAmmoGrid();
+            MainFrame.frame.revalidate();
+            MainFrame.frame.repaint();
 
             //attack animation plays 1 second after user enters their attack
             ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
@@ -328,7 +353,7 @@ public class Main {
                 {
                     if (player.map[i][j] == key)
                     {
-                        player.map[i][j] = '-';
+                        player.map[i][j] = 'X';
                         shipLength -= 1;
                     }
                     if (shipLength == 0) break;
@@ -343,7 +368,7 @@ public class Main {
                 {
                     if (enemy.map[i][j] == key)
                     {
-                        enemy.map[i][j] = '-';
+                        enemy.map[i][j] = 'X';
                         shipLength -= 1;
                     }
                     if (shipLength == 0) break;
@@ -362,7 +387,7 @@ public class Main {
             {
                 for (int j = 0; j < player.map.length; j++)
                 {
-                    if (player.map[i][j] != '-') return false;
+                    if (player.map[i][j] != '-' && player.map[i][j] != 'x' && player.map[i][j] != 'X') return false;
                 }
             }
             return true;
@@ -374,7 +399,7 @@ public class Main {
             {
                 for (int j = 0; j < enemy.map.length; j++)
                 {
-                    if (enemy.map[i][j] != '-') return false;
+                    if (enemy.map[i][j] != '-' && enemy.map[i][j] != 'x' && enemy.map[i][j] != 'X') return false;
                 }
             }
             return true;
@@ -494,20 +519,28 @@ public class Main {
  *  - Fixed Grid image scaling issues (10:45AM)
  *  - Making program more bullet proof (11:35AM)
  * 
- *  Things to add:
+ *  TODO Things to add:
  *      - Choice between AI or PVP
  *      - Heavy rework to ending screen (display both resulting maps and add a quit btn and animation)
  *      - rework win conditions (If player 1 took down more ships than player 2, player 1 wins, if both took down even amount of ships, its a draw)
  *      - add better visuals to MainFrame and ending frame
  *      - transition between turns (think fire emblem)
  *      - attack animations (think Fire emblem GBA series)
- *      - metaprogression (add ranked points for fun)
+ *      - metaprogression (add ranked points for fun) (lowest priority)
  *      - Main thing to do is to clean up the code (So much redundant garbage)
+ *      - add an extra button (the menu button) that opens up a new frame when pressed, showing 3 of these buttons:
+ *          - Quit to SelectionFrame
+ *          - Quit to titleScreen
+ *          - Quit full application
+ *      - UI changes when the user chooses to go pvp mode
+ *      - have medium difficulty button only work when the user chooses the single segment attack type 
+ *      - label grid size so that its easier for the user to determine the coordinate they want to pick
+ *  
  *  Enemy AI Plan:
  *      - easy difficulty has the AI completely random point generation (already implemented)
  *      - medium difficulty (hardest one to implement) has random point generation, but when the point is a ship, the AI goes into the searching state
  *          - when in the searching state, the ai will look for other possible segments that are connected to that key point, and will loop x times. (x depends on boat length)
- *      - Hard difficulty will have the AI search for the ship chars (using linear search), this one is impossible to beat.
+ *      - Hard difficulty will have the AI search for the ship chars (using linear search), this one is impossible to beat. (implemented)
  * 
  *  Theres a lot of time still left on this assignment, so after that, I could add sounds and music, then playtest it a bunch
  * 
@@ -516,4 +549,29 @@ public class Main {
  *      - added animation transition between player and enemy turns (1:47AM)
  *      - added the script TransitionAnim, the frame now moves (9:39AM)
  *      - FInally fixed the problem where the program would crash everytime the TransitionAnim is re-instantiated (11:25AM)
+ *      - added enemyAI impossible difficulty (1:54 PM)
+ *      - player and enemy map now display on the end screen and added a quit button on the end screen (7:09PM)
+ *      - created the QuitMenu script (9:55PM)
+ *  (day 6: may 28, 2025)
+ *      - finally fixed the issue with the frames not working properly after being reloaded with the QuitMenu buttons (12:26AM)
+ *          - TODO the solution is really goofy, the start of the Jframe scripts are gonna look goofy, ill have an explanation for each of them
+ *      - added extra variable in player stats 'hidden map' to manage map seen by each side (7:30AM)
+ *      - easier to tell which parts the player hit and which parts you were hit by the enemy on the map (8:11AM)
+ *      - added indicator to which is player and enemy map on the MainFrame script (8:21AM)
+ *      - added move history title in MainFrame (8:36AM)
+ *      - added AmmoGrid in MainFrame (9:10AM)
+ *      - ammo number now displays in grid instead of as a number in a textArea (9:51Am)
+ * 
+ *  TODO add a bunch of popup windows for confirmation cause theres many things the user can do on accident
+ *  when enemy map display is off, display different grid (implemented)
+ *      - instead of it being a empty space have it be a grid full of empty spaces that updates depending on where the player attacks
+ *  TODO make a new function that changes the layout of the MainFrame when the user does pvp (have the maps alternate bwtween active/inactive, cooldown between each)
+ *  TODO add an extra row and column that displays numbers
+ *  instead of ammocount in JTextArea do another grid that displays ammo visually (implemented)
+ *  instead of the area attacked turning into an empty space, add an X visual that shows the location of the attack (for both map sides) (implemented)
+ *  TODO better transitions in the main frame and ending frame
+ *  TODO remove medium AI difficulty
+ *  TODO have turn history display more information
+ *  TODO a bug that happens rarely where the MainFrame is never loaded after exiting selectionFrame
+ *  TODO delete all progress after game ends in mainFrame and when user surrenders
  */

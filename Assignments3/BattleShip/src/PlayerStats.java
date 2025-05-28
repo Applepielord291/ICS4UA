@@ -8,6 +8,7 @@ public class PlayerStats
 {
     public int ammoCount; 
     public char[][] map;
+    public char[][] hiddenMap;
     public int timesFired;
     public int timesMissed;
     public int timesHit;

@@ -7,7 +7,9 @@
 public class GameRules {
     public static AIDifficulty difficulty;
     public static AttackType atkType;
+    public static CurrentFrame currF;
     public static boolean enemyMapVisible = false;
+    public static boolean playerCanAttack = true;
     public enum AIDifficulty
     {
         Easy,
@@ -19,5 +21,11 @@ public class GameRules {
     {
         singleSegment,
         fullShip
+    }
+    public enum CurrentFrame
+    {
+        endScreen,
+        selectionScreen,
+        mainScreen
     }
 }

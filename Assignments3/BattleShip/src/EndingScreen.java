@@ -1,3 +1,5 @@
+import java.awt.GridLayout;
+
 import javax.swing.*;
 
 /* Nigel Garcia
@@ -7,19 +9,51 @@ import javax.swing.*;
  */
 
 public class EndingScreen {
+    static JFrame frame = new JFrame();
+    static JPanel panel = new JPanel();
     public static void DisplayFrame()
     {
-        JFrame frame = new JFrame();
-        JPanel panel = new JPanel();
+        GameRules.currF = GameRules.CurrentFrame.endScreen;
+
+        
         frame.setUndecorated(true);
 
-        JLabel pTitle = new JLabel("Player Stats");
-        JLabel eTitle = new JLabel("Enemy Stats");
+        ImageIcon quitBtnIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\QuitBtn.png");
+        ImageIcon playerStatIcon = new ImageIcon("BattleShip\\Graphics\\EndingFrame\\PlayerStatsIcon.png");
+        ImageIcon enemyStatIcon = new ImageIcon("BattleShip\\Graphics\\EndingFrame\\EnemyStatsIcon.png");
+        ImageIcon bgIcon = new ImageIcon("BattleShip\\Graphics\\EndingFrame\\EndingFrameBg.png");
+
+        JLabel pTitle = new JLabel(playerStatIcon);
+        JLabel eTitle = new JLabel(enemyStatIcon);
         JLabel timesFired = new JLabel("Times fired: " + Main.player.timesFired);
         JLabel timesMissed = new JLabel("Times missed: " + Main.player.timesMissed);
+        JLabel bgLbl = new JLabel(bgIcon);
+
+        JButton quitBtn = new JButton(quitBtnIcon);
 
         JLabel timesFiredE = new JLabel("Times fired: " + Main.enemy.timesFired);
         JLabel timesMissedE = new JLabel("Times missed: " + Main.enemy.timesMissed);
+
+        JPanel playerGrid = new JPanel();
+        JPanel enemyGrid = new JPanel();
+
+        playerGrid.setLayout(new GridLayout(Main.player.map.length, Main.player.map.length));
+        enemyGrid.setLayout(new GridLayout(Main.enemy.map.length, Main.enemy.map.length));
+
+        for (int i = 0; i < Main.player.map.length; i++)
+        {
+            for (int j = 0; j < Main.player.map.length; j++)
+            {
+                playerGrid.add(new JLabel(Main.ImageToAdd(Main.player.map[i][j], 150)));
+            }
+        }
+        for (int i = 0; i < Main.enemy.map.length; i++)
+        {
+            for (int j = 0; j < Main.enemy.map.length; j++)
+            {
+                enemyGrid.add(new JLabel(Main.ImageToAdd(Main.enemy.map[i][j], 150)));
+            }
+        }
 
         frame.setResizable(false);
         frame.setSize(400, 400);
@@ -29,21 +63,41 @@ public class EndingScreen {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Post game");
 
-        pTitle.setBounds(10, 10, 100, 25);
-        eTitle.setBounds(210, 10, 100, 25);
-        timesFiredE.setBounds(10, 25, 150, 25);
-        timesMissedE.setBounds(10, 40, 100, 25);
-        timesFired.setBounds(210, 25, 150, 25);
-        timesMissed.setBounds(210, 40, 150, 25);
+        pTitle.setBounds(20, 10, 150, 37);
+        eTitle.setBounds(210, 10, 150, 37);
+        timesFiredE.setBounds(210, 45, 150, 25);
+        timesMissedE.setBounds(210, 60, 100, 25);
+        timesFired.setBounds(20, 45, 150, 25);
+        timesMissed.setBounds(20, 60, 150, 25);
+
+        bgLbl.setBounds(0, 0, 400, 400);
+
+        quitBtn.setBounds(125, 350, 125, 31);
+
+        playerGrid.setBounds(20, 175, 150, 150);
+        enemyGrid.setBounds(210, 175, 150, 150);
+
+        quitBtn.addActionListener(e -> userClickedQuit());
 
         frame.add(panel);
+        
         panel.add(pTitle);
         panel.add(eTitle);
         panel.add(timesFired);
         panel.add(timesMissed);
         panel.add(timesFiredE);
         panel.add(timesMissedE);
+        panel.add(quitBtn);
+        panel.add(playerGrid);
+        panel.add(enemyGrid);
+        panel.add(bgLbl);
+
 
         frame.setVisible(true);
+    }
+    public static void userClickedQuit()
+    {
+        QuitMenu.showFrame(MainFrame.frame);
+        frame.dispose();
     }
 }

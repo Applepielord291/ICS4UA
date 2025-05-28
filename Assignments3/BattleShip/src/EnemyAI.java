@@ -22,11 +22,12 @@ public class EnemyAI {
         }
         else if (GameRules.difficulty == GameRules.AIDifficulty.impossible)
         {
+            //TODO not working
             for (int i = 0; i < player.map.length; i++)
             {
                 for (int j = 0; j < player.map.length; j++)
                 {
-                    if (player.map[i][j] != '-') 
+                    if (player.map[i][j] != '-' && player.map[i][j] != 'x' && player.map[i][j] != 'X') 
                     {
                         xPoint = i+1;
                         yPoint = j+1;
@@ -36,14 +37,20 @@ public class EnemyAI {
             }
         }
         
-        if (player.map[xPoint][yPoint] != '-' && enem.ammoCount > 0)
+        if (player.map[xPoint][yPoint] != '-' && player.map[xPoint][yPoint] != 'x' && player.map[xPoint][yPoint] != 'X' && enem.ammoCount > 0)
         {
             if (GameRules.atkType == GameRules.AttackType.fullShip) Main.DestroyEntireShip(player.map[xPoint][yPoint], true);
-            player.map[xPoint][yPoint] = '-';
+            player.map[xPoint][yPoint] = 'X';
+            player.hiddenMap[xPoint][yPoint] = 'X';
             enem.timesHit += 1;
             result = "Hit!";
         }
-        else if (player.map[xPoint][yPoint] == '-') enem.timesMissed += 1;
+        else 
+        {
+            enem.timesMissed += 1;
+            player.map[xPoint][yPoint] = 'x';
+            player.hiddenMap[xPoint][yPoint] = 'x';
+        }
         enem.ammoCount -= 1;
         enem.timesFired += 1;
         //call functio do edit history
