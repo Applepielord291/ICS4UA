@@ -41,7 +41,6 @@ public class EnemyAI {
             if (GameRules.atkType == GameRules.AttackType.fullShip) Main.DestroyEntireShip(player.map[xPoint][yPoint], true);
             player.map[xPoint][yPoint] = 'X';
             player.hiddenMap[xPoint][yPoint] = 'X';
-            enem.timesHit += 1;
             result = "Hit!";
         }
         else 
@@ -80,7 +79,7 @@ public class EnemyAI {
                 GameRules.playerCanAttack = true;
                 MainFrame.userTurnStarted();
             }
-        }, 3, TimeUnit.SECONDS);
+        }, 2, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
     }
 }

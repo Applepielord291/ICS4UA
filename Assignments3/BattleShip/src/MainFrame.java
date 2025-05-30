@@ -20,6 +20,7 @@ public class MainFrame {
     public static JPanel playerGrid = new JPanel();
     public static JPanel enemyGrid = new JPanel();
     public static JPanel ammoGrid = new JPanel();
+    public static JPanel enemyAmmoGrid = new JPanel();
 
     static ImageIcon bgAnim = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameBg.gif");
     static ImageIcon bgAnimFadeOut = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameFadeOut.gif");
@@ -31,6 +32,8 @@ public class MainFrame {
     static JFrame frame = new JFrame();
 
     static JPanel panel = new JPanel();
+
+    static boolean isEnemyTurn = false; //used only for pvp
 
     public static void ShowFrame()
     {
@@ -45,6 +48,7 @@ public class MainFrame {
         playerGrid = new JPanel();
         enemyGrid = new JPanel();
         ammoGrid = new JPanel();
+        enemyAmmoGrid = new JPanel();
         bgAnim = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameBg.gif");
         bgAnimFadeOut = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameFadeOut.gif");
         bgLbl = new JLabel(bgAnimFadeOut); //used to display background graphic
@@ -52,13 +56,12 @@ public class MainFrame {
         panel = new JPanel();
         ammoActive = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAmmoActive.png");
         ammoUsed = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAmmoUsed.png");
+        isEnemyTurn = false;
 
         GameRules.currF = GameRules.CurrentFrame.mainScreen;
         GameRules.playerCanAttack = true;
 
         frame.setUndecorated(true);
-
-        
 
         JScrollPane moveHistory = new JScrollPane(moveHistoryTxt);
 
@@ -93,6 +96,7 @@ public class MainFrame {
         playerGrid.setBounds(10, 10, 300, 300);
         enemyGrid.setBounds(575, 10, 300, 300);
         ammoGrid.setBounds(625, 450, 200, 125);
+        enemyAmmoGrid.setBounds(625, 450, 200, 125);
         
         playerMapTitle.setBounds(85, 315, 150, 25);
         enemyMapTitle.setBounds(650, 315, 150, 25);
@@ -113,8 +117,10 @@ public class MainFrame {
         playerGrid.setLayout(new GridLayout(Main.player.map.length, Main.player.map.length));
         enemyGrid.setLayout(new GridLayout(Main.enemy.map.length, Main.enemy.map.length));
         ammoGrid.setLayout(new GridLayout(2, Main.player.ammoCount/2));
+        enemyAmmoGrid.setLayout(new GridLayout(2, Main.enemy.ammoCount/2));
 
         updateAmmoGrid();
+        updateEnemAmmoGrid();
         
         displayPlayerMap();
         
@@ -154,6 +160,7 @@ public class MainFrame {
             panel.add(playerMapTitle);
             panel.add(enemyMapTitle);
             panel.add(ammoGrid);
+            panel.add(enemyAmmoGrid);
             panel.add(bgLbl);
             bgLbl.setIcon(bgAnim);
             frame.setVisible(true);
@@ -179,21 +186,93 @@ public class MainFrame {
             ammoGrid.add(new JLabel(new ImageIcon(curr)));
         }
     }
+    public static void updateEnemAmmoGrid()
+    {
+        enemyAmmoGrid.removeAll();
+        for (int i = 0; i < Main.player.ammoCount; i++)
+        {
+            Image curr = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAmmoActive.png").getImage().getScaledInstance(62, 62, 0);
+            enemyAmmoGrid.add(new JLabel(new ImageIcon(curr)));
+        }
+        for (int i = 0; i < Main.player.timesFired; i++)
+        {
+            Image curr = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAmmoUsed.png").getImage().getScaledInstance(62, 62, 0);
+            enemyAmmoGrid.add(new JLabel(new ImageIcon(curr)));
+        }
+    }
     public static void userSurrender()
     {
-        Main.player.ammoCount = 0;
-        EndingScreen.DisplayFrame();
+        int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to surrender?", "WARNING", JOptionPane.YES_NO_OPTION);
+        if (ans == JOptionPane.YES_OPTION) 
+        {
+            Main.player.ammoCount = 0;
+            EndingScreen.DisplayFrame();
+        }
     }
     public static void userClickedAttack()
     {
-        if (GameRules.playerCanAttack) 
+        if (xCordTxt.getText() != "" && yCordTxt.getText() != "")
         {
-            Main.userSendsAttack(xCordTxt.getText(), yCordTxt.getText());
+            if (GameRules.playerCanAttack && !isEnemyTurn) //this condition looks confusing but let me explain
+            {
+                //the first variable makes it so that they cant attack during the entire duration of other phase
+                //the second variable acts as a cooldown between the turns:
+                //its so that the player wont be able to attack right after the other players sends an attack
+                if ((Integer.parseInt(xCordTxt.getText()) <= Main.player.map.length && Integer.parseInt(xCordTxt.getText()) > 0) && (Integer.parseInt(yCordTxt.getText()) <= Main.player.map.length && Integer.parseInt(yCordTxt.getText()) > 0))
+                {
+                    Main.userSendsAttack(xCordTxt.getText(), yCordTxt.getText());
+                }
+                else JOptionPane.showMessageDialog(null, new JLabel("Invalid coordinates!"));
+            }
+            else if (!GameRules.playerCanAttack && isEnemyTurn)
+            {
+                if ((Integer.parseInt(xCordTxt.getText()) <= Main.player.map.length && Integer.parseInt(xCordTxt.getText()) > 0) && (Integer.parseInt(yCordTxt.getText()) <= Main.player.map.length && Integer.parseInt(yCordTxt.getText()) > 0))
+                {
+                    if (GameRules.difficulty == GameRules.AIDifficulty.pvp) Main.enemySendsAttack(xCordTxt.getText(), yCordTxt.getText());
+                }
+                else JOptionPane.showMessageDialog(null, new JLabel("Invalid coordinates!"));
+            }
+            else JOptionPane.showMessageDialog(null, new JLabel("Its not your turn yet!"));
         }
-        else if (!GameRules.playerCanAttack)
+        else JOptionPane.showMessageDialog(null, new JLabel("You have to enter coordinates!"));
+    }
+    public static void enemyTurn() //also change map grid displays in this function depending on game settings
+    {
+        if (!GameRules.enemyMapVisible)
         {
-            JOptionPane.showMessageDialog(null, new JLabel("Its not your turn yet!"));
+            playerGrid.removeAll();
+            enemyGrid.removeAll();
+            for (int i = 0; i < Main.player.map.length; i++)
+            {
+                for (int j = 0; j < Main.player.map.length; j++)
+                {
+                    playerGrid.add(new JLabel(Main.ImageToAdd(Main.player.hiddenMap[i][j], 300)));
+                    enemyGrid.add(new JLabel(Main.ImageToAdd(Main.enemy.map[i][j], 300)));
+                }
+            }
+            frame.revalidate();
+            frame.repaint();
         }
+        isEnemyTurn = true;
+    }
+    public static void userTurn()
+    {
+        if (!GameRules.enemyMapVisible)
+        {
+            playerGrid.removeAll();
+            enemyGrid.removeAll();
+            for (int i = 0; i < Main.player.map.length; i++)
+            {
+                for (int j = 0; j < Main.player.map.length; j++)
+                {
+                    playerGrid.add(new JLabel(Main.ImageToAdd(Main.player.map[i][j], 300)));
+                    enemyGrid.add(new JLabel(Main.ImageToAdd(Main.enemy.hiddenMap[i][j], 300)));
+                }
+            }
+            frame.revalidate();
+            frame.repaint();
+        }
+        isEnemyTurn = false;
     }
     public static void userTurnStarted()
     {

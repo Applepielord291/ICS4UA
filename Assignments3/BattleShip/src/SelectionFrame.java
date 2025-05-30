@@ -29,8 +29,29 @@ public class SelectionFrame {
     static JButton unCheatBtn = new JButton("Hide Enemy Map");
 
     static JLabel enemyMapPreviewLbl = new JLabel(enemyMapTitleIcon);
+
+    static ImageIcon easySelectIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\EasySelected.png");
+    static ImageIcon easyUnselectIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\EasyUnselected.png");
+    static ImageIcon hardSelectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\HardSelected.png");
+    static ImageIcon hardUnselectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\HardUnselected.png");
+    static ImageIcon pvpSelectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\PvpSelected.png");
+    static ImageIcon pvpUnselectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\PvpUnselected.png");
+    static ImageIcon singleSelectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\SingleSegmentSelected.png");
+    static ImageIcon singleUnselectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\SingleSegmentUnselected.png");
+    static ImageIcon multipleSelectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\FullShipSinksSelected.png");
+    static ImageIcon multipleUnselectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\FullShipSinksUnselected.png");
+
+    static JButton easyBtn = new JButton(easySelectIcon);
+    static JButton hardBtn = new JButton(hardUnselectedIcon);
+    static JButton pvpBtn = new JButton(pvpUnselectedIcon);
+
+    static JButton singleSegBtn = new JButton("Single Segment");
+    static JButton fullShipBtn = new JButton("Full Ship Sinks");
     public static void ShowFrame()
     {
+        GameRules.atkType = GameRules.AttackType.fullShip;
+        GameRules.difficulty = GameRules.AIDifficulty.Easy;
+
         frame.removeAll();
         frame.revalidate();
         frame.repaint();
@@ -63,21 +84,31 @@ public class SelectionFrame {
         ImageIcon setMapSizeIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipSetSize.png");
         ImageIcon quitBtnIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/QuitBtn.png");
 
+        easySelectIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\EasySelected.png");
+        easyUnselectIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\EasyUnselected.png");
+        hardSelectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\HardSelected.png");
+        hardUnselectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\HardUnselected.png");
+        pvpSelectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\PvpSelected.png");
+        pvpUnselectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\PvpUnselected.png");
+
+        singleSelectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\SingleSegmentSelected.png");
+        singleUnselectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\SingleSegmentUnselected.png");
+        multipleSelectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\FullShipSinksSelected.png");
+        multipleUnselectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\FullShipSinksUnselected.png");
+        
         JButton confirmMapBtn = new JButton("Confirm");
         JButton readyBtn = new JButton(readyBtnIcon);
         
-        JButton easyBtn = new JButton("Easy");
-        JButton midBtn = new JButton("Medium");
-        JButton hardBtn = new JButton("Impossible");
-        JButton pvpBtn = new JButton("No AI (PvP)");
-        JButton singleSegBtn = new JButton("Single Segment");
-        JButton fullShipBtn = new JButton("Full Ship Sinks");
+        easyBtn = new JButton(easySelectIcon);
+        hardBtn = new JButton(hardUnselectedIcon);
+        pvpBtn = new JButton(pvpUnselectedIcon);
+        singleSegBtn = new JButton(singleUnselectedIcon);
+        fullShipBtn = new JButton(multipleSelectedIcon);
         JButton quitBtn = new JButton(quitBtnIcon);
 
         JLabel modTitle = new JLabel(modIcon);
         JLabel mapSizeLbl = new JLabel(mapIconTitle);
         JLabel playerTitleLbl = new JLabel(playerSettingsIcon);
-        //JLabel ammoLbl = new JLabel("Max Ammo");
         JLabel attackTypeLbl = new JLabel(attackTypeIcon);
         JLabel mapPreviewLbl = new JLabel(playerMapTitleIcon);
         JLabel setMapSizeLbl = new JLabel(setMapSizeIcon);
@@ -98,11 +129,8 @@ public class SelectionFrame {
             panel.add(confirmMapBtn);
             panel.add(readyBtn);
             panel.add(mapSizeLbl);
-            //panel.add(modTitle); uncomment this for main title
             panel.add(cheatBtn);
             panel.add(playerTitleLbl);
-            //panel.add(ammoLbl);
-            //panel.add(maxAmmo);
             panel.add(mapPreviewLbl);
             panel.add(diffLbl);
             panel.add(easyBtn);
@@ -111,7 +139,6 @@ public class SelectionFrame {
             panel.add(singleSegBtn);
             panel.add(fullShipBtn);
             panel.add(quitBtn);
-            panel.add(midBtn);
             panel.add(hardBtn);
             panel.add(pvpBtn);
 
@@ -128,24 +155,20 @@ public class SelectionFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("BattleShipSelect");
 
-        //maxAmmo.setEditable(false);
-
         bgLbl.setBounds(0, 0, 800, 450);
 
         setMapSizeLbl.setBounds(5, 80, 150, 37);
         MapSize.setBounds(95, 6, 35, 20);
         playerGrid.setBounds(575, 40, 150, 150);
         enemyGrid.setBounds(575, 240, 150, 150);
-        //maxAmmo.setBounds(10, 350, 100, 25);
         
         confirmMapBtn.setBounds(160, 80, 95, 37);
         readyBtn.setBounds(285, 325, 200, 50);
         cheatBtn.setBounds(5, 125, 150, 25);
         unCheatBtn.setBounds(5, 125, 150, 25);
         easyBtn.setBounds(330, 100, 100, 25);
-        midBtn.setBounds(330, 130, 100, 25);
-        hardBtn.setBounds(330, 160, 100, 25);
-        pvpBtn.setBounds(330, 190, 100, 25);
+        hardBtn.setBounds(330, 130, 100, 25);
+        pvpBtn.setBounds(330, 160, 100, 25);
         singleSegBtn.setBounds(50, 300, 150, 25);
         fullShipBtn.setBounds(50, 330, 150, 25);
         quitBtn.setBounds(323, 385, 125, 31);
@@ -153,7 +176,6 @@ public class SelectionFrame {
         mapSizeLbl.setBounds(5, 10, 250, 65);
         modTitle.setBounds(260, 10, 250, 65);
         playerTitleLbl.setBounds(5, 200, 250, 65);
-        //ammoLbl.setBounds(10, 325, 100, 25);
         mapPreviewLbl.setBounds(575, 10, 150, 25);
         diffLbl.setBounds(260, 10, 250, 65);
         enemyMapPreviewLbl.setBounds(575, 210, 150, 25);
@@ -167,7 +189,6 @@ public class SelectionFrame {
         fullShipBtn.addActionListener(e -> userClickedFullSink());
         unCheatBtn.addActionListener(e -> userChangedWays());
         quitBtn.addActionListener(e -> userExit());
-        midBtn.addActionListener(e -> userClickedMedium());
         hardBtn.addActionListener(e -> userClickedHard());
         pvpBtn.addActionListener(e -> userClickedPvp());
 
@@ -181,27 +202,33 @@ public class SelectionFrame {
     public static void userClickedPvp()
     {
         GameRules.difficulty = GameRules.AIDifficulty.pvp;
-    }
-    public static void userClickedMedium()
-    {
-        GameRules.difficulty = GameRules.AIDifficulty.medium;
+        pvpBtn.setIcon(pvpSelectedIcon);
+        easyBtn.setIcon(easyUnselectIcon);
+        hardBtn.setIcon(hardUnselectedIcon);
     }
     public static void userClickedHard()
     {
         GameRules.difficulty = GameRules.AIDifficulty.impossible;
+        pvpBtn.setIcon(pvpUnselectedIcon);
+        easyBtn.setIcon(easyUnselectIcon);
+        hardBtn.setIcon(hardSelectedIcon);
     }
     public static void userExit()
     {
-        //TODO fix transition background for this
-        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the application?", "WARNING", JOptionPane.YES_NO_OPTION);
+        if (ans == JOptionPane.YES_OPTION) 
+        {
+            ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
             panel.removeAll();
             panel.add(bgLbl);
             bgLbl.setIcon(titleFadeIn);
             scheduledExecutorService.schedule(() -> {
-                QuitMenu.showFrame(SelectionFrame.frame);
-                //frame.dispose();
+                frame.dispose();
+                System.exit(0);
             }, 3, TimeUnit.SECONDS);
             scheduledExecutorService.shutdown();
+        }
+        
     }
     public static void userChangedWays()
     {
@@ -222,14 +249,21 @@ public class SelectionFrame {
     public static void userClickedFullSink()
     {
         GameRules.atkType = GameRules.AttackType.fullShip;
+        singleSegBtn.setIcon(singleUnselectedIcon);
+        fullShipBtn.setIcon(multipleSelectedIcon);
     }
     public static void userClickedSingle()
     {
         GameRules.atkType = GameRules.AttackType.singleSegment;
+        singleSegBtn.setIcon(singleSelectedIcon);
+        fullShipBtn.setIcon(multipleUnselectedIcon);
     }
     public static void userClickedEasyBtn()
     {
         GameRules.difficulty = GameRules.AIDifficulty.Easy;
+        pvpBtn.setIcon(pvpUnselectedIcon);
+        easyBtn.setIcon(easySelectIcon);
+        hardBtn.setIcon(hardUnselectedIcon);
     }
     public static void userConfirmedSize()
     {

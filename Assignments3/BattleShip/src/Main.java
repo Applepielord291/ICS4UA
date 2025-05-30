@@ -59,7 +59,6 @@ public class Main {
         subMarine.shipOnMap = false;
 
         player.timesFired = 0;
-        player.timesHit = 0;
         player.timesMissed = 0;
 
         //display title screen
@@ -101,13 +100,7 @@ public class Main {
             {
                 player.map[i][j] = '-';
                 player.hiddenMap[i][j] = '-';
-            }
-        }
-        enemy.map = new char[size][size];
-        for (int i = 0; i < enemy.map.length; i++)
-        {
-            for (int j = 0; j < enemy.map.length; j++)
-            {
+
                 enemy.map[i][j] = '-';
                 enemy.hiddenMap[i][j] = '-';
             }
@@ -255,6 +248,76 @@ public class Main {
             return map;
         }
     }
+    public static void enemySendsAttack(String xCord, String yCord)
+    {
+        //THIS FUNCTION IS ONLY FOR PVP
+        GameRules.playerCanAttack = true;
+        //Function called upon when the user clicks the attack button after entering an x and y coordinate on the MainFrame
+        if (!xCord.equals("") && !yCord.equals("") && enemy.ammoCount > 0)
+        {
+            //string value used for the move history file
+            String hitOrMiss = "Miss!";
+            int x = Integer.parseInt(xCord)-1; int y = Integer.parseInt(yCord)-1;
+            if (player.map[y][x] != '-' && player.map[y][x] != 'x' && player.map[y][x] != 'X') 
+            {
+                hitOrMiss = "Hit!";
+                if (GameRules.atkType == GameRules.AttackType.fullShip) DestroyEntireShip(player.map[y][x], false);
+                player.map[y][x] = 'X';
+                player.hiddenMap[y][x] = 'X';
+            }
+            else
+            {
+                enemy.timesMissed+=1;
+                player.map[y][x] = 'x';
+                player.hiddenMap[y][x] = 'x';
+            }
+            enemy.timesFired+=1;
+
+            //refreshes the map grid
+            MainFrame.playerGrid.removeAll();
+            for (int i = 0; i < player.map.length; i++)
+            {
+                for (int j = 0; j < player.map.length; j++)
+                {
+                    if (GameRules.enemyMapVisible) MainFrame.playerGrid.add(new JLabel(ImageToAdd(player.map[i][j], 300)));
+                    else MainFrame.playerGrid.add(new JLabel(ImageToAdd(player.hiddenMap[i][j], 300)));
+                }
+            }
+
+            MoveHistory("Enemy", hitOrMiss);
+            enemy.ammoCount -= 1;
+            //MainFrame.updateAmmoGrid(); uncomment this when you add an enemy ammogrid
+            MainFrame.frame.revalidate();
+            MainFrame.frame.repaint();
+
+            //attack animation plays 1 second after user enters their attack
+            ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+            scheduledExecutorService.schedule(() -> {
+                //attack animation here
+                
+            }, 1, TimeUnit.SECONDS);
+            scheduledExecutorService.shutdown();
+
+            //switches to enemy turn 3 seconds after the user sends their attack
+            //dont forget to disable player attacking after those 3 seconds
+            ScheduledExecutorService scheduledExecutorService2 = Executors.newScheduledThreadPool(1);
+            //add attack animation here
+            scheduledExecutorService2.schedule(() -> {
+                boolean didGameEnd = GameEnd(false);
+                if (!didGameEnd) 
+                {
+                    MainFrame.userTurnStarted();
+                    MainFrame.userTurn();
+                    JOptionPane.showMessageDialog(null, new JLabel("Player turn! since its pvp, use the text boxes."));
+                }
+                else 
+                {
+                    EndingScreen.DisplayFrame();
+                }
+            }, 2, TimeUnit.SECONDS);
+            scheduledExecutorService2.shutdown();
+        }
+    }
     public static void userSendsAttack(String xCord, String yCord)
     {
         GameRules.playerCanAttack = false;
@@ -313,13 +376,21 @@ public class Main {
                 if (!didGameEnd) 
                 {
                     MainFrame.enemyTurnStarted();
-                    EnemyAI.enemyTurn(player, enemy);
+                    if (GameRules.difficulty != GameRules.AIDifficulty.pvp)
+                    {
+                        EnemyAI.enemyTurn(player, enemy);
+                    }
+                    else 
+                    {
+                        MainFrame.enemyTurn();
+                        JOptionPane.showMessageDialog(null, new JLabel("Enemy turn! since its pvp, use the text boxes."));
+                    }
                 }
                 else 
                 {
                     EndingScreen.DisplayFrame();
                 }
-            }, 3, TimeUnit.SECONDS);
+            }, 2, TimeUnit.SECONDS);
             scheduledExecutorService2.shutdown();
         }
     }
@@ -345,6 +416,7 @@ public class Main {
                     if (player.map[i][j] == key)
                     {
                         player.map[i][j] = 'X';
+                        player.hiddenMap[i][j] = 'X';
                         shipLength -= 1;
                     }
                     if (shipLength == 0) break;
@@ -360,6 +432,7 @@ public class Main {
                     if (enemy.map[i][j] == key)
                     {
                         enemy.map[i][j] = 'X';
+                        enemy.hiddenMap[i][j] = 'X';
                         shipLength -= 1;
                     }
                     if (shipLength == 0) break;
@@ -371,26 +444,33 @@ public class Main {
     public static boolean GameEnd(boolean isPlayer)
     {
         //uses linear search to check if the game ended
+        //TODO win condition not working properly
         if (isPlayer)
         {
-            if (player.ammoCount == 0) return true;
+            if (player.ammoCount == 0 && enemy.ammoCount == 0) return true;
             for (int i = 0; i < player.map.length; i++)
             {
                 for (int j = 0; j < player.map.length; j++)
                 {
-                    if (player.map[i][j] != '-' && player.map[i][j] != 'x' && player.map[i][j] != 'X') return false;
+                    if (player.map[i][j] != '-' && player.map[i][j] != 'x' && player.map[i][j] != 'X') 
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
         }
         else
         {
-            if (player.ammoCount == 0) return true;
+            if (player.ammoCount == 0 && enemy.ammoCount == 0) return true;
             for (int i = 0; i < enemy.map.length; i++)
             {
                 for (int j = 0; j < enemy.map.length; j++)
                 {
-                    if (enemy.map[i][j] != '-' && enemy.map[i][j] != 'x' && enemy.map[i][j] != 'X') return false;
+                    if (enemy.map[i][j] != '-' && enemy.map[i][j] != 'x' && enemy.map[i][j] != 'X') 
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -436,14 +516,34 @@ public class Main {
     {
         //call upon this function when the game ends: this is to reload the info so it dosent break
         GameRules.resetValues();
+
+        player.ammoCount = 0;
+        player.map = null;
+        player.hiddenMap = null;
+        player.timesFired = 0;
+        player.timesMissed = 0;
+
+        enemy.ammoCount = 0;
+        enemy.map = null;
+        enemy.hiddenMap = null;
+        enemy.timesFired = 0;
+        enemy.timesMissed = 0;
         //list of things to reseet:
-        //player and enemy values
+        //player and enemy values (done)
         //setting values
         //Move history file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("BattleShip\\src\\MoveHistory.txt")))
+        {
+            bw.write("");
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, new JLabel("Failed to display move history file"));
+        }
     }
 }
 
-/* TODO TIMELINE:
+/* TIMELINE:
  * Main goal: Finish core functionality before the end of today. When creating games, the top priority is to make sure it runs. Add all the fancy mechanics and visuals later.
  *      An important thing I learned is that people prefer games that are simple yet polished instead of gimmicky yet unpolished.
  * 
@@ -500,10 +600,10 @@ public class Main {
  *  - Making program more bullet proof (11:35AM)
  * 
  *  Things to add:
- *      - TODO Choice between AI or PVP
+ *      - Choice between AI or PVP (implemented)
  *      - Heavy rework to ending screen (display both resulting maps and add a quit btn and animation) (implemented)
- *      - TODO rework win conditions (If player 1 took down more ships than player 2, player 1 wins, if both took down even amount of ships, its a draw)
- *      - TODO add better visuals to MainFrame and ending frame
+ *      - rework win conditions (If player 1 took down more ships than player 2, player 1 wins, if both took down even amount of ships, its a draw) (implemented)
+ *      - add better visuals to MainFrame and ending frame (implemented)
  *      - transition between turns (think fire emblem) (implemented)
  *      - TODO attack animations (think Fire emblem GBA series) (most likely not doing)
  *      - TODO metaprogression (add ranked points for fun) (lowest priority) (most likely not doing)
@@ -512,9 +612,8 @@ public class Main {
  *          - Quit to SelectionFrame
  *          - Quit to titleScreen
  *          - Quit full application
- *      - TODO UI changes when the user chooses to go pvp mode
+ *      - UI changes when the user chooses to go pvp mode (implemented)
  *      - have medium difficulty button only work when the user chooses the single segment attack type (most likely not doing)
- *      - TODO label grid size so that its easier for the user to determine the coordinate they want to pick 
  *  
  *  Enemy AI Plan:
  *      - easy difficulty has the AI completely random point generation (already implemented)
@@ -543,20 +642,33 @@ public class Main {
  *      - ammo number now displays in grid instead of as a number in a textArea (9:51Am)
  *      - user can no longer crash the program by spam clicking the attack button in the MainFrame (11:24AM)
  *      - Fixed enemyAI impossible difficulty not attacking (11:45AM)
+ *      - Fixed maps not updating on ending screen (11:03PM)
+ *      - fixed user being able to enter invalid coordinates on MinFrame (11:06PM)
+ *  (Day 7: May 29, 2025)
+ *      - both AI and pvp exist and work properly now (9:56AM)
+ *      - Added alot more "Are you sure?" popups (12:03PM)
+ *      - added indicator for which settings are selected in the selection frame (12:58PM)
+ *      - actually says who wins the game in the EndingScreen (1:15PM)
+ *  (Day 8: may 30, 2025)
+ *      - Fixed win condition not working properly (12:34AM)
  * 
- *  TODO add a bunch of popup windows for confirmation cause theres many things the user can do on accident
+ *  add a bunch of popup windows for confirmation cause theres many things the user can do on accident (implemented)
  *  when enemy map display is off, display different grid (implemented)
  *      - instead of it being a empty space have it be a grid full of empty spaces that updates depending on where the player attacks
- *  TODO make a new function that changes the layout of the MainFrame when the user does pvp (have the maps alternate bwtween active/inactive, cooldown between each)
- *  TODO add an extra row and column that displays numbers
+ *  make a new function that changes the layout of the MainFrame when the user does pvp (have the maps alternate bwtween active/inactive, cooldown between each) (implemented)
+ *  TODO add an extra row and column that displays numbers (not sure if i will do)
  *  instead of ammocount in JTextArea do another grid that displays ammo visually (implemented)
  *  instead of the area attacked turning into an empty space, add an X visual that shows the location of the attack (for both map sides) (implemented)
- *  TODO better transitions in the main frame and ending frame
- *  TODO remove medium AI difficulty
- *  TODO have turn history display more information
+ *  better transitions in the main frame and ending frame (decided to not do)
+ *  remove medium AI difficulty (implemented)
+ *  have turn history display more information (decided not to do)
  *  a bug that happens rarely where the MainFrame is never loaded after exiting selectionFrame (realised this happens when try catch fails)
- *  TODO delete all progress after game ends in mainFrame and when user surrenders
- *  TODO add indicator that shows which modes are selected in the SeletionFrame
- *  TODO EndScreen displays only the map of the first game (if user loaded one game), fix this
- *  TODO popup error when user enters coordinates that go outside the bounds of the array
+ *  delete all progress after game ends in mainFrame and when user surrenders (implemented)
+ *  add indicator that shows which modes are selected in the SeletionFrame (implemented)
+ *  EndScreen displays only the map of the first game (if user loaded one game), fix this (fixed)
+ *  popup error when user enters coordinates that go outside the bounds of the array (implemented)
+ *  enemy ammo grid only in pvp mode (implemented)
+ *  TODO add ships takenDown
+ *  program stops working properly when "quit to title" button is pressed (fixed)
+ *  TODO clean up code
  */

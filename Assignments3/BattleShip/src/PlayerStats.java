@@ -11,5 +11,4 @@ public class PlayerStats
     public char[][] hiddenMap;
     public int timesFired;
     public int timesMissed;
-    public int timesHit;
 }

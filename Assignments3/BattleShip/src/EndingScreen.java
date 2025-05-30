@@ -13,9 +13,15 @@ public class EndingScreen {
     static JPanel panel = new JPanel();
     public static void DisplayFrame()
     {
+        frame.removeAll(); //so map actually updates
+        frame.revalidate();
+        frame.repaint();
+
+        frame = new JFrame();
+        panel = new JPanel();
+
         GameRules.currF = GameRules.CurrentFrame.endScreen;
 
-        
         frame.setUndecorated(true);
 
         ImageIcon quitBtnIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\QuitBtn.png");
@@ -28,6 +34,7 @@ public class EndingScreen {
         JLabel timesFired = new JLabel("Times fired: " + Main.player.timesFired);
         JLabel timesMissed = new JLabel("Times missed: " + Main.player.timesMissed);
         JLabel bgLbl = new JLabel(bgIcon);
+        JLabel whoWinsLbl = new JLabel("Game Result: " + whoWins());
 
         JButton quitBtn = new JButton(quitBtnIcon);
 
@@ -45,12 +52,6 @@ public class EndingScreen {
             for (int j = 0; j < Main.player.map.length; j++)
             {
                 playerGrid.add(new JLabel(Main.ImageToAdd(Main.player.map[i][j], 150)));
-            }
-        }
-        for (int i = 0; i < Main.enemy.map.length; i++)
-        {
-            for (int j = 0; j < Main.enemy.map.length; j++)
-            {
                 enemyGrid.add(new JLabel(Main.ImageToAdd(Main.enemy.map[i][j], 150)));
             }
         }
@@ -71,6 +72,7 @@ public class EndingScreen {
         timesMissed.setBounds(20, 60, 150, 25);
 
         bgLbl.setBounds(0, 0, 400, 400);
+        whoWinsLbl.setBounds(145, 100, 150, 45);
 
         quitBtn.setBounds(125, 350, 125, 31);
 
@@ -90,8 +92,8 @@ public class EndingScreen {
         panel.add(quitBtn);
         panel.add(playerGrid);
         panel.add(enemyGrid);
+        panel.add(whoWinsLbl);
         panel.add(bgLbl);
-
 
         frame.setVisible(true);
     }
@@ -99,5 +101,11 @@ public class EndingScreen {
     {
         QuitMenu.showFrame(MainFrame.frame);
         frame.dispose();
+    }
+    public static String whoWins()
+    {
+        if (Main.player.timesMissed < Main.enemy.timesMissed) return "Player Wins"; //player win
+        else if (Main.player.timesMissed == Main.enemy.timesMissed) return "Tie";
+        else return "Enemy Wins";
     }
 }

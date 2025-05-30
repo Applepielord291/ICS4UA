@@ -13,7 +13,6 @@ public class GameRules {
     public enum AIDifficulty
     {
         Easy,
-        medium,
         impossible,
         pvp
     }
