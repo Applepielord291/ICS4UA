@@ -1,0 +1,11 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "DbTest/lib/commons-logging-1.2.jar",
+        "DbTest/lib/commons-lang3-3.8.1.jar",
+        "DbTest/lib/hsqldb-2.5.0.jar",
+        "DbTest/lib/jackcess-3.0.1.jar",
+        "DbTest/lib/ucanaccess-5.0.1.jar",
+        "DbTest/lib/ucanload.jar"
+    ]
+}

@@ -4,32 +4,27 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
-/* Nigel Garcia
+/* 
  * May 23 2025
  * Selection Frame
  * This takes place after the opening frame, where the user has to select game rules and check maps.
  */
 
 public class SelectionFrame {
+    //variables declared in class to be accessed by all functions/other scripts
     public static JTextPane MapSize = new JTextPane();
-    
     public static JPanel playerGrid = new JPanel();
     public static JPanel enemyGrid = new JPanel();
-    
     public static JFrame frame = new JFrame();
     public static JPanel panel = new JPanel();
-
     public static ImageIcon bgAnim = new ImageIcon("BattleShip/Graphics/TitleScreen/BattleShipTitleScreen.gif");
     static ImageIcon titleFadeIn = new ImageIcon("BattleShip/Graphics/TitleScreen/BattleShipTitleFade.gif");
     static ImageIcon titleFadeOut = new ImageIcon("BattleShip/Graphics/TitleScreen/BattleShipTitleFadeOut.gif");
     static ImageIcon enemyMapTitleIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipEnemyPreview.png");
     public static JLabel bgLbl = new JLabel(bgAnim); //used to display background graphic
-
     static JButton cheatBtn = new JButton("Display Enemy Map");
     static JButton unCheatBtn = new JButton("Hide Enemy Map");
-
     static JLabel enemyMapPreviewLbl = new JLabel(enemyMapTitleIcon);
-
     static ImageIcon easySelectIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\EasySelected.png");
     static ImageIcon easyUnselectIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\EasyUnselected.png");
     static ImageIcon hardSelectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\HardSelected.png");
@@ -40,24 +35,24 @@ public class SelectionFrame {
     static ImageIcon singleUnselectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\SingleSegmentUnselected.png");
     static ImageIcon multipleSelectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\FullShipSinksSelected.png");
     static ImageIcon multipleUnselectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\FullShipSinksUnselected.png");
-
     static JButton easyBtn = new JButton(easySelectIcon);
     static JButton hardBtn = new JButton(hardUnselectedIcon);
     static JButton pvpBtn = new JButton(pvpUnselectedIcon);
-
-    static JButton singleSegBtn = new JButton("Single Segment");
-    static JButton fullShipBtn = new JButton("Full Ship Sinks");
+    static JButton singleSegBtn = new JButton();
+    static JButton fullShipBtn = new JButton();
     public static void ShowFrame()
     {
+        //setting default settings
         GameRules.atkType = GameRules.AttackType.fullShip;
         GameRules.difficulty = GameRules.AIDifficulty.Easy;
+        GameRules.enemyMapVisible = false;
 
+        //okay, so for this chunk of code,i need to redeclare the variables and reload the frame again
+        //if I dont do this, the frame and its components dosent load properly if the user decides that they want to play another round
+        //I know for sure theres a better way to do this, but the entire program is already a mess anyway.
         frame.removeAll();
         frame.revalidate();
         frame.repaint();
-        GameRules.currF = GameRules.CurrentFrame.selectionScreen;
-
-        //just testing something
         MapSize = new JTextPane();
         playerGrid = new JPanel();
         enemyGrid = new JPanel();
@@ -72,8 +67,11 @@ public class SelectionFrame {
         unCheatBtn = new JButton("Hide Enemy Map");
         enemyMapPreviewLbl = new JLabel(enemyMapTitleIcon);
 
+        //hide frame border
         frame.setUndecorated(true);
 
+        //component declaration
+        //seperated by empty lines for some organization
         ImageIcon readyBtnIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipReadyBtn.png");
         ImageIcon modIcon = new ImageIcon("BattleShip/Graphics/SelectionScreen/ModifyGameRulesLbl.png");
         ImageIcon mapIconTitle = new ImageIcon("BattleShip/Graphics/SelectionScreen/BattleShipMapSize.png");
@@ -96,7 +94,7 @@ public class SelectionFrame {
         multipleSelectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\FullShipSinksSelected.png");
         multipleUnselectedIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\FullShipSinksUnselected.png");
         
-        JButton confirmMapBtn = new JButton("Confirm");
+        JButton confirmMapBtn = new JButton("Generate");
         JButton readyBtn = new JButton(readyBtnIcon);
         
         easyBtn = new JButton(easySelectIcon);
@@ -115,15 +113,16 @@ public class SelectionFrame {
         
         JLabel diffLbl = new JLabel(aiDifficultyIcon);
 
+        //tries to fit the text box into the map size set icon
         MapSize.setAlignmentX(0);
         MapSize.setAlignmentY(0);
         MapSize.setFont(MapSize.getFont().deriveFont(14f));
 
+        //components display on frame after 3 seconds
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         bgLbl.setIcon(titleFadeOut);
         scheduledExecutorService.schedule(() -> {
-            panel.remove(bgLbl); 
-
+            panel.remove(bgLbl); //remove the bg label first since it always renders on top of everything else
             panel.add(setMapSizeLbl);
             setMapSizeLbl.add(MapSize);
             panel.add(confirmMapBtn);
@@ -141,12 +140,12 @@ public class SelectionFrame {
             panel.add(quitBtn);
             panel.add(hardBtn);
             panel.add(pvpBtn);
-
-            panel.add(bgLbl);
+            panel.add(bgLbl); //re add
             bgLbl.setIcon(bgAnim);
         }, 3, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
 
+        //frame essentials
         frame.setResizable(false);
         frame.setSize(800, 450);
         frame.setLocationRelativeTo(null);
@@ -155,6 +154,8 @@ public class SelectionFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("BattleShipSelect");
 
+        //setting component positions
+        //seperated by empty lines for some organization
         bgLbl.setBounds(0, 0, 800, 450);
 
         setMapSizeLbl.setBounds(5, 80, 150, 37);
@@ -181,40 +182,39 @@ public class SelectionFrame {
         enemyMapPreviewLbl.setBounds(575, 210, 150, 25);
         attackTypeLbl.setBounds(50, 270, 150, 25);
 
+        //button events
         confirmMapBtn.addActionListener(e -> userConfirmedSize());
         readyBtn.addActionListener(e -> userClickedReady());
         cheatBtn.addActionListener(e -> userViewEnemMap());
         easyBtn.addActionListener(e -> userClickedEasyBtn());
         singleSegBtn.addActionListener(e -> userClickedSingle());
         fullShipBtn.addActionListener(e -> userClickedFullSink());
-        unCheatBtn.addActionListener(e -> userChangedWays());
+        unCheatBtn.addActionListener(e -> userHideMap());
         quitBtn.addActionListener(e -> userExit());
         hardBtn.addActionListener(e -> userClickedHard());
         pvpBtn.addActionListener(e -> userClickedPvp());
 
         frame.add(panel);
-
         panel.add(bgLbl);
         frame.setVisible(true);
-
-        GameRules.enemyMapVisible = false;
     }
-    public static void userClickedPvp()
+    public static void userClickedPvp() //sets AI difficulty to pvp and highlights pvp btn as indicator that its selected
     {
         GameRules.difficulty = GameRules.AIDifficulty.pvp;
         pvpBtn.setIcon(pvpSelectedIcon);
         easyBtn.setIcon(easyUnselectIcon);
         hardBtn.setIcon(hardUnselectedIcon);
     }
-    public static void userClickedHard()
+    public static void userClickedHard() //sets AI difficulty to hard and highlights hard btn as indicator that its selected
     {
         GameRules.difficulty = GameRules.AIDifficulty.impossible;
         pvpBtn.setIcon(pvpUnselectedIcon);
         easyBtn.setIcon(easyUnselectIcon);
         hardBtn.setIcon(hardSelectedIcon);
     }
-    public static void userExit()
+    public static void userExit() //closes program
     {
+        //asks user if they want to exit program (popup), if yes, close program
         int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit the application?", "WARNING", JOptionPane.YES_NO_OPTION);
         if (ans == JOptionPane.YES_OPTION) 
         {
@@ -228,15 +228,15 @@ public class SelectionFrame {
             }, 3, TimeUnit.SECONDS);
             scheduledExecutorService.shutdown();
         }
-        
     }
-    public static void userChangedWays()
+    public static void userHideMap() //hide enemies map
     {
+        //asks if user wants to hide enemy map (popup) if yes, hide map, display "show enemy map" button, and map will be hidden in mainframe
         int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to hide the enemies map?", "WARNING", JOptionPane.YES_NO_OPTION);
         if (ans == JOptionPane.YES_OPTION) 
         {
             GameRules.enemyMapVisible = false;
-            panel.remove(bgLbl); //java is silly and the only way the thing T DW - THERES LAYERS yeha theres layers so this is the only way
+            panel.remove(bgLbl); 
             panel.remove(enemyGrid); 
             panel.remove(enemyMapPreviewLbl);
             panel.add(cheatBtn);
@@ -246,27 +246,28 @@ public class SelectionFrame {
             frame.repaint();
         }
     }
-    public static void userClickedFullSink()
+    public static void userClickedFullSink() //sets attack type to full sink, means that when one part of the ship is hit, the rest will sink
     {
         GameRules.atkType = GameRules.AttackType.fullShip;
         singleSegBtn.setIcon(singleUnselectedIcon);
         fullShipBtn.setIcon(multipleSelectedIcon);
     }
-    public static void userClickedSingle()
+    public static void userClickedSingle() //sets attack type to single segment, means that segment must be destroyed one at a time
     {
         GameRules.atkType = GameRules.AttackType.singleSegment;
         singleSegBtn.setIcon(singleSelectedIcon);
         fullShipBtn.setIcon(multipleUnselectedIcon);
     }
-    public static void userClickedEasyBtn()
+    public static void userClickedEasyBtn() //sets AI difficulty to easy and highlights easy btn as indicator that its selected
     {
         GameRules.difficulty = GameRules.AIDifficulty.Easy;
         pvpBtn.setIcon(pvpUnselectedIcon);
         easyBtn.setIcon(easySelectIcon);
         hardBtn.setIcon(hardUnselectedIcon);
     }
-    public static void userConfirmedSize()
+    public static void userConfirmedSize() //called when user types value into text box and hits generate
     {
+        //checks if map size is valid, if it is, sets grid size, generates map, and displays it on grid
         try
         {
             if (Integer.parseInt(MapSize.getText()) >= 5 && Integer.parseInt(MapSize.getText()) <= 10)
@@ -276,7 +277,6 @@ public class SelectionFrame {
                 Main.mapSizeSet(Integer.parseInt(MapSize.getText()));
                 playerGrid.setLayout(new GridLayout(Main.player.map.length, Main.player.map.length));
                 enemyGrid.setLayout(new GridLayout(Main.enemy.map.length, Main.enemy.map.length));
-                
                 panel.remove(bgLbl); 
                 panel.add(bgLbl);
                 frame.revalidate();
@@ -292,10 +292,11 @@ public class SelectionFrame {
             JOptionPane.showMessageDialog(null, new JLabel("You must enter a map size value! (5 - 10)"));
         }
     }
-    public static void userClickedReady()
+    public static void userClickedReady() //called when user clicks ready button
     {
-        
-        try
+        //checks if map is generated and if text box is not empty
+        //if all is good, then user enters MainFrame to play the game
+        if (!MapSize.getText().equals("") && Main.player.map != null && Main.enemy.map != null)
         {
             ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
             panel.removeAll();
@@ -307,7 +308,7 @@ public class SelectionFrame {
             }, 3, TimeUnit.SECONDS);
             scheduledExecutorService.shutdown();
         }
-        catch (Exception e)
+        else
         {
             JOptionPane.showMessageDialog(null, new JLabel("You have to generate a map first!"));
         }
@@ -315,7 +316,7 @@ public class SelectionFrame {
     }
     public static void userViewEnemMap()
     {
-        //display popup to confirm, then display enemy map.
+        //asks if user wants to show enemy map (popup) if yes, show map, display "hide enemy map" button, and map will be shown in mainframe
         int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to display the enemies map?", "WARNING", JOptionPane.YES_NO_OPTION);
         if (ans == JOptionPane.YES_OPTION) 
         {

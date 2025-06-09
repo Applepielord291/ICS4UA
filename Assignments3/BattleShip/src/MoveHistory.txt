@@ -1,7 +1,2 @@
-Player Hit!
-Enemy Hit!
-Player Hit!
-Enemy Missed!
 Player Miss!
 Enemy Missed!
-Player Hit!

@@ -8,11 +8,10 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.io.File;
 import java.io.FileReader;
 
-/* Nigel Garcia
+/* 
  * May 23 2025
  * Main
  * The main script for the program, run it in here.
@@ -21,8 +20,7 @@ import java.io.FileReader;
 /* As always, a timeline will be included at the bottom of this script. */
 
 public class Main {
-    public static char[][] map = new char[0][0];
-
+    //player and enemy
     public static PlayerStats player = new PlayerStats();
     public static PlayerStats enemy = new PlayerStats();
 
@@ -34,29 +32,24 @@ public class Main {
     public static ShipType subMarine = new ShipType();
 
     //stores turn history
-    public static File moveHistoryFile = null;
+    private static File moveHistoryFile = null;
     public static void main(String[] args) throws Exception 
     {
         //Assigning values for each ship object
         Frigate.length = 3;
         Frigate.shipVisual = 'F';
-        Frigate.shipOnMap = false;
 
         attackBoat.length = 2;
         attackBoat.shipVisual = 'A';
-        attackBoat.shipOnMap = false;
 
         dinghy.length = 1;
         dinghy.shipVisual = 'D';
-        dinghy.shipOnMap = false;
 
         dreadNaught.length = 5;
         dreadNaught.shipVisual = 'N';
-        dreadNaught.shipOnMap = false;
 
         subMarine.length = 4;
         subMarine.shipVisual = 'S';
-        subMarine.shipOnMap = false;
 
         player.timesFired = 0;
         player.timesMissed = 0;
@@ -444,7 +437,6 @@ public class Main {
     public static boolean GameEnd(boolean isPlayer)
     {
         //uses linear search to check if the game ended
-        //TODO win condition not working properly
         if (isPlayer)
         {
             if (player.ammoCount == 0 && enemy.ammoCount == 0) return true;
@@ -633,7 +625,7 @@ public class Main {
  *      - created the QuitMenu script (9:55PM)
  *  (day 6: may 28, 2025)
  *      - finally fixed the issue with the frames not working properly after being reloaded with the QuitMenu buttons (12:26AM)
- *          - TODO the solution is really goofy, the start of the Jframe scripts are gonna look goofy, ill have an explanation for each of them
+ *          - the solution is really goofy, the start of the Jframe scripts are gonna look goofy, ill have an explanation for each of them
  *      - added extra variable in player stats 'hidden map' to manage map seen by each side (7:30AM)
  *      - easier to tell which parts the player hit and which parts you were hit by the enemy on the map (8:11AM)
  *      - added indicator to which is player and enemy map on the MainFrame script (8:21AM)
@@ -651,6 +643,7 @@ public class Main {
  *      - actually says who wins the game in the EndingScreen (1:15PM)
  *  (Day 8: may 30, 2025)
  *      - Fixed win condition not working properly (12:34AM)
+ *      - cleaning up/commenting code (1:43AM)
  * 
  *  add a bunch of popup windows for confirmation cause theres many things the user can do on accident (implemented)
  *  when enemy map display is off, display different grid (implemented)
@@ -668,7 +661,7 @@ public class Main {
  *  EndScreen displays only the map of the first game (if user loaded one game), fix this (fixed)
  *  popup error when user enters coordinates that go outside the bounds of the array (implemented)
  *  enemy ammo grid only in pvp mode (implemented)
- *  TODO add ships takenDown
+ *  add ships takenDown (implemented)
  *  program stops working properly when "quit to title" button is pressed (fixed)
  *  TODO clean up code
  */

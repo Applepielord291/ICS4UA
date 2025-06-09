@@ -1,0 +1,8 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "C:\\Users\\pixel\\OneDrive\\Documents\\ICS4UA\\Unit4\\DbTest\\lib\\commons-logging-1.2.jar"
+    ]
+}

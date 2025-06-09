@@ -5,43 +5,38 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/* Nigel Garcia
+/* 
  * May 23 2025
  * Frame
  * The Frame for the BattleShip Program
  */
 
 public class MainFrame {
+    //variables declared in class to be accessed by all functions
     public static JTextPane xCordTxt = new JTextPane();
     public static JTextPane yCordTxt = new JTextPane();
-
     public static JTextPane moveHistoryTxt = new JTextPane();
-
     public static JPanel playerGrid = new JPanel();
     public static JPanel enemyGrid = new JPanel();
     public static JPanel ammoGrid = new JPanel();
     public static JPanel enemyAmmoGrid = new JPanel();
-
     static ImageIcon bgAnim = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameBg.gif");
     static ImageIcon bgAnimFadeOut = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameFadeOut.gif");
     static ImageIcon ammoActive = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAmmoActive.png");
     static ImageIcon ammoUsed = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAmmoUsed.png");
-
     static JLabel bgLbl = new JLabel(bgAnimFadeOut); //used to display background graphic
-
     static JFrame frame = new JFrame();
-
     static JPanel panel = new JPanel();
+    static boolean isEnemyTurn = false; //used only for pvp, tracking if its enemy or player turn
 
-    static boolean isEnemyTurn = false; //used only for pvp
-
-    public static void ShowFrame()
+    public static void ShowFrame() //Function called upon to display frame after user enters a game (pressing ready btn in selection frame)
     {
+        //okay, so for this chunk of code,i need to redeclare the variables and reload the frame again
+        //if I dont do this, the frame and its components dosent load properly if the user decides that they want to play another round
+        //I know for sure theres a better way to do this, but the entire program is already a mess anyway.
         frame.removeAll();
         frame.revalidate();
         frame.repaint();
-
-        //just testing something
         xCordTxt = new JTextPane();
         yCordTxt = new JTextPane();
         moveHistoryTxt = new JTextPane();
@@ -51,18 +46,21 @@ public class MainFrame {
         enemyAmmoGrid = new JPanel();
         bgAnim = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameBg.gif");
         bgAnimFadeOut = new ImageIcon("BattleShip/Graphics/MainFrame/MainFrameFadeOut.gif");
-        bgLbl = new JLabel(bgAnimFadeOut); //used to display background graphic
+        bgLbl = new JLabel(bgAnimFadeOut); 
         frame = new JFrame();
         panel = new JPanel();
         ammoActive = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAmmoActive.png");
         ammoUsed = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAmmoUsed.png");
         isEnemyTurn = false;
 
-        GameRules.currF = GameRules.CurrentFrame.mainScreen;
+        //player turn first
         GameRules.playerCanAttack = true;
 
+        //hide frame border
         frame.setUndecorated(true);
 
+        //component declaration
+        //seperated by empty lines for some organization
         JScrollPane moveHistory = new JScrollPane(moveHistoryTxt);
 
         ImageIcon playerMapIcon = new ImageIcon("BattleShip\\Graphics\\SelectionScreen\\BattleShipPlayerMapTitle.png");
@@ -80,9 +78,9 @@ public class MainFrame {
         JLabel yLbl = new JLabel("Y");
         JLabel playerMapTitle = new JLabel(playerMapIcon);
         JLabel enemyMapTitle = new JLabel(enemyMapIcon);
-
         JLabel moveHistoryLbl = new JLabel(turnHistoryIcon);
 
+        //frame essentials
         frame.setResizable(false);
         frame.setSize(900, 625);
         frame.setLocationRelativeTo(null);
@@ -91,8 +89,11 @@ public class MainFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("BattleShip");
 
+        //self-explanatory
         moveHistoryTxt.setEditable(false);
 
+        //setting component positions
+        //seperated by empty lines for some organization
         playerGrid.setBounds(10, 10, 300, 300);
         enemyGrid.setBounds(575, 10, 300, 300);
         ammoGrid.setBounds(625, 450, 200, 125);
@@ -114,16 +115,16 @@ public class MainFrame {
         sendBtn.setBounds(385, 380, 100, 25);
         surrenderBtn.setBounds(385, 410, 100, 25);
 
+        //sets grid size by element number (using gridlayout so i dont have to manually set positions), so it can actually display images
         playerGrid.setLayout(new GridLayout(Main.player.map.length, Main.player.map.length));
         enemyGrid.setLayout(new GridLayout(Main.enemy.map.length, Main.enemy.map.length));
         ammoGrid.setLayout(new GridLayout(2, Main.player.ammoCount/2));
         enemyAmmoGrid.setLayout(new GridLayout(2, Main.enemy.ammoCount/2));
 
+        //Functions to display the grid information
         updateAmmoGrid();
         updateEnemAmmoGrid();
-        
         displayPlayerMap();
-        
         for (int i = 0; i < Main.enemy.map.length; i++)
         {
             for (int j = 0; j < Main.enemy.map.length; j++)
@@ -133,24 +134,20 @@ public class MainFrame {
             }
         }
         
-
+        //button events
         sendBtn.addActionListener(e -> userClickedAttack());
-
         surrenderBtn.addActionListener(e -> userSurrender());
 
+        //components arent added until after 2 seconds (when the fadeout transition ends) 
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-        
         scheduledExecutorService.schedule(() -> {
             userTurnStarted();
             panel.remove(bgLbl);
             panel.add(xCordTxt);
             panel.add(yCordTxt);
             panel.add(surrenderBtn);
-
             panel.add(playerGrid);
-
             panel.add(enemyGrid);
-
             panel.add(sendBtn);
             panel.add(moveHistoryLbl);
             panel.add(moveHistory);
@@ -167,26 +164,28 @@ public class MainFrame {
         }, 2, TimeUnit.SECONDS);
         scheduledExecutorService.shutdown();
 
+        //these arent in the timer since these display the actual fadeout animation
         frame.add(panel);
         panel.add(bgLbl);
 
         frame.setVisible(true);
     }
-    public static void updateAmmoGrid()
+    public static void updateAmmoGrid() //reloads the ammo grid with new information (called every turn)
     {
+        //reset so that theres not double elements
         ammoGrid.removeAll();
-        for (int i = 0; i < Main.player.ammoCount; i++)
+        for (int i = 0; i < Main.player.ammoCount; i++) //for number of ammo, add ammo available image
         {
             Image curr = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAmmoActive.png").getImage().getScaledInstance(62, 62, 0);
             ammoGrid.add(new JLabel(new ImageIcon(curr)));
         }
-        for (int i = 0; i < Main.player.timesFired; i++)
+        for (int i = 0; i < Main.player.timesFired; i++) //for number of ammo used, add ammo used image
         {
             Image curr = new ImageIcon("BattleShip\\Graphics\\MainFrame\\BattleShipAmmoUsed.png").getImage().getScaledInstance(62, 62, 0);
             ammoGrid.add(new JLabel(new ImageIcon(curr)));
         }
     }
-    public static void updateEnemAmmoGrid()
+    public static void updateEnemAmmoGrid() //same as updateAmmoGrid (only called in pvp mode)
     {
         enemyAmmoGrid.removeAll();
         for (int i = 0; i < Main.player.ammoCount; i++)
@@ -200,8 +199,9 @@ public class MainFrame {
             enemyAmmoGrid.add(new JLabel(new ImageIcon(curr)));
         }
     }
-    public static void userSurrender()
+    public static void userSurrender() //called when user clicks surrender button
     {
+        //popup with yes or no, if yes clicked, display end frame
         int ans = JOptionPane.showConfirmDialog(null, "Are you sure you want to surrender?", "WARNING", JOptionPane.YES_NO_OPTION);
         if (ans == JOptionPane.YES_OPTION) 
         {
@@ -209,9 +209,9 @@ public class MainFrame {
             EndingScreen.DisplayFrame();
         }
     }
-    public static void userClickedAttack()
+    public static void userClickedAttack() //called when user clicks attack button
     {
-        if (xCordTxt.getText() != "" && yCordTxt.getText() != "")
+        if (xCordTxt.getText() != "" && yCordTxt.getText() != "") //check if cords arent empty
         {
             if (GameRules.playerCanAttack && !isEnemyTurn) //this condition looks confusing but let me explain
             {
@@ -220,6 +220,7 @@ public class MainFrame {
                 //its so that the player wont be able to attack right after the other players sends an attack
                 if ((Integer.parseInt(xCordTxt.getText()) <= Main.player.map.length && Integer.parseInt(xCordTxt.getText()) > 0) && (Integer.parseInt(yCordTxt.getText()) <= Main.player.map.length && Integer.parseInt(yCordTxt.getText()) > 0))
                 {
+                    //this condition is long but its just check if the coordinate is a valid one (not outside of array bounds)
                     Main.userSendsAttack(xCordTxt.getText(), yCordTxt.getText());
                 }
                 else JOptionPane.showMessageDialog(null, new JLabel("Invalid coordinates!"));
@@ -228,16 +229,19 @@ public class MainFrame {
             {
                 if ((Integer.parseInt(xCordTxt.getText()) <= Main.player.map.length && Integer.parseInt(xCordTxt.getText()) > 0) && (Integer.parseInt(yCordTxt.getText()) <= Main.player.map.length && Integer.parseInt(yCordTxt.getText()) > 0))
                 {
-                    if (GameRules.difficulty == GameRules.AIDifficulty.pvp) Main.enemySendsAttack(xCordTxt.getText(), yCordTxt.getText());
+                    if (GameRules.difficulty == GameRules.AIDifficulty.pvp) Main.enemySendsAttack(xCordTxt.getText(), yCordTxt.getText()); //called only in pvp
                 }
                 else JOptionPane.showMessageDialog(null, new JLabel("Invalid coordinates!"));
             }
-            else JOptionPane.showMessageDialog(null, new JLabel("Its not your turn yet!"));
+            else JOptionPane.showMessageDialog(null, new JLabel("Its not your turn yet!")); //called only in non-pvp
         }
-        else JOptionPane.showMessageDialog(null, new JLabel("You have to enter coordinates!"));
+        else JOptionPane.showMessageDialog(null, new JLabel("You have to enter coordinates!")); //called when cords are empty
     }
-    public static void enemyTurn() //also change map grid displays in this function depending on game settings
+    public static void enemyTurn() //called when enemy turn starts ONLY in pvp mode
     {
+        //check if user has enemy map visibility disabled (in this case the enemy of enemy is the player)
+        //it refreshes the grid with the enemys map and the players hidden map
+        //this function assumes 2 people are playing together locally, which is why I added this feature
         if (!GameRules.enemyMapVisible)
         {
             playerGrid.removeAll();
@@ -255,7 +259,7 @@ public class MainFrame {
         }
         isEnemyTurn = true;
     }
-    public static void userTurn()
+    public static void userTurn() //same thing as with enemyTurn but on the players side
     {
         if (!GameRules.enemyMapVisible)
         {
@@ -274,15 +278,15 @@ public class MainFrame {
         }
         isEnemyTurn = false;
     }
-    public static void userTurnStarted()
+    public static void userTurnStarted() //animation handler for player turn (the animation top of the screen)
     {
         TransitionAnim.showFrame("player");
     }
-    public static void enemyTurnStarted()
+    public static void enemyTurnStarted() //animation handler for enemy turn (the animation top of the screen)
     {
         TransitionAnim.showFrame("enemy");
     }
-    public static void displayPlayerMap()
+    public static void displayPlayerMap() //displays player map on grid
     {
         playerGrid.removeAll();
         for (int i = 0; i < Main.player.map.length; i++)

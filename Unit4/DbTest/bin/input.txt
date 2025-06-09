@@ -1,0 +1,14 @@
+1 | n | pop | admin | 1 | null | 
+2 | p | pop | user1 | 2 | null | 
+3 | e | pop | user2 | 9 | null | 
+4 | v | pop | user3 | 8 | null | 
+5 | t | pop | user4 | 7 | null | 
+6 | g | pop | user2 | 4 | null | 
+7 | g | wha | user2 | 4 | null | 
+8 | g | wha | user2 | 4 | null | 
+9 | g | wha | user2 | 4 | null | 
+10 | g | wha | user2 | 4 | null | 
+11 | g | wha | user2 | 4 | null | 
+12 | g | wha | user2 | 4 | null | 
+13 | g | wha | user2 | 4 | null | 
+14 | g | wha | user2 | 4 | null | 

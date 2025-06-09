@@ -1,0 +1,7 @@
+{
+    "java.project.sourcePaths": [
+        "BattleShip/src",
+        "BattleShip/Graphics"
+    ],
+    "java.dependency.packagePresentation": "hierarchical"
+}
